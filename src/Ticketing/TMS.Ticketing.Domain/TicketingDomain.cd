@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TMS.Ticketing.Domain.Common.Detail">
+    <Position X="4.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Common\Detail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Events.Event">
+    <Position X="8.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAgAaARAAAAAgAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\Event.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Venue" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Details" />
+      <Property Name="Managers" />
+      <Property Name="Seats" />
+      <Property Name="Prices" />
+      <Property Name="Offers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Events.EventManager">
+    <Position X="10.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\EventManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Events.EventSeat">
+    <Position X="10.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAIAABAAAAAA=</HashCode>
+      <FileName>Events\EventSeat.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="State" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Events.Offer">
+    <Position X="10.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Events\Offer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Ordering.Cart">
+    <Position X="15.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAAAACAA=</HashCode>
+      <FileName>Ordeting\Cart.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Ordering.Order">
+    <Position X="15.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAkAAAACAAACiAAAAAAAAAAQBAAAAAAAAAAAAA=</HashCode>
+      <FileName>Ordeting\Order.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Status" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Events.PriceType">
+    <Position X="10.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAgAAAAAAAAAAAAAASACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\PriceType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Venues.Seat">
+    <Position X="5.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAIAAAAAAABA=</HashCode>
+      <FileName>Venues\Seat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Venues.Section">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAQAAAgAAAAAAQAAAAAQAAA=</HashCode>
+      <FileName>Venues\Section.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Rows" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Venues.SectionRow">
+    <Position X="5.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAgAAAAAAAAAAAAAAAAAAAAAQABA=</HashCode>
+      <FileName>Venues\SectionRow.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Seats" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Venues.Venue">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAhAAAIAAAAAAQAAAIAAAAAAEIAAAAAAAA=</HashCode>
+      <FileName>Venues\Venue.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Details" />
+      <Property Name="Sections" />
+      <Property Name="Bookings" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Venues.VenueBooking">
+    <Position X="0.5" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAgACAIAAAAAAAAAAAAAAgAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Venues\VenueBooking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Tickets.Ticket">
+    <Position X="20.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAkAAAACAAAAiAAAAAAAAAAABAAAAAAAAgAAAA=</HashCode>
+      <FileName>Tickets\Ticket.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Status" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Seats" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Tickets.TicketItem">
+    <Position X="18" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAACACAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Tickets\TicketItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="TMS.Ticketing.Domain.Events.SeatState">
+    <Position X="13" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAABBAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\SeatState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TMS.Ticketing.Domain.Ordering.OrderStatus">
+    <Position X="18" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACQAAAIAAAAAAIAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Ordeting\OrderStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TMS.Ticketing.Domain.Venues.SectionType">
+    <Position X="3" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAQAAAAAAA=</HashCode>
+      <FileName>Venues\SectionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TMS.Ticketing.Domain.Tickets.TicketStatus">
+    <Position X="20.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgBAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Tickets\TicketStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="10" />
+</ClassDiagram>
