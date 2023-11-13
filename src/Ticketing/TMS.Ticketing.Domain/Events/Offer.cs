@@ -2,7 +2,7 @@
 
 public sealed class Offer
 {
-    public required int SeatId { get; set; }
+    public required Guid SeatId { get; set; }
 
-    public required int PriceId { get; set; }
+    public required Guid PriceId { get; set; }
 }

@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Domain.Events;
 
-public sealed class Event : IDocumentEntry<Guid>
+public sealed class Event : ICollectionEntry<Guid>
 {
     public static string Collection => "Events";
 
@@ -10,7 +10,7 @@ public sealed class Event : IDocumentEntry<Guid>
     
     public required string Name { get; set; }
 
-    public List<Detail>? Details { get; set; }
+    public List<KeyValePair>? Details { get; set; }
 
     public required DateTime Start { get; set; }
     

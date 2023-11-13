@@ -1,13 +1,6 @@
 ﻿namespace TMS.Ticketing.Domain.Tickets;
 
-public enum TicketStatus
-{
-    Pending = 1,
-    CheckedIn = 2,
-    Canceled = 3
-}
-
-public sealed class Ticket : IDocumentEntry<Guid>
+public sealed class Ticket : ICollectionEntry<Guid>
 {
     public static string Collection => "Tickets";
 

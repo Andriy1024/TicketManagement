@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Domain.Venues;
 
-public sealed class Venue : IDocumentEntry<Guid>
+public sealed class Venue : ICollectionEntry<Guid>
 {
     public static string Collection => "Venues";
 
@@ -16,7 +16,7 @@ public sealed class Venue : IDocumentEntry<Guid>
     
     public required string Street { get; set; }
 
-    public List<Detail>? Details { get; set; }
+    public List<KeyValePair>? Details { get; set; }
 
     public List<Section> Sections { get; set; } = new();
 }

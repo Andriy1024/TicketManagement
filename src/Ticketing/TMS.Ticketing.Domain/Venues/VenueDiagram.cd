@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TMS.Ticketing.Domain.Venues.Venue">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAABQAAIAAAAAAQAAAIAAAAAAEIAAAAAAAA=</HashCode>
+      <FileName>Venues\Venue.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Sections" />
+      <Property Name="Details" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Venues.Section">
+    <Position X="6.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAQAAAgAAAAAAQAAAAAQAAA=</HashCode>
+      <FileName>Venues\Section.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Seats" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Venues.Seat">
+    <Position X="6.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAIAAAAAAIAAAAAQAAA=</HashCode>
+      <FileName>Venues\Seat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Venues.VenueBooking">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAgACAAQAAAAAAAAAAAAAgAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Venues\VenueBooking.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Common.KeyValePair">
+    <Position X="0.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Common\KeyValePair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="TMS.Ticketing.Domain.Venues.SectionType">
+    <Position X="6.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAQAAAAAAA=</HashCode>
+      <FileName>Venues\SectionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
