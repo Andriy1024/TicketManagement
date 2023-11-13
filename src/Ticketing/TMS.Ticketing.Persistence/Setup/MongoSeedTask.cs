@@ -6,11 +6,14 @@ using TMS.Ticketing.Persistence.Abstractions;
 
 namespace TMS.Ticketing.Persistence.Setup;
 
-internal class MongoSeedDataTask : IStartupTask
+/// <summary>
+/// The task is created for local testing purposes.
+/// </summary>
+internal class MongoSeedTask : IStartupTask
 {
     private readonly IMongoRepository<Venue, Guid> venues;
 
-    public MongoSeedDataTask(IMongoRepository<Venue, Guid> venues)
+    public MongoSeedTask(IMongoRepository<Venue, Guid> venues)
     {
         this.venues = venues;
     }
@@ -33,7 +36,7 @@ internal class MongoSeedDataTask : IStartupTask
                 City = "Krakow",
                 Country = "Poland",
                 Street = "Steet 45",
-                Details = new List<Detail>() 
+                Details = new List<KeyValePair>() 
                 {
                     new()
                     {

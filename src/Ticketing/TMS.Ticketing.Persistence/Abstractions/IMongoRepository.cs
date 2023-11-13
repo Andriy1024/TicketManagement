@@ -7,11 +7,11 @@ using TMS.Ticketing.Domain;
 namespace TMS.Ticketing.Persistence.Abstractions;
 
 public interface IMongoRepository<TEntity, TIdentifiable>
-    where TEntity : IDocumentEntry<TIdentifiable>
+    where TEntity : ICollectionEntry<TIdentifiable>
 {
-    public IMongoCollection<TEntity> Collection { get; }
-    Task<TEntity> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default);
-    Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+    IMongoCollection<TEntity> Collection { get; }
+    Task<TEntity?> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default);
+    Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);

@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 namespace TMS.Ticketing.Persistence.Database;
 
 internal class MongoRepository<TEntity, TIdentifiable> : IMongoRepository<TEntity, TIdentifiable>
-    where TEntity : IDocumentEntry<TIdentifiable>
+    where TEntity : ICollectionEntry<TIdentifiable>
 	where TIdentifiable : notnull
 {
 	public IMongoCollection<TEntity> Collection { get; }
@@ -19,11 +19,11 @@ internal class MongoRepository<TEntity, TIdentifiable> : IMongoRepository<TEntit
         Collection = database.GetCollection<TEntity>(TEntity.Collection);
     }
 
-    public Task<TEntity> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default)
+    public Task<TEntity?> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default)
         => GetAsync(e => e.Id.Equals(id), cancellationToken);
 
-    public Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-		=> Collection.Find(predicate).SingleOrDefaultAsync(cancellationToken);
+    public Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+		=> Collection.Find(predicate).FirstOrDefaultAsync(cancellationToken);
 
     public async Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         => await Collection.AsQueryable().ToListAsync(cancellationToken);
