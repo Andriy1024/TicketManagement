@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-using TMS.Common.Errors;
-
 namespace TMS.Ticketing.API.Controllers;
 
 [Route("api/venues")]
@@ -61,7 +59,7 @@ public sealed class VenuesController : ControllerBase
     [HttpDelete("{venueId}")]
     public async Task<IActionResult> DeleteVenueAsync(Guid venueId)
     {
-        await _venuesRepo.DeleteAsync(x => x.Id == venueId);
+        await _venuesRepo.DeleteAsync(venueId);
 
         return Ok();
     }
@@ -80,18 +78,20 @@ public sealed class VenuesController : ControllerBase
     [HttpPut("{venueId}/sections")]
     public async Task<IActionResult> UpdateSectionsAsync([FromRoute] Guid venueId, [FromBody] List<Section> sections)
     {
-        var venue = await _venuesRepo.GetAsync(x => x.Id == venueId);
+        //var venue = await _venuesRepo.GetAsync(venueId);
 
-        if (venue == null) 
-        {
-            throw AppError
-                .NotFound("Venue was not found")
-                .ToException();
-        }
+        //if (venue == null)
+        //{
+        //    throw AppError
+        //        .NotFound("Venue was not found")
+        //        .ToException();
+        //}
 
-        venue.Sections = sections;
+        //venue.Sections = sections;
 
-        await _venuesRepo.UpdateAsync(venue);
+        //await _venuesRepo.UpdateAsync(venue);
+
+        // TODO: split this endpoint into it's own sections/seats CRUD endpoints
 
         return Ok();
     }

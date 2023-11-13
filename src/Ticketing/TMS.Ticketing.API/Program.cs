@@ -1,8 +1,8 @@
-using TMS.Ticketing.Persistence.Setup;
 using TMS.Common.Extensions;
-using TMS.Ticketing.Domain.Venues;
-using TMS.Ticketing.API;
 using TMS.Common.Users;
+
+using TMS.Ticketing.Persistence.Setup;
+using TMS.Ticketing.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +12,7 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
     .AddScoped<IUserContext, UserContext>()
-    .AddMongoServices(builder.Configuration)
-    .AddMongoRepository<Venue, Guid>()
-    .AddMongoRepository<VenueBooking, Guid>();
+    .AddMongoServices(builder.Configuration);
 
 var app = builder.Build();
 

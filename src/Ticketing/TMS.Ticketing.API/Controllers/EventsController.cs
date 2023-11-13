@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using TMS.Common.Errors;
+using TMS.Common.Users;
 using TMS.Ticketing.Domain.Events;
-using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.API.Dtos.Events;
 using TMS.Ticketing.Persistence.Abstractions;
 
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using TMS.Common.Errors;
-using TMS.Common.Users;
 
 namespace TMS.Ticketing.API.Controllers;
 
@@ -17,17 +16,10 @@ namespace TMS.Ticketing.API.Controllers;
 public sealed class EventsController : ControllerBase
 {
     private readonly IMongoRepository<Event, Guid> _eventsRepo;
-    private readonly IMongoRepository<Venue, Guid> _venueRepo;
-    private readonly IMongoRepository<VenueBooking, Guid> _venueBookingRepo;
 
-    public EventsController(
-        IMongoRepository<Event, Guid> eventsRepo, 
-        IMongoRepository<Venue, Guid> venueRepo, 
-        IMongoRepository<VenueBooking, Guid> venueBookingRepo)
+    public EventsController(IMongoRepository<Event, Guid> eventsRepo)
     {
         _eventsRepo = eventsRepo;
-        _venueRepo = venueRepo;
-        _venueBookingRepo = venueBookingRepo;
     }
 
     [HttpGet]
@@ -72,7 +64,7 @@ public sealed class EventsController : ControllerBase
         [FromRoute] Guid eventId, 
         [FromBody] EventPropertiesDto dto)
     {
-        var @event = await _eventsRepo.GetAsync(x => x.Id == eventId);
+        var @event = await _eventsRepo.GetAsync(eventId);
 
         if (@event == null)
         {
@@ -94,7 +86,7 @@ public sealed class EventsController : ControllerBase
     [HttpDelete("{eventId}")]
     public async Task<IActionResult> DeleteEventAsync(Guid eventId)
     {
-        await _eventsRepo.DeleteAsync(x => x.Id == eventId);
+        await _eventsRepo.DeleteAsync(eventId);
 
         return Ok();
     }

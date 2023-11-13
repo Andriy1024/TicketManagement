@@ -41,7 +41,7 @@ public class VenueBookingsController : ControllerBase
 
         var @event = await _eventsRepo.GetAsync(x => x.Id == dto.EventId);
 
-        if (venue == null)
+        if (@event == null)
         {
             throw AppError
                 .NotFound("Event was not found")
@@ -66,7 +66,7 @@ public class VenueBookingsController : ControllerBase
             EventId = @event.Id,
             Start = dto.Start,
             End = dto.End,
-            BookingNumber = bookingNumber++
+            BookingNumber = (bookingNumber + 1)
         });
 
         @event.Seats = venue.Sections
