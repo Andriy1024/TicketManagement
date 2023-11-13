@@ -1,15 +1,12 @@
-﻿using MongoDB.Driver;
-
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 using TMS.Ticketing.Domain;
 
 namespace TMS.Ticketing.Persistence.Abstractions;
 
-public interface IMongoRepository<TEntity, TIdentifiable>
-    where TEntity : ICollectionEntry<TIdentifiable>
+public interface IRepository<TEntity, TIdentifiable>
+    where TEntity : IEntity<TIdentifiable>
 {
-    IMongoCollection<TEntity> Collection { get; }
     Task<TEntity?> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default);
     Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);

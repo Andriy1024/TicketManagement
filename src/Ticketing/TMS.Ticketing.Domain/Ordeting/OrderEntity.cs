@@ -2,10 +2,8 @@
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class Order : ICollectionEntry<Guid>
+public sealed class OrderEntity : IEntity<Guid>
 {
-    public static string Collection => "Orders";
-
     public Guid Id { get; init; }
 
     public Guid EventId { get; init; }

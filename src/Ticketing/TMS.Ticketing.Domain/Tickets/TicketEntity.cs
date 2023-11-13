@@ -1,9 +1,7 @@
 ﻿namespace TMS.Ticketing.Domain.Tickets;
 
-public sealed class Ticket : ICollectionEntry<Guid>
+public sealed class TicketEntity : IEntity<Guid>
 {
-    public static string Collection => "Tickets";
-
     public required Guid Id { get; init; }
 
     public required Guid EventId { get; init; }

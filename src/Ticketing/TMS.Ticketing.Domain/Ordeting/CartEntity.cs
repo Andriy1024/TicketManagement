@@ -2,10 +2,8 @@
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class Cart : ICollectionEntry<Guid>
+public sealed class CartEntity : IEntity<Guid>
 {
-    public static string Collection => "Carts";
-
     public required Guid Id { get; init; }
 
     public required int AccountId { get; init; }

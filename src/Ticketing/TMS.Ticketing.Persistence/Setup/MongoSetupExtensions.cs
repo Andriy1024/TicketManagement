@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
@@ -12,6 +13,7 @@ using TMS.Ticketing.Domain.Tickets;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Database;
+using TMS.Ticketing.Persistence.Implementations;
 
 namespace TMS.Ticketing.Persistence.Setup;
 
@@ -36,55 +38,55 @@ public static class MongoSetupExtensions
             var client = provider.GetRequiredService<IMongoClient>();
             return client.GetDatabase(options.DatabaseName);
         });
-
+        
         ConfigureClassMapp();
 
         return services
             .AddScoped<IStartupTask, MongoSchemaTask>()
             .AddScoped<IStartupTask, MongoSeedTask>()
-            .AddMongoRepository<Venue, Guid>()
-            .AddMongoRepository<VenueBooking, Guid>()
-            .AddMongoRepository<Event, Guid>()
-            .AddMongoRepository<Cart, Guid>()
-            .AddMongoRepository<Order, Guid>()
-            .AddMongoRepository<Ticket, Guid>();
+            .AddScoped<IVenuesRepository, VenuesRepository>()
+            .AddScoped<IVenuesBookingRepository, VenuesBookingRepository>()
+            .AddScoped<IEventsRepository, EventsRepository>()
+            .AddScoped<ICartsRepository, CartsRepository>()
+            .AddScoped<IOrdersRepository, OrdersRepository>()
+            .AddScoped<ITicketsRepository, TicketsRepository>();
     }
 
     private static void ConfigureClassMapp() 
     {
-        BsonClassMap.RegisterClassMap<Venue>(map =>
+        BsonClassMap.RegisterClassMap<VenueEntity>(map =>
         {
             map.AutoMap();
 
             map.MapIdMember(x => x.Id);
         });
 
-        BsonClassMap.RegisterClassMap<VenueBooking>(map =>
+        BsonClassMap.RegisterClassMap<VenueBookingEntity>(map =>
         {
             map.AutoMap();
             map.MapIdMember(x => x.Id);
         });
 
-        BsonClassMap.RegisterClassMap<Event>(map =>
+        BsonClassMap.RegisterClassMap<EventEntity>(map =>
         {
             map.AutoMap();
             map.MapIdMember(x => x.Id);
         });
 
-        BsonClassMap.RegisterClassMap<Cart>(map =>
+        BsonClassMap.RegisterClassMap<CartEntity>(map =>
         {
             map.AutoMap();
             map.MapIdMember(x => x.Id);
             map.UnmapProperty(x => x.Total);
         });
 
-        BsonClassMap.RegisterClassMap<Order>(map =>
+        BsonClassMap.RegisterClassMap<OrderEntity>(map =>
         {
             map.AutoMap();
             map.MapIdMember(x => x.Id);
         });
 
-        BsonClassMap.RegisterClassMap<Ticket>(map =>
+        BsonClassMap.RegisterClassMap<TicketEntity>(map =>
         {
             map.AutoMap();
             map.MapIdMember(x => x.Id);
@@ -92,9 +94,9 @@ public static class MongoSetupExtensions
     }
 
     public static IServiceCollection AddMongoRepository<TEntity, TIdentifiable>(this IServiceCollection services)
-        where TEntity : ICollectionEntry<TIdentifiable>
+        where TEntity : IEntity<TIdentifiable>
         where TIdentifiable : notnull
     {
-        return services.AddTransient<IMongoRepository<TEntity, TIdentifiable>, MongoRepository<TEntity, TIdentifiable>>();
+        return services.AddTransient<IRepository<TEntity, TIdentifiable>, MongoRepository<TEntity, TIdentifiable>>();
     }
 }

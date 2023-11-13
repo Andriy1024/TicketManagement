@@ -8,15 +8,17 @@ using System.Linq.Expressions;
 
 namespace TMS.Ticketing.Persistence.Database;
 
-internal class MongoRepository<TEntity, TIdentifiable> : IMongoRepository<TEntity, TIdentifiable>
-    where TEntity : ICollectionEntry<TIdentifiable>
+internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TEntity, TIdentifiable>
+    where TEntity : IEntity<TIdentifiable>
 	where TIdentifiable : notnull
 {
-	public IMongoCollection<TEntity> Collection { get; }
+	protected abstract string CollectionName { get; }
+
+	protected IMongoCollection<TEntity> Collection { get; }
 
 	public MongoRepository(IMongoDatabase database)
 	{
-        Collection = database.GetCollection<TEntity>(TEntity.Collection);
+        Collection = database.GetCollection<TEntity>(CollectionName);
     }
 
     public Task<TEntity?> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default)

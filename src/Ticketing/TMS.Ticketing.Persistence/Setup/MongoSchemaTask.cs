@@ -1,34 +1,55 @@
 ﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 using TMS.Common.Interfaces;
-using TMS.Ticketing.Domain.Events;
-using TMS.Ticketing.Domain.Ordering;
-using TMS.Ticketing.Domain.Tickets;
+
 using TMS.Ticketing.Domain.Venues;
+using TMS.Ticketing.Persistence.Abstractions;
+using TMS.Ticketing.Persistence.Helpers;
 
 namespace TMS.Ticketing.Persistence.Setup;
 
-internal class MongoSchemaTask : IStartupTask
+internal sealed class MongoSchemaTask : IStartupTask
 {
     private readonly IMongoDatabase _database;
+    private readonly IVenuesRepository _venuesRepo;
+    private readonly IVenuesBookingRepository _venuesBookingRepo;
+    private readonly IEventsRepository _eventsRepo;
+    private readonly ICartsRepository _cartsRepo;
+    private readonly IOrdersRepository _ordersRepo;
+    private readonly ITicketsRepository _ticketsRepo;
 
-    public MongoSchemaTask(IMongoDatabase database)
+    public MongoSchemaTask(
+        IMongoDatabase database, 
+        IVenuesRepository venuesRepo, 
+        IVenuesBookingRepository venuesBookingRepo, 
+        IEventsRepository eventsRepo, 
+        ICartsRepository cartsRepo, 
+        IOrdersRepository ordersRepo, 
+        ITicketsRepository ticketsRepo)
     {
         _database = database;
+        _venuesRepo = venuesRepo;
+        _venuesBookingRepo = venuesBookingRepo;
+        _eventsRepo = eventsRepo;
+        _cartsRepo = cartsRepo;
+        _ordersRepo = ordersRepo;
+        _ticketsRepo = ticketsRepo;
     }
 
     public async Task ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        // Verify collections successfully created
-        _ = _database.GetCollection<Venue>(Venue.Collection);
-        _ = _database.GetCollection<Event>(Event.Collection);
-        _ = _database.GetCollection<Cart>(Cart.Collection);
-        _ = _database.GetCollection<Order>(Order.Collection);
-        _ = _database.GetCollection<Ticket>(Ticket.Collection);
+        // Verify repositories successfully created
+        var fakeId = Guid.NewGuid();
+        
+        _ = await _venuesRepo.GetAsync(fakeId);
+        _ = await _venuesBookingRepo.GetAsync(fakeId);
+        _ = await _eventsRepo.GetAsync(fakeId);
+        _ = await _cartsRepo.GetAsync(fakeId);
+        _ = await _ordersRepo.GetAsync(fakeId);
+        _ = await _ticketsRepo.GetAsync(fakeId);
 
-        var venuesBooking = _database.GetCollection<VenueBooking>(VenueBooking.Collection);
+        var venuesBooking = _database.GetCollection<VenueBookingEntity>(Collections.VenuesBooking);
 
         var indexes = venuesBooking.Indexes.List().ToList();
 
@@ -36,14 +57,14 @@ internal class MongoSchemaTask : IStartupTask
 
         if (indexes.All(index => index["name"] != (BsonValue)indexName))
         {
-            var venueBookingUniqueIndex = Builders<VenueBooking>.IndexKeys
+            var venueBookingUniqueIndex = Builders<VenueBookingEntity>.IndexKeys
                 .Combine(
-                    Builders<VenueBooking>.IndexKeys.Ascending(x => x.VenueId),
-                    Builders<VenueBooking>.IndexKeys.Ascending(x => x.BookingNumber)
+                    Builders<VenueBookingEntity>.IndexKeys.Ascending(x => x.VenueId),
+                    Builders<VenueBookingEntity>.IndexKeys.Ascending(x => x.BookingNumber)
                 );
 
             await venuesBooking.Indexes.CreateOneAsync(
-                new CreateIndexModel<VenueBooking>(venueBookingUniqueIndex,
+                new CreateIndexModel<VenueBookingEntity>(venueBookingUniqueIndex,
                     new CreateIndexOptions
                     {
                         Unique = true,

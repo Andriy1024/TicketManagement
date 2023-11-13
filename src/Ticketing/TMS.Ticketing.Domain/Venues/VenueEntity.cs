@@ -2,10 +2,8 @@
 
 namespace TMS.Ticketing.Domain.Venues;
 
-public sealed class Venue : ICollectionEntry<Guid>
+public sealed class VenueEntity : IEntity<Guid>
 {
-    public static string Collection => "Venues";
-
     public required Guid Id { get; init; }
     
     public required string Name { get; set; }
