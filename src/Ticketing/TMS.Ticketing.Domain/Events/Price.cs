@@ -1,6 +1,6 @@
 ﻿namespace TMS.Ticketing.Domain.Events;
 
-public sealed class PriceType
+public sealed class Price
 {
     public required int EventId { get; set; }
 

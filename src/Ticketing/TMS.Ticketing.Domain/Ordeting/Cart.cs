@@ -1,12 +1,16 @@
-﻿using TMS.Ticketing.Domain.Tickets;
+﻿using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class Cart
+public sealed class Cart : IDocumentEntry<Guid>
 {
-    public required Guid CartId { get; init; }
+    public static string Collection => "Carts";
 
-    public decimal Total => this.Items.Sum(x => x.Amount);
+    public required Guid Id { get; init; }
 
-    public required List<TicketItem> Items { get; init; } = new();
+    public int AccountId { get; init; }
+
+    public decimal Total => this.OrderItems.Sum(x => x.Amount);
+
+    public List<OrderItem> OrderItems { get; } = new();
 }

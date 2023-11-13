@@ -1,27 +1,26 @@
 ﻿using TMS.Ticketing.Domain.Common;
-using TMS.Ticketing.Domain.Venues;
 
 namespace TMS.Ticketing.Domain.Events;
 
-public sealed class Event
+public sealed class Event : IDocumentEntry<Guid>
 {
-    public required int EventId { get; set; }
+    public static string Collection => "Events";
+
+    public required Guid Id { get; init; }
     
     public required string Name { get; set; }
 
-    public required List<Detail> Details { get; set; }
-
-    public required VenueBooking Venue { get; set; }
+    public List<Detail>? Details { get; set; }
 
     public required DateTime Start { get; set; }
     
     public required DateTime End { get; set; }
 
-    public required List<EventManager> Managers { get; set; }
+    public required int CreatorId { get; set; }
 
-    public required List<EventSeat> Seats { get; set; }
+    public List<EventSeat> Seats { get; set; } = new();
 
-    public required List<PriceType> Prices { get; set; }
+    public List<Price> Prices { get; set; } = new();
 
-    public required List<Offer> Offers { get; set; }
+    public List<Offer> Offers { get; set; } = new();
 }

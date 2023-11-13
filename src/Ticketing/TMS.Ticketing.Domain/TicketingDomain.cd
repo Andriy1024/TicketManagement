@@ -7,11 +7,11 @@
       <FileName>Common\Detail.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TMS.Ticketing.Domain.Events.Event">
+  <Class Name="TMS.Ticketing.Domain.Events.EventAggregate">
     <Position X="8.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAgAaARAAAAAgAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Events\Event.cs</FileName>
+      <FileName>Events\EventAggregate.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Venue" />
@@ -48,21 +48,28 @@
       <FileName>Events\Offer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TMS.Ticketing.Domain.Ordering.Cart">
-    <Position X="15.5" Y="6" Width="1.5" />
+  <Class Name="TMS.Ticketing.Domain.Ordering.CartAggregate">
+    <Position X="15.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAAAACAA=</HashCode>
-      <FileName>Ordeting\Cart.cs</FileName>
+      <FileName>Ordeting\CartAggregate.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Items" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="TMS.Ticketing.Domain.Ordering.Order">
+  <Class Name="TMS.Ticketing.Domain.Ordering.OrderAggregate">
     <Position X="15.5" Y="2.75" Width="1.5" />
+    <AssociationLine Name="Items" Type="TMS.Ticketing.Domain.Ordeting.OrderItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17" Y="4.861" />
+        <Point X="19.062" Y="4.861" />
+        <Point X="19.062" Y="5.5" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EAAAAAAkAAAACAAACiAAAAAAAAAAQBAAAAAAAAAAAAA=</HashCode>
-      <FileName>Ordeting\Order.cs</FileName>
+      <HashCode>EAAAAAAkAAAACAAAAiAAAAAAAAAAQBAAAAAAAAAAAAA=</HashCode>
+      <FileName>Ordeting\OrderAggregate.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Status" />
@@ -108,11 +115,11 @@
       <Property Name="Seats" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="TMS.Ticketing.Domain.Venues.Venue">
+  <Class Name="TMS.Ticketing.Domain.Venues.VenueAggregate">
     <Position X="0.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAhAAAIAAAAAAQAAAIAAAAAAEIAAAAAAAA=</HashCode>
-      <FileName>Venues\Venue.cs</FileName>
+      <FileName>Venues\VenueAggregate.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Details" />
@@ -127,24 +134,11 @@
       <FileName>Venues\VenueBooking.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TMS.Ticketing.Domain.Tickets.Ticket">
-    <Position X="20.75" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAkAAAACAAAAiAAAAAAAAAAABAAAAAAAAgAAAA=</HashCode>
-      <FileName>Tickets\Ticket.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Status" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="Seats" />
-    </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="TMS.Ticketing.Domain.Tickets.TicketItem">
-    <Position X="18" Y="5" Width="1.5" />
+  <Class Name="TMS.Ticketing.Domain.Ordeting.OrderItem">
+    <Position X="18.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAACACAAAAAAAAIAAAAAAAAA=</HashCode>
-      <FileName>Tickets\TicketItem.cs</FileName>
+      <FileName>Ordeting\OrderItem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="TMS.Ticketing.Domain.Events.SeatState">
@@ -155,7 +149,7 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="TMS.Ticketing.Domain.Ordering.OrderStatus">
-    <Position X="18" Y="2.5" Width="1.5" />
+    <Position X="18.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAACQAAAIAAAAAAIAAAAAAAAAAABAAAAAAAAA=</HashCode>
       <FileName>Ordeting\OrderStatus.cs</FileName>

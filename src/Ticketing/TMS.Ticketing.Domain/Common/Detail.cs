@@ -2,6 +2,6 @@
 
 public sealed class Detail
 {
-    public required string Name { get; init; }
-    public required string Value { get; init; }
+    public string? Name { get; set; }
+    public string? Value { get; set; }
 }

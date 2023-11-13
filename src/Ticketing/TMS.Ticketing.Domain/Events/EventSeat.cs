@@ -2,9 +2,7 @@
 
 public sealed class EventSeat
 {
-    public required int EventId { get; set; }
-
-    public required int SeatId { get; set; }
+    public required Guid SeatId { get; init; }
 
     public required SeatState State { get; set; }
 }

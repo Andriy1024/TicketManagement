@@ -2,21 +2,21 @@
 
 namespace TMS.Ticketing.Domain.Venues;
 
-public sealed class Venue
+public sealed class Venue : IDocumentEntry<Guid>
 {
-    public required int Id { get; init; }
-    
-    public required string Name { get; init; }
-    
-    public required string Country { get; init; }
-    
-    public required string City { get; init; }
-    
-    public required string Street { get; init; }
+    public static string Collection => "Venues";
 
-    public required List<Detail> Details { get; init; } = new();
+    public required Guid Id { get; init; }
+    
+    public required string Name { get; set; }
+    
+    public required string Country { get; set; }
+    
+    public required string City { get; set; }
+    
+    public required string Street { get; set; }
 
-    public required List<Section> Sections { get; init; } = new();
+    public List<Detail>? Details { get; set; }
 
-    public required List<VenueBooking> Bookings { get; init; } = new();
+    public List<Section> Sections { get; set; } = new();
 }
