@@ -44,7 +44,7 @@ internal class MongoSeedTask : IStartupTask
                         Value = "Detail Value"
                     }
                 },
-                Sections = new List<Section>() 
+                Sections = new List<VenueSection>() 
                 {
                     new() 
                     {
@@ -52,16 +52,16 @@ internal class MongoSeedTask : IStartupTask
                         Name = "Section 1",
                         Type = SectionType.Designated,
                         VenueId = venueId,
-                        Seats = new List<Seat>() 
+                        Seats = new List<VenueSeat>() 
                         {
-                            new Seat()
+                            new VenueSeat()
                             {
                                 SectionId = sectionId,
                                 RowNumber = 1,
                                 SeatId = Guid.NewGuid(),
                                 SeatNumber = 1
                             },
-                            new Seat()
+                            new VenueSeat()
                             {
                                 SectionId = sectionId,
                                 RowNumber = 1,

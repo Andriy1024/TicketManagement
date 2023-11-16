@@ -1,5 +1,5 @@
 ﻿using TMS.Ticketing.Domain.Venues;
 
-namespace TMS.Ticketing.Persistence.Abstractions;
+namespace TMS.Ticketing.Application.Repositories;
 
 public interface IVenuesBookingRepository : IRepository<VenueBookingEntity, Guid> { }

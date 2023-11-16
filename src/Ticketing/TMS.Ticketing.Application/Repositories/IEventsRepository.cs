@@ -1,5 +1,5 @@
 ﻿using TMS.Ticketing.Domain.Events;
 
-namespace TMS.Ticketing.Persistence.Abstractions;
+namespace TMS.Ticketing.Application.Repositories;
 
 public interface IEventsRepository : IRepository<EventEntity, Guid> { }

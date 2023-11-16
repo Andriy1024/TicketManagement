@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TMS.Ticketing.Domain\TMS.Ticketing.Domain.csproj" />
+    <ProjectReference Include="..\TMS.Ticketing.Application\TMS.Ticketing.Application.csproj" />
   </ItemGroup>
 
 </Project>

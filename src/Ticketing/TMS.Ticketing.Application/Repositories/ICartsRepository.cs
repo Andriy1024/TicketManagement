@@ -1,5 +1,5 @@
 ﻿using TMS.Ticketing.Domain.Ordering;
 
-namespace TMS.Ticketing.Persistence.Abstractions;
+namespace TMS.Ticketing.Application.Repositories;
 
 public interface ICartsRepository : IRepository<CartEntity, Guid> { }

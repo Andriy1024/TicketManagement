@@ -2,7 +2,6 @@
 
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Persistence.Abstractions;
-using TMS.Ticketing.Persistence.Database;
 using TMS.Ticketing.Persistence.Helpers;
 
 namespace TMS.Ticketing.Persistence.Implementations;

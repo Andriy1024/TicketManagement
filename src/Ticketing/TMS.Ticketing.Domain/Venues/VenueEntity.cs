@@ -1,4 +1,5 @@
-﻿using TMS.Ticketing.Domain.Common;
+﻿using TMS.Common.Errors;
+using TMS.Ticketing.Domain.Common;
 
 namespace TMS.Ticketing.Domain.Venues;
 
@@ -16,5 +17,11 @@ public sealed class VenueEntity : IEntity<Guid>
 
     public List<KeyValePair>? Details { get; set; }
 
-    public List<Section> Sections { get; set; } = new();
+    public List<VenueSection> Sections { get; set; } = new();
+
+    public VenueSection GetSection(Guid sectionId)
+    {
+        return Sections.Find(x => x.SectionId == sectionId) 
+            ?? throw AppError.NotFound($"Section not found: {sectionId}").ToException();
+    }
 }

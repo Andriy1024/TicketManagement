@@ -1,5 +1,5 @@
 ﻿using TMS.Ticketing.Domain.Tickets;
 
-namespace TMS.Ticketing.Persistence.Abstractions;
+namespace TMS.Ticketing.Application.Repositories;
 
 public interface ITicketsRepository : IRepository<TicketEntity, Guid> { }
