@@ -4,6 +4,8 @@ using TMS.Ticketing.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 using MediatR;
+using TMS.Ticketing.Application.UseCases.VenueSections;
+using TMS.Ticketing.Application.UseCases.VenueSeats;
 
 namespace TMS.Ticketing.API.Controllers;
 
@@ -49,11 +51,10 @@ public sealed class VenuesController : ControllerBase
     [HttpDelete("{venueId}/sections/{sectionId}")]
     public Task<VenueDetailsDto> GetSectionsAsync(Guid venueId, Guid sectionId)
         => _mediator.Send(new DeleteSectionCommand 
-        { 
-            VenueId = venueId, 
-            SectionId = sectionId 
-        });
-
+            { 
+                VenueId = venueId, 
+                SectionId = sectionId 
+            });
 
     #endregion
 
@@ -66,11 +67,11 @@ public sealed class VenuesController : ControllerBase
     [HttpDelete("{venueId}/sections/{sectionId}/seats/{seatId}")]
     public Task<VenueDetailsDto> DeleteSeatsync(Guid venueId, Guid sectionId, Guid seatId)
         => _mediator.Send(new DeleteSeatCommand
-        {
-            VenueId = venueId,
-            SectionId = sectionId,
-            SeatId = seatId
-        });
+            {
+                VenueId = venueId,
+                SectionId = sectionId,
+                SeatId = seatId
+            });
 
     #endregion
 }

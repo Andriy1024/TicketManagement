@@ -2,4 +2,7 @@
 
 namespace TMS.Ticketing.Application.Repositories;
 
-public interface IEventsRepository : IRepository<EventEntity, Guid> { }
+public interface IEventsRepository : IRepository<EventEntity, Guid> 
+{
+    Task<EventEntity> GetRequiredAsync(Guid eventId);
+}

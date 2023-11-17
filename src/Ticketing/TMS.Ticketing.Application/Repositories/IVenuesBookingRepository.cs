@@ -2,4 +2,6 @@
 
 namespace TMS.Ticketing.Application.Repositories;
 
-public interface IVenuesBookingRepository : IRepository<VenueBookingEntity, Guid> { }
+public interface IVenuesBookingRepository : IRepository<VenueBookingEntity, Guid> 
+{
+}

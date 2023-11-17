@@ -4,7 +4,19 @@ public sealed class GetVenuesOverview : IRequest<IEnumerable<VenueOverviewDto>>
 {
 }
 
-public sealed class GetVenueDetails : IRequest<VenueDetailsDto>
+public sealed class GetVenuesOverviewHandler : IRequestHandler<GetVenuesOverview, IEnumerable<VenueOverviewDto>>
 {
-    public Guid Id { get; set; }
+    private readonly IVenuesRepository _repository;
+
+    public GetVenuesOverviewHandler(IVenuesRepository repository)
+    {
+        this._repository = repository;
+    }
+
+    public async Task<IEnumerable<VenueOverviewDto>> Handle(GetVenuesOverview request, CancellationToken cancellationToken)
+    {
+        var venues = await _repository.GetAllAsync(cancellationToken);
+
+        return venues.Select(VenueOverviewDto.Map).ToList();
+    }
 }
