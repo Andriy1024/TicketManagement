@@ -16,7 +16,7 @@ public sealed class CreateVenueCommand : IRequest<VenueDetailsDto>
     public List<KeyValePair>? Details { get; set; }
 }
 
-public sealed class CreateVenueHandler : IRequestHandler<CreateVenueCommand, VenueDetailsDto>
+internal sealed class CreateVenueHandler : IRequestHandler<CreateVenueCommand, VenueDetailsDto>
 {
     private readonly IVenuesRepository _repository;
 

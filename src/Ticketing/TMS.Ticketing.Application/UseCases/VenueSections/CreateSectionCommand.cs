@@ -11,7 +11,7 @@ public sealed class CreateSectionCommand : IRequest<VenueDetailsDto>
     public required SectionType Type { get; init; }
 }
 
-public sealed class VenueSectionsHandlers : IRequestHandler<CreateSectionCommand, VenueDetailsDto>
+internal sealed class VenueSectionsHandlers : IRequestHandler<CreateSectionCommand, VenueDetailsDto>
 {
     private readonly IVenuesRepository _repository;
 

@@ -1,4 +1,5 @@
 ﻿using TMS.Common.Users;
+
 using TMS.Ticketing.Domain.Common;
 using TMS.Ticketing.Domain.Events;
 
@@ -15,7 +16,7 @@ public sealed class CreateEventCommand : IRequest<EventDetailsDto>
     public DateTime End { get; set; }
 }
 
-public sealed class CreateEventHandler : IRequestHandler<CreateEventCommand, EventDetailsDto>
+internal sealed class CreateEventHandler : IRequestHandler<CreateEventCommand, EventDetailsDto>
 {
     private readonly IEventsRepository _eventsRepo;
 

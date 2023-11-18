@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-
+using TMS.Common.Errors;
 using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Helpers;
@@ -12,5 +12,11 @@ internal sealed class CartsRepository : MongoRepository<CartEntity, Guid>, ICart
 
     public CartsRepository(IMongoDatabase database) : base(database)
     {
+    }
+
+    public async Task<CartEntity> GetRequiredAsync(Guid id)
+    {
+        return await GetAsync(id)
+            ?? throw AppError.NotFound($"Cart not found: {id}").ToException();
     }
 }

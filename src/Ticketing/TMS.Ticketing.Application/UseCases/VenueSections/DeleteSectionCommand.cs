@@ -7,7 +7,7 @@ public sealed class DeleteSectionCommand : IRequest<VenueDetailsDto>
     public required Guid VenueId { get; init; }
 }
 
-public sealed class DeleteSectionHandler : IRequestHandler<DeleteSectionCommand, VenueDetailsDto>
+internal sealed class DeleteSectionHandler : IRequestHandler<DeleteSectionCommand, VenueDetailsDto>
 {
     private readonly IVenuesRepository _repository;
 

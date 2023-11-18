@@ -1,11 +1,11 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.VenueBookings;
 
-public class GetVenueBookings : IRequest<IEnumerable<VenueBookingDto>>
+public sealed class GetVenueBookings : IRequest<IEnumerable<VenueBookingDto>>
 {
     public required Guid VenueId { get; init; }
 }
 
-public sealed class GetVenueBookingsHandler : IRequestHandler<GetVenueBookings, IEnumerable<VenueBookingDto>>
+internal sealed class GetVenueBookingsHandler : IRequestHandler<GetVenueBookings, IEnumerable<VenueBookingDto>>
 {
     private readonly IVenuesBookingRepository _bookingRepo;
 

@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Application.UseCases.VenueSeats;
 
-public class CreateSeatCommand : IRequest<VenueDetailsDto>
+public sealed class CreateSeatCommand : IRequest<VenueDetailsDto>
 {
     public required Guid VenueId { get; init; }
 
@@ -11,7 +11,7 @@ public class CreateSeatCommand : IRequest<VenueDetailsDto>
     public required int? RowNumber { get; init; }
 }
 
-public class CreateSeatHandlers : IRequestHandler<CreateSeatCommand, VenueDetailsDto>
+internal sealed class CreateSeatHandlers : IRequestHandler<CreateSeatCommand, VenueDetailsDto>
 {
     private readonly IVenuesRepository _repository;
 

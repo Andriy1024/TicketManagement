@@ -1,4 +1,5 @@
 ﻿using TMS.Common.Errors;
+
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Venues;
 
@@ -15,8 +16,7 @@ public sealed class CreateVenueBookingCommand : IRequest<VenueBookingDto>
     public DateTime End { get; set; }
 }
 
-public sealed class CreateVenueBookingHandler :
-    IRequestHandler<CreateVenueBookingCommand, VenueBookingDto>
+internal sealed class CreateVenueBookingHandler : IRequestHandler<CreateVenueBookingCommand, VenueBookingDto>
 {
     private readonly IVenuesBookingRepository _bookingRepo;
 

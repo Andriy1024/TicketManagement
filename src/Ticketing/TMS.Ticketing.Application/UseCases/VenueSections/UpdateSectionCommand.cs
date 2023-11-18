@@ -13,7 +13,7 @@ public sealed class UpdateSectionCommand : IRequest<VenueDetailsDto>
     public required SectionType Type { get; init; }
 }
 
-public sealed class UpdateSectionHandler : IRequestHandler<UpdateSectionCommand, VenueDetailsDto>
+internal sealed class UpdateSectionHandler : IRequestHandler<UpdateSectionCommand, VenueDetailsDto>
 {
     private readonly IVenuesRepository _repository;
 

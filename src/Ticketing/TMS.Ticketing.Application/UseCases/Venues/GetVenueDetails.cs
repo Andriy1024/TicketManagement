@@ -1,11 +1,8 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Venues;
 
-public sealed class GetVenueDetails : IRequest<VenueDetailsDto>
-{
-    public Guid Id { get; set; }
-}
+public sealed record GetVenueDetails(Guid Id) : IRequest<VenueDetailsDto>;
 
-public sealed class GetVenueDetailsHandler : IRequestHandler<GetVenueDetails, VenueDetailsDto>
+internal sealed class GetVenueDetailsHandler : IRequestHandler<GetVenueDetails, VenueDetailsDto>
 {
     private readonly IVenuesRepository _repository;
 

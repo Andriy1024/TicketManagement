@@ -15,7 +15,7 @@ public sealed class UpdateEventCommand : IRequest<EventDetailsDto>
     public DateTime End { get; set; }
 }
 
-public sealed class UpdateEventHandler : IRequestHandler<UpdateEventCommand, EventDetailsDto>
+internal sealed class UpdateEventHandler : IRequestHandler<UpdateEventCommand, EventDetailsDto>
 {
     private readonly IEventsRepository _eventsRepo;
 

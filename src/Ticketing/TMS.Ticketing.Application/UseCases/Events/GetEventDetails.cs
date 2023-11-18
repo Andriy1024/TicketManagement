@@ -5,7 +5,7 @@ public sealed class GetEventDetails : IRequest<EventDetailsDto>
     public Guid EventId { get; set; }
 }
 
-public sealed class GetEventDetailsHandler : IRequestHandler<GetEventDetails, EventDetailsDto>
+internal sealed class GetEventDetailsHandler : IRequestHandler<GetEventDetails, EventDetailsDto>
 {
     private readonly IEventsRepository _eventsRepo;
 

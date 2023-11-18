@@ -1,11 +1,11 @@
 ﻿using TMS.Ticketing.Application.UseCases.Venues;
 using TMS.Ticketing.Application.Dtos;
+using TMS.Ticketing.Application.UseCases.VenueSections;
+using TMS.Ticketing.Application.UseCases.VenueSeats;
 
 using Microsoft.AspNetCore.Mvc;
 
 using MediatR;
-using TMS.Ticketing.Application.UseCases.VenueSections;
-using TMS.Ticketing.Application.UseCases.VenueSeats;
 
 namespace TMS.Ticketing.API.Controllers;
 
@@ -24,9 +24,13 @@ public sealed class VenuesController : ControllerBase
 
     #region Venues
 
-    [HttpGet]
-    public Task<IEnumerable<VenueOverviewDto>> GetVenusAsync(CancellationToken token)
+    [HttpGet("overview")]
+    public Task<IEnumerable<VenueOverviewDto>> GetVenuesOverviewAsync(CancellationToken token)
         => _mediator.Send(new GetVenuesOverview(), token);
+
+    [HttpGet("{venueId}")]
+    public Task<VenueDetailsDto> GetVenueDetailsAsync([FromRoute] Guid venueId, CancellationToken token)
+        => _mediator.Send(new GetVenueDetails(venueId), token);
 
     [HttpPost]
     public Task<VenueDetailsDto> CreateVenueAsync([FromBody] CreateVenueCommand command)
@@ -61,11 +65,11 @@ public sealed class VenuesController : ControllerBase
     #region Seats
 
     [HttpPost("sections/seats")]
-    public Task<VenueDetailsDto> CreateSeatsync(CreateSeatCommand command)
+    public Task<VenueDetailsDto> CreateSeatAsync(CreateSeatCommand command)
         => _mediator.Send(command);
 
     [HttpDelete("{venueId}/sections/{sectionId}/seats/{seatId}")]
-    public Task<VenueDetailsDto> DeleteSeatsync(Guid venueId, Guid sectionId, Guid seatId)
+    public Task<VenueDetailsDto> DeleteSeatAsync(Guid venueId, Guid sectionId, Guid seatId)
         => _mediator.Send(new DeleteSeatCommand
             {
                 VenueId = venueId,

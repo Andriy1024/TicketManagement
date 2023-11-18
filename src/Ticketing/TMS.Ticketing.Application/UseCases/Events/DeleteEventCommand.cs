@@ -5,7 +5,7 @@ public sealed class DeleteEventCommand : IRequest<Unit>
     public Guid EventId { get; set; }
 }
 
-public sealed class DeleteEventHandler : IRequestHandler<DeleteEventCommand, Unit>
+internal sealed class DeleteEventHandler : IRequestHandler<DeleteEventCommand, Unit>
 {
     private readonly IEventsRepository _eventsRepo;
 

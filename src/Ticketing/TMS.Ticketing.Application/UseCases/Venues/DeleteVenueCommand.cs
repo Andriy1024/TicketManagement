@@ -5,7 +5,7 @@ public sealed class DeleteVenueCommand : IRequest<Unit>
     public required Guid Id { get; init; }
 }
 
-public sealed class DeleteVenueHandler : IRequestHandler<DeleteVenueCommand, Unit>
+internal sealed class DeleteVenueHandler : IRequestHandler<DeleteVenueCommand, Unit>
 {
     private readonly IVenuesRepository _repository;
 

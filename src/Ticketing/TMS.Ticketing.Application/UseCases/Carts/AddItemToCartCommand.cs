@@ -1,12 +1,13 @@
 ﻿using TMS.Common.Errors;
 using TMS.Common.Users;
+
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public class UpdateCartCommand : IRequest<CartDto>
+public sealed class AddItemToCartCommand : IRequest<CartDetailsDto>
 {
     public Guid CartId { get; set; }
 
@@ -17,25 +18,25 @@ public class UpdateCartCommand : IRequest<CartDto>
     public Guid PriceId { get; set; }
 }
 
-public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, CartDto>
+internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, CartDetailsDto>
 {
-    private readonly IRepository<CartEntity, Guid> _cartRepository;
-    private readonly IRepository<EventEntity, Guid> _eventsRepository;
+    private readonly ICartsRepository _cartRepo;
+    private readonly IEventsRepository _eventsRepo;
     private readonly IUserContext _userContext;
 
-    public UpdateCartHandler(
-        IRepository<CartEntity, Guid> cartRepository, 
-        IRepository<EventEntity, Guid> eventsRepository, 
+    public AddItemToCartHandler(
+        ICartsRepository cartRepo,
+        IEventsRepository eventsRepo, 
         IUserContext userContext)
     {
-        this._cartRepository = cartRepository;
-        this._eventsRepository = eventsRepository;
+        this._cartRepo = cartRepo;
+        this._eventsRepo = eventsRepo;
         this._userContext = userContext;
     }
 
-    public async Task<CartDto> Handle(UpdateCartCommand request, CancellationToken cancellationToken)
+    public async Task<CartDetailsDto> Handle(AddItemToCartCommand request, CancellationToken cancellationToken)
     {
-        var cart = await _cartRepository.GetAsync(request.CartId);
+        var cart = await _cartRepo.GetRequiredAsync(request.CartId);
 
         if (cart == null)
         {
@@ -45,10 +46,10 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, CartDto>
                 AccountId = _userContext.GetUser().Id
             };
 
-            await _cartRepository.AddAsync(cart);
+            await _cartRepo.AddAsync(cart);
         }
 
-        var @event = await _eventsRepository.GetAsync(request.EventId);
+        var @event = await _eventsRepo.GetAsync(request.EventId);
 
         if (@event == null) throw AppError
             .NotFound("Event was not found")
@@ -79,8 +80,8 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, CartDto>
 
         cart.OrderItems.Add(orderItem);
 
-        await _cartRepository.UpdateAsync(cart);
+        await _cartRepo.UpdateAsync(cart);
 
-        return new CartDto();
+        return new CartDetailsDto();
     }
 }

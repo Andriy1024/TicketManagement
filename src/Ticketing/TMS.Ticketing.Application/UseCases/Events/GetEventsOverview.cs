@@ -4,7 +4,7 @@ public sealed class GetEventsOverview : IRequest<IEnumerable<EventOverviewDto>>
 {
 }
 
-public sealed class GetEventsOverviewHandler : IRequestHandler<GetEventsOverview, IEnumerable<EventOverviewDto>>
+internal sealed class GetEventsOverviewHandler : IRequestHandler<GetEventsOverview, IEnumerable<EventOverviewDto>>
 {
     private readonly IEventsRepository _eventsRepo;
 

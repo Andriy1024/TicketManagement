@@ -4,7 +4,7 @@ public sealed class GetVenuesOverview : IRequest<IEnumerable<VenueOverviewDto>>
 {
 }
 
-public sealed class GetVenuesOverviewHandler : IRequestHandler<GetVenuesOverview, IEnumerable<VenueOverviewDto>>
+internal sealed class GetVenuesOverviewHandler : IRequestHandler<GetVenuesOverview, IEnumerable<VenueOverviewDto>>
 {
     private readonly IVenuesRepository _repository;
 

@@ -2,4 +2,7 @@
 
 namespace TMS.Ticketing.Application.Repositories;
 
-public interface ICartsRepository : IRepository<CartEntity, Guid> { }
+public interface ICartsRepository : IRepository<CartEntity, Guid> 
+{
+    Task<CartEntity> GetRequiredAsync(Guid id);
+}

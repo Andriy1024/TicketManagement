@@ -11,9 +11,9 @@ namespace TMS.Ticketing.Persistence.Setup;
 /// </summary>
 internal class MongoSeedTask : IStartupTask
 {
-    private readonly IRepository<VenueEntity, Guid> venues;
+    private readonly IVenuesRepository venues;
 
-    public MongoSeedTask(IRepository<VenueEntity, Guid> venues)
+    public MongoSeedTask(IVenuesRepository venues)
     {
         this.venues = venues;
     }
