@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\TMS.Common\TMS.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\" />
+    <ProjectReference Include="..\TMS.Payments.Domain\TMS.Payments.Domain.csproj" />
   </ItemGroup>
 
 </Project>

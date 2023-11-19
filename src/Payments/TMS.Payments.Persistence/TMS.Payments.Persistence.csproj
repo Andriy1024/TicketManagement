@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\TMS.Common\TMS.Common.csproj" />
+    <PackageReference Include="Marten" Version="6.0.0-rc.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\" />
+    <ProjectReference Include="..\TMS.Payments.Application\TMS.Payments.Application.csproj" />
   </ItemGroup>
 
 </Project>

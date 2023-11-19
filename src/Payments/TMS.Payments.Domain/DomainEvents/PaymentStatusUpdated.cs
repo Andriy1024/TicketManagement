@@ -1,5 +1,5 @@
-﻿using TMS.Payments.Domain.Enums;
-using TMS.Payments.Domain.Interfaces;
+﻿using TMS.Payments.Domain.Abstractions;
+using TMS.Payments.Domain.Enums;
 
 namespace TMS.Payments.Domain.DomainEvents;
 
