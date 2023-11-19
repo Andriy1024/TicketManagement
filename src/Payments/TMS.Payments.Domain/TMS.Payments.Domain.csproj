@@ -10,8 +10,4 @@
     <ProjectReference Include="..\..\Common\TMS.Common\TMS.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
-
 </Project>

@@ -60,6 +60,7 @@ public sealed class PaymentAggregate : EventSourcedAggregate
         var @event = new PaymentStatusUpdated()
         {
             PaymentId = PaymentId,
+            AccountId = AccountId,
             Status = PaymentStatus.Completed,
             CreateAt = DateTime.UtcNow,
             Message = "Payment completed"
@@ -73,6 +74,7 @@ public sealed class PaymentAggregate : EventSourcedAggregate
         var @event = new PaymentStatusUpdated()
         {
             PaymentId = PaymentId,
+            AccountId = AccountId,
             Status = PaymentStatus.Failed,
             CreateAt = DateTime.UtcNow,
             Message = "Payment failed"

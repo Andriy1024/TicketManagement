@@ -4,7 +4,7 @@ using TMS.Payments.Application.Interfaces;
 
 using Marten;
 
-namespace TMS.Payments.Persistence.EventStore;
+namespace TMS.Payments.Persistence.Implementations;
 
 public sealed class MartenEventStore : IPaymentsEventStore
 {

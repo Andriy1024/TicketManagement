@@ -11,18 +11,23 @@ using Weasel.Core;
 
 using TMS.Common.Extensions;
 using TMS.Common.Interfaces;
-using TMS.Payments.Persistence.EventStore;
+using TMS.Payments.Persistence.Implementations;
 using TMS.Payments.Application.Interfaces;
 using TMS.Payments.Domain.DomainEvents;
+using TMS.Payments.Domain.Views;
+using TMS.Payments.Persistence.Projections;
+using TMS.Payments.Domain.Abstractions;
 
 namespace TMS.Payments.Persistence;
 
 public static class ServiceRegistration
 {
-
-    public static IServiceCollection AddMarten(this IServiceCollection app, IConfiguration configuration)
+    public static IServiceCollection AddPeristence(this IServiceCollection app, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DbConnection");
+        var options = configuration.GetSection(nameof(MartenConfig)).Get<MartenConfig>()
+            ?? throw new ArgumentNullException(nameof(MartenConfig));
+
+        var connectionString = options.ConnectionString;
 
         app.AddMarten(o =>
         {
@@ -33,15 +38,15 @@ public static class ServiceRegistration
             o.Events.DatabaseSchemaName = "EventStore";
 
             // This is enough to tell Marten that the ConversationView document is persisted and needs schema objects
-            //o.Schema.For<ConversationView>()
-            //    //.UseOptimisticConcurrency(true)
-            //    .Identity(x => x.Id);
+            o.Schema.For<UserPaymentsView>()
+                //.UseOptimisticConcurrency(true)
+                .Identity(x => x.AccountId);
 
-            //o.Schema.For<UserConversationsView>()
-            //    .Identity(x => x.UserId);
+            o.Schema.For<PaymentDetailsView>()
+                .Identity(x => x.PaymentId);
 
-            //o.Projections.Add<ConversationViewProjection>(ProjectionLifecycle.Async);
-            //o.Projections.Add<UserConversationsViewProjection>(ProjectionLifecycle.Async);
+            o.Projections.Add<UserPaymentsViewProjection>(ProjectionLifecycle.Async);
+            o.Projections.Add<PaymentViewProjection>(ProjectionLifecycle.Async);
 
             // Lets Marten know that the event store is active
             o.Events.AddEventType(typeof(PaymentCreatedEvent));
@@ -76,7 +81,8 @@ public static class ServiceRegistration
             .BindConfiguration(nameof(MartenConfig))
             .Services
             .AddScoped<IStartupTask, DataBaseStartupTask>()
-            .AddScoped<IPaymentsEventStore, MartenEventStore>();
+            .AddScoped<IPaymentsEventStore, MartenEventStore>()
+            .AddScoped<IPaymentsViewRepository, PaymentsViewRepository>();
 
         return app;
     }
