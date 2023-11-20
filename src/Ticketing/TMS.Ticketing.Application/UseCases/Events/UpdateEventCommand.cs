@@ -21,7 +21,7 @@ internal sealed class UpdateEventHandler : IRequestHandler<UpdateEventCommand, E
 
     public UpdateEventHandler(IEventsRepository eventsRepo)
     {
-        this._eventsRepo = eventsRepo;
+        _eventsRepo = eventsRepo;
     }
 
     public async Task<EventDetailsDto> Handle(UpdateEventCommand request, CancellationToken cancellationToken)

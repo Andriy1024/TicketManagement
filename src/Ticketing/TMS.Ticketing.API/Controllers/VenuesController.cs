@@ -18,7 +18,7 @@ public sealed class VenuesController : ControllerBase
     private readonly IMediator _mediator;
 
     public VenuesController(IMediator mediator)
-        => this._mediator = mediator;
+        => _mediator = mediator;
 
     #endregion
 

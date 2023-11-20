@@ -3,10 +3,7 @@ using TMS.Common.Users;
 
 namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public sealed class GetCartDetails : IRequest<CartDetailsDto>
-{
-    public Guid CartId { get; set; }
-}
+public sealed record GetCartDetails(Guid CartId) : IRequest<CartDetailsDto>;
 
 internal sealed class GetCartDetailsHandler : IRequestHandler<GetCartDetails, CartDetailsDto>
 {

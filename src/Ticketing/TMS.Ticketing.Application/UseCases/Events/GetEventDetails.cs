@@ -1,13 +1,15 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed class GetEventDetails : IRequest<EventDetailsDto>
-{
-    public Guid EventId { get; set; }
-}
+public sealed record GetEventDetails(Guid EventId) : IRequest<EventDetailsDto>;
 
 internal sealed class GetEventDetailsHandler : IRequestHandler<GetEventDetails, EventDetailsDto>
 {
     private readonly IEventsRepository _eventsRepo;
+
+    public GetEventDetailsHandler(IEventsRepository eventsRepo)
+    {
+        _eventsRepo = eventsRepo;
+    }
 
     public async Task<EventDetailsDto> Handle(GetEventDetails request, CancellationToken cancellationToken)
     {

@@ -10,7 +10,7 @@ internal sealed class GetEventsOverviewHandler : IRequestHandler<GetEventsOvervi
 
     public GetEventsOverviewHandler(IEventsRepository eventsRepo)
     {
-        this._eventsRepo = eventsRepo;
+        _eventsRepo = eventsRepo;
     }
 
     public async Task<IEnumerable<EventOverviewDto>> Handle(GetEventsOverview request, CancellationToken cancellationToken)

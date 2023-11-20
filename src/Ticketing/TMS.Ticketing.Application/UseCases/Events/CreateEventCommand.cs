@@ -24,8 +24,8 @@ internal sealed class CreateEventHandler : IRequestHandler<CreateEventCommand, E
 
     public CreateEventHandler(IEventsRepository eventsRepo, IUserContext userContext)
     {
-        this._eventsRepo = eventsRepo;
-        this._userContext = userContext;
+        _eventsRepo = eventsRepo;
+        _userContext = userContext;
     }
 
     public async Task<EventDetailsDto> Handle(CreateEventCommand request, CancellationToken cancellationToken)

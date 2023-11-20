@@ -41,7 +41,7 @@ public static class MongoSetupExtensions
 
         return services
             .AddScoped<IStartupTask, MongoSchemaTask>()
-            .AddScoped<IStartupTask, MongoSeedTask>()
+            //.AddScoped<IStartupTask, MongoSeedTask>()
             .AddScoped<IVenuesRepository, VenuesRepository>()
             .AddScoped<IVenuesBookingRepository, VenuesBookingRepository>()
             .AddScoped<IEventsRepository, EventsRepository>()

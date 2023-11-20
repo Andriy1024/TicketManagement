@@ -34,7 +34,7 @@ internal sealed class VenueSectionsHandlers : IRequestHandler<CreateSectionComma
 
         venue.Sections.Add(section);
 
-        await _repository.AddAsync(venue);
+        await _repository.UpdateAsync(venue);
 
         return VenueDetailsDto.Map(venue);
     }

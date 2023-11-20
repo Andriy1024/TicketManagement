@@ -15,9 +15,7 @@ public class OrdersController : ControllerBase
     private readonly IMediator _mediator;
 
     public OrdersController(IMediator mediator)
-    {
-        this._mediator = mediator;
-    }
+        => _mediator = mediator;
 
     #region Cart
 
@@ -27,7 +25,7 @@ public class OrdersController : ControllerBase
 
     [HttpGet("carts/{cartId}")]
     public Task<CartDetailsDto> GetCartDetailsAsync([FromRoute] Guid cartId, CancellationToken token)
-        => _mediator.Send(new GetCartDetails { CartId = cartId });
+        => _mediator.Send(new GetCartDetails(cartId));
 
     [HttpPost("carts")]
     public Task<CartDetailsDto> AddItemToCartAsync([FromBody] AddItemToCartCommand command)

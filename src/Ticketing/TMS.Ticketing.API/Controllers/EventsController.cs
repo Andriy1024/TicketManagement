@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using MediatR;
+
 using TMS.Ticketing.Application.Dtos;
 using TMS.Ticketing.Application.UseCases.Events;
+using TMS.Ticketing.Application.UseCases.Prices;
+using TMS.Ticketing.Application.UseCases.Offers;
 
 namespace TMS.Ticketing.API.Controllers;
 
@@ -10,10 +13,16 @@ namespace TMS.Ticketing.API.Controllers;
 [ApiController]
 public sealed class EventsController : ControllerBase
 {
+    #region Context
+
     private readonly IMediator _mediator;
 
     public EventsController(IMediator mediator)
-        => this._mediator = mediator;
+        => _mediator = mediator;
+
+    #endregion
+
+    #region Events
 
     [HttpGet("overview")]
     public Task<IEnumerable<EventOverviewDto>> GetEventsOverviewAsync(CancellationToken token)
@@ -21,7 +30,7 @@ public sealed class EventsController : ControllerBase
 
     [HttpGet("{eventId}")]
     public Task<EventDetailsDto> GetEventDetailsAsync(Guid eventId, CancellationToken token)
-        => _mediator.Send(new GetEventDetails() { EventId = eventId }, token);
+        => _mediator.Send(new GetEventDetails(eventId), token);
 
     [HttpPost]
     public Task<EventDetailsDto> CreateEventAsync([FromBody] CreateEventCommand command)
@@ -33,5 +42,23 @@ public sealed class EventsController : ControllerBase
 
     [HttpDelete("{eventId}")]
     public Task<Unit> DeleteEventAsync(Guid eventId)
-        => _mediator.Send(new DeleteEventCommand() { EventId = eventId });
+        => _mediator.Send(new DeleteEventCommand(eventId));
+
+    #endregion
+
+    #region Prices
+
+    [HttpPost("prices")]
+    public Task<EventDetailsDto> CreatePriceAsync([FromBody] CreatePriceCommand command)
+        => _mediator.Send(command);
+
+    #endregion
+
+    #region Offers
+
+    [HttpPost("offers")]
+    public Task<EventDetailsDto> CreateOfferAsync([FromBody] CreateOfferCommand command)
+        => _mediator.Send(command);
+
+    #endregion
 }

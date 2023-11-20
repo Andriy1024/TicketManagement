@@ -19,9 +19,7 @@ public sealed class CreateVenueBookingCommand : IRequest<VenueBookingDto>
 internal sealed class CreateVenueBookingHandler : IRequestHandler<CreateVenueBookingCommand, VenueBookingDto>
 {
     private readonly IVenuesBookingRepository _bookingRepo;
-
     private readonly IEventsRepository _eventsRepo;
-
     private readonly IVenuesRepository _venueRepo;
 
     public CreateVenueBookingHandler(

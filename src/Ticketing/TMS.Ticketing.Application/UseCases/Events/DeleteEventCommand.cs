@@ -1,9 +1,6 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed class DeleteEventCommand : IRequest<Unit>
-{
-    public Guid EventId { get; set; }
-}
+public sealed record DeleteEventCommand(Guid EventId) : IRequest<Unit>;
 
 internal sealed class DeleteEventHandler : IRequestHandler<DeleteEventCommand, Unit>
 {
@@ -11,7 +8,7 @@ internal sealed class DeleteEventHandler : IRequestHandler<DeleteEventCommand, U
 
     public DeleteEventHandler(IEventsRepository eventsRepo)
     {
-        this._eventsRepo = eventsRepo;
+        _eventsRepo = eventsRepo;
     }
 
     public async Task<Unit> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
