@@ -1,12 +1,10 @@
 ﻿using TMS.Common.Enums;
 
-namespace TMS.Payments.Domain.Views;
+namespace TMS.Common.IntegrationEvents;
 
-public class PaymentOverview
+public class PaymentStatusUpdated
 {
     public Guid PaymentId { get; set; }
-
-    public int AccountId { get; set; }
 
     public PaymentStatus Status { get; set; }
 }

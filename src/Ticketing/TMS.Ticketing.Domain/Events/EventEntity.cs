@@ -1,4 +1,6 @@
-﻿using TMS.Ticketing.Domain.Common;
+﻿using TMS.Common.Errors;
+using TMS.Ticketing.Domain.Common;
+using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Domain.Events;
 
@@ -21,4 +23,10 @@ public sealed class EventEntity : IEntity<Guid>
     public List<Price> Prices { get; set; } = new();
 
     public List<Offer> Offers { get; set; } = new();
+
+    public EventSeat GetSeat(Guid seatId) 
+        => Seats.Find(x => x.SeatId == seatId)
+            ?? throw AppError
+                .InvalidData($"Seat not found: {seatId}")
+                .ToException();
 }

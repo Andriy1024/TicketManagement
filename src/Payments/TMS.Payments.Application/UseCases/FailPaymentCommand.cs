@@ -1,9 +1,10 @@
 ﻿using MediatR;
-
+using TMS.Common.Enums;
 using TMS.Common.Errors;
+using TMS.Common.IntegrationEvents;
 using TMS.Payments.Application.Interfaces;
+using TMS.Payments.Application.MessageBrocker;
 using TMS.Payments.Domain.Entities;
-using TMS.Payments.Domain.Enums;
 
 namespace TMS.Payments.Application.UseCases;
 
@@ -14,10 +15,12 @@ public sealed record FailPaymentResult(Guid PaymentId, PaymentStatus Status);
 public sealed class FailPaymentHandler : IRequestHandler<FailPaymentCommand, FailPaymentResult>
 {
     private readonly IPaymentsEventStore _eventStore;
+    private readonly IMessageBrocker _messageBrocker;
 
-    public FailPaymentHandler(IPaymentsEventStore eventStore)
+    public FailPaymentHandler(IPaymentsEventStore eventStore, IMessageBrocker messageBrocker)
     {
         _eventStore = eventStore;
+        _messageBrocker = messageBrocker;
     }
 
     public async Task<FailPaymentResult> Handle(FailPaymentCommand request, CancellationToken cancellationToken)
@@ -32,6 +35,12 @@ public sealed class FailPaymentHandler : IRequestHandler<FailPaymentCommand, Fai
         payment.Failed();
 
         await _eventStore.StoreAsync(payment);
+
+        await _messageBrocker.SendAsync(new PaymentStatusUpdated
+        {
+            PaymentId = payment.PaymentId,
+            Status = payment.Status,
+        });
 
         return new FailPaymentResult(payment.PaymentId, payment.Status);
     }

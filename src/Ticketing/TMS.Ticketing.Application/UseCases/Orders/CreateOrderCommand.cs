@@ -1,8 +1,7 @@
 ﻿using TMS.Common.Errors;
 using TMS.Common.Extensions;
 using TMS.Common.Users;
-
-using TMS.Ticketing.Application.Services;
+using TMS.Ticketing.Application.Services.Payments;
 using TMS.Ticketing.Domain.Ordering;
 
 namespace TMS.Ticketing.Application.UseCases.Orders;
@@ -64,7 +63,7 @@ internal sealed class CreateOrderHandler : IRequestHandler<CreateOrderCommand, C
 
         await _cartRepo.DeleteAsync(cart.Id);
 
-        await _payments.CreatePaymentAsync(paymentId, cart.Total);
+        await _payments.CreatePaymentAsync(paymentId, cart.Total, user.Id);
 
         return new CreateOrderCommandResult(paymentId);
     }

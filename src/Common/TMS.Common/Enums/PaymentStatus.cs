@@ -1,4 +1,4 @@
-﻿namespace TMS.Payments.Domain.Enums;
+﻿namespace TMS.Common.Enums;
 
 public enum PaymentStatus
 {

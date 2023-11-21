@@ -1,4 +1,5 @@
-﻿using TMS.Payments.Domain.DomainEvents;
+﻿using TMS.Common.Enums;
+using TMS.Payments.Domain.DomainEvents;
 using TMS.Payments.Domain.Enums;
 
 namespace TMS.Payments.Domain.Views;

@@ -4,7 +4,6 @@ using MongoDB.Driver;
 using TMS.Common.Interfaces;
 
 using TMS.Ticketing.Domain.Venues;
-using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Helpers;
 
 namespace TMS.Ticketing.Persistence.Setup;

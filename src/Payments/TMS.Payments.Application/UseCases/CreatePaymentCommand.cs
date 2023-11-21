@@ -1,5 +1,5 @@
 ﻿using MediatR;
-
+using TMS.Common.Enums;
 using TMS.Payments.Application.Interfaces;
 using TMS.Payments.Domain.Entities;
 using TMS.Payments.Domain.Enums;
@@ -10,6 +10,7 @@ public sealed class CreatePaymentCommand : IRequest<CreatePaymentResult>
 {
     public Guid PaymentId { get; set; }
 
+    // Will be taken from jwt token in future.
     public int AccountId { get; set; }
 
     public decimal Amount { get; set; }
@@ -31,7 +32,7 @@ internal sealed class CreatePaymentHandler : IRequestHandler<CreatePaymentComman
         var payment = PaymentAggregate.Create(
             request.PaymentId, 
             request.Amount, 
-            request.AccountId, 
+            request.AccountId,
             PaymentType.Payment);
 
         await _eventStore.StoreAsync(payment);

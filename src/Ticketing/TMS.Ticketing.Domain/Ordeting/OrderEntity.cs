@@ -41,10 +41,7 @@ public sealed class OrderEntity : IEntity<Guid>
 
         foreach (var orderItem in orderItems)
         {
-            var eventSeat = @event.Seats
-                .FirstOrDefault(x => x.SeatId == orderItem.SeatId)
-                    ?? throw AppError.InvalidData($"Seat not found: {orderItem.SeatId}")
-                        .ToException();
+            var eventSeat = @event.GetSeat(orderItem.SeatId);
 
             if (eventSeat.State != SeatState.Available)
             {

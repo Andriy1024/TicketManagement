@@ -1,4 +1,6 @@
-﻿using TMS.Payments.Domain.Abstractions;
+﻿using TMS.Common.Enums;
+
+using TMS.Payments.Domain.Abstractions;
 using TMS.Payments.Domain.Enums;
 
 namespace TMS.Payments.Domain.DomainEvents;

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 using TMS.Common.Errors;
-using TMS.Payments.Domain.Abstractions;
+using TMS.Payments.Application.Interfaces;
 using TMS.Payments.Domain.Views;
 
 namespace TMS.Payments.Application.UseCases;

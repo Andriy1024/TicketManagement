@@ -1,6 +1,6 @@
 ﻿using TMS.Payments.Domain.Views;
 
-namespace TMS.Payments.Domain.Abstractions;
+namespace TMS.Payments.Application.Interfaces;
 
 public interface IPaymentsViewRepository
 {
