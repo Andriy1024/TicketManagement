@@ -29,11 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Ticketing.API", "src\Ti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Ticketing.Application", "src\Ticketing\TMS.Ticketing.Application\TMS.Ticketing.Application.csproj", "{4E63BD4D-D86F-4B67-92F3-AF6BC2F3BEB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Payments.Application", "src\Payments\TMS.Payments.Application\TMS.Payments.Application.csproj", "{95EFC475-391F-40DC-BC3D-B7C0B16EB501}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Payments.Application", "src\Payments\TMS.Payments.Application\TMS.Payments.Application.csproj", "{95EFC475-391F-40DC-BC3D-B7C0B16EB501}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Payments.Persistence", "src\Payments\TMS.Payments.Persistence\TMS.Payments.Persistence.csproj", "{DA34FA72-0F91-4A5C-B98E-AA75857E528F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Payments.Persistence", "src\Payments\TMS.Payments.Persistence\TMS.Payments.Persistence.csproj", "{DA34FA72-0F91-4A5C-B98E-AA75857E528F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Payments.API", "src\Payments\TMS.Payments.API\TMS.Payments.API.csproj", "{6AFB81E7-5775-4ACF-B8A1-EB56CF674F59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Payments.API", "src\Payments\TMS.Payments.API\TMS.Payments.API.csproj", "{6AFB81E7-5775-4ACF-B8A1-EB56CF674F59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
