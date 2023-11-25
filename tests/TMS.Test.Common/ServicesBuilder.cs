@@ -11,7 +11,7 @@ public class ServicesBuilder<T> where T : ServicesBuilder<T>
 
     public ConfigurationBuilder ConfigBuilder { get; set; }
 
-    public IConfiguration Config { get; set; }
+    public IConfiguration? Config { get; set; }
 
     public ServiceCollection Services { get; set; }
 
@@ -63,7 +63,5 @@ public class ServicesBuilder<T> where T : ServicesBuilder<T>
         return (T)this;
     }
 
-    public IServiceProvider BuildServices() => Services.BuildServiceProvider();
-
-    public IServiceScope BuildServicesScope() => BuildServices().CreateScope();
+    public IServiceProvider BuildServiceProvider() => Services.BuildServiceProvider();
 }

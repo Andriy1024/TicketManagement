@@ -35,12 +35,14 @@ public class GetVenuesOverviewTest
     public async Task GetVenuesOverview_ByDefaultReturns_VenueOverviewDtos()
     {
         // Arrange
-        await SeedDataAsync();
+        var services = _services.BuildServiceProvider();
+
+        await SeedDataAsync(services);
 
         IEnumerable<VenueOverviewDto> actual;
 
         // Act
-        using (var scope = _services.BuildServicesScope()) 
+        using (var scope = services.CreateScope()) 
         {
             var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<GetVenuesOverview, IEnumerable<VenueOverviewDto>>>();
 
@@ -58,9 +60,9 @@ public class GetVenuesOverviewTest
         });
     }
 
-    private async Task SeedDataAsync() 
+    private static async Task SeedDataAsync(IServiceProvider services) 
     {
-        using var scope = _services.BuildServicesScope();
+        using var scope = services.CreateScope();
 
         var repo = scope.ServiceProvider.GetRequiredService<IVenuesRepository>();
 

@@ -41,14 +41,16 @@ public class GetVenueDetailsTest
     public async Task GetVenueDetails_ByDefaultReturns_VenueDetailsDto()
     {
         // Arrange
+        var services = _services.BuildServiceProvider();
+
         var venueId = Guid.NewGuid();
 
-        await SeedDataAsync(venueId);
+        await SeedDataAsync(services, venueId);
 
         VenueDetailsDto actual;
 
         // Act
-        using (var scope = _services.BuildServicesScope())
+        using (var scope = services.CreateScope())
         {
             var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<GetVenueDetails, VenueDetailsDto>>();
 
@@ -73,12 +75,14 @@ public class GetVenueDetailsTest
     public async Task GetVenueDetails_NotExistedVenue_ThrowsNotFoundError()
     {
         // Arrange
-        await SeedDataAsync(Guid.NewGuid());
+        var services = _services.BuildServiceProvider();
+
+        await SeedDataAsync(services, Guid.NewGuid());
 
         Exception? actual = null;
 
         // Act
-        using (var scope = _services.BuildServicesScope())
+        using (var scope = services.CreateScope())
         {
             var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<GetVenueDetails, VenueDetailsDto>>();
 
@@ -99,9 +103,9 @@ public class GetVenueDetailsTest
             .Should().Match<ApiError>(x => x.StatusCode == HttpStatusCode.NotFound);
     }
 
-    private async Task SeedDataAsync(Guid venueId)
+    private static async Task SeedDataAsync(IServiceProvider services, Guid venueId)
     {
-        using var scope = _services.BuildServicesScope();
+        using var scope = services.CreateScope();
 
         var repo = scope.ServiceProvider.GetRequiredService<IVenuesRepository>();
 
