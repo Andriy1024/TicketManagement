@@ -10,7 +10,7 @@ public sealed class EventEntity : IEntity<Guid>
     
     public required string Name { get; set; }
 
-    public List<KeyValePair>? Details { get; set; }
+    public List<Detail>? Details { get; set; }
 
     public required DateTime Start { get; set; }
     

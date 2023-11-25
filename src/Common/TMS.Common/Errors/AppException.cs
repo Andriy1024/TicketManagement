@@ -2,9 +2,9 @@
 
 public class AppException : Exception
 {
-    public AppError Error { get; }
+    public ApiError Error { get; }
 
-    public AppException(AppError error)
+    public AppException(ApiError error)
     {
         Error = error;
     }
