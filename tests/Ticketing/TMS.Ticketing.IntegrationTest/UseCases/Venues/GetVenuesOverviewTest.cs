@@ -1,0 +1,73 @@
+using FluentAssertions;
+
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+
+using NSubstitute;
+
+using TMS.Test.Common;
+using TMS.Ticketing.Application.Dtos;
+using TMS.Ticketing.Application.Repositories;
+using TMS.Ticketing.Application.Services.Payments;
+using TMS.Ticketing.Application.UseCases.Venues;
+using TMS.Ticketing.IntegrationTest.Common;
+using TMS.Ticketing.IntegrationTest.Common.Factories;
+using TMS.Ticketing.IntegrationTest.UseCases.Venues.Common;
+
+namespace TMS.Ticketing.IntegrationTest.UseCases.Venues;
+
+[Collection(VenuesDatabaseCollection.Name)]
+public class GetVenuesOverviewTest
+{
+    private readonly TicketingServices _services;
+
+    public GetVenuesOverviewTest(MongoDbFactory mongoDb)
+    {
+        _services = new TicketingServices()
+          .AddJsonConfig("appsettings", "appsettings.test.json")
+          .AddMongoConnection(mongoDb.ConnectionString, Guid.NewGuid().ToString())
+          .BuildConfiguration()
+          .AddTicketingServices()
+          .OverrideService(Substitute.For<IPaymentsService>());
+    }
+
+    [Fact]
+    public async Task GetVenuesOverview_ByDefaultReturns_VenueOverviewDtos()
+    {
+        // Arrange
+        await SeedDataAsync();
+
+        IEnumerable<VenueOverviewDto> actual;
+
+        // Act
+        using (var scope = _services.BuildServicesScope()) 
+        {
+            var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<GetVenuesOverview, IEnumerable<VenueOverviewDto>>>();
+
+            actual = await handler.Handle(new GetVenuesOverview(), CancellationToken.None);
+        }
+
+        // Assert
+        actual.Should().NotBeNull().And.HaveCount(2);
+
+        actual.Should().MatchSnapshot(nameof(actual), matchOptions: o => 
+        {
+            o.IgnoreField($"**.{nameof(VenueOverviewDto.Id)}");
+
+            return o;
+        });
+    }
+
+    private async Task SeedDataAsync() 
+    {
+        using var scope = _services.BuildServicesScope();
+
+        var repo = scope.ServiceProvider.GetRequiredService<IVenuesRepository>();
+
+        var firstVenue = VenueTestFactory.Create(name: "Venue #1");
+        var secondVenue = VenueTestFactory.Create(name: "Venue #2");
+
+        await repo.AddAsync(firstVenue);
+        await repo.AddAsync(secondVenue);
+    }
+}

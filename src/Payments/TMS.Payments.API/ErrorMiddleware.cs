@@ -21,7 +21,7 @@ internal class ErrorMiddleware
         {
             var error = e switch
             {
-                AppException app => app.Error,
+                ApiException app => app.Error,
                 _ => ApiError.InternalServerError(e.Message)
             };
 

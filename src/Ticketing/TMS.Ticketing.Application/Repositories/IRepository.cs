@@ -7,9 +7,6 @@ namespace TMS.Ticketing.Application.Repositories;
 public interface IRepository<TEntity, TIdentifiable>
     where TEntity : IEntity<TIdentifiable>
 {
-    // TEMP
-    IQueryable<TEntity> Qearyable { get; }
-
     Task<TEntity?> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default);
     Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);

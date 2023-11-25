@@ -8,6 +8,8 @@ public class MongoDbFactory : IAsyncLifetime
 {
     private readonly MongoDbContainer _mongoDb;
 
+    public string ConnectionString => _mongoDb.GetConnectionString();
+
     public MongoDbFactory()
     {
         var dockerHost = Environment.GetEnvironmentVariable("DOCKER_HOST");

@@ -1,18 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Bson.Serialization;
+
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using TMS.Common.Interfaces;
+
 using TMS.Ticketing.Domain;
-using TMS.Ticketing.Domain.Events;
-using TMS.Ticketing.Domain.Ordering;
-using TMS.Ticketing.Domain.Tickets;
-using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Implementations;
 using TMS.Ticketing.Persistence.StartupTask;
@@ -43,7 +36,7 @@ public static class ServiceRegistration
             return client.GetDatabase(options.DatabaseName);
         });
 
-        ConfigureClassMapp();
+        BsonClassMapInitializer.Initialize();
 
         return services
             .AddScoped<IStartupTask, MongoSchemaTask>()
@@ -58,43 +51,7 @@ public static class ServiceRegistration
 
     private static void ConfigureClassMapp()
     {
-        BsonClassMap.RegisterClassMap<VenueEntity>(map =>
-        {
-            map.AutoMap();
-
-            map.MapIdMember(x => x.Id);
-        });
-
-        BsonClassMap.RegisterClassMap<VenueBookingEntity>(map =>
-        {
-            map.AutoMap();
-            map.MapIdMember(x => x.Id);
-        });
-
-        BsonClassMap.RegisterClassMap<EventEntity>(map =>
-        {
-            map.AutoMap();
-            map.MapIdMember(x => x.Id);
-        });
-
-        BsonClassMap.RegisterClassMap<CartEntity>(map =>
-        {
-            map.AutoMap();
-            map.MapIdMember(x => x.Id);
-            map.UnmapProperty(x => x.Total);
-        });
-
-        BsonClassMap.RegisterClassMap<OrderEntity>(map =>
-        {
-            map.AutoMap();
-            map.MapIdMember(x => x.Id);
-        });
-
-        BsonClassMap.RegisterClassMap<TicketEntity>(map =>
-        {
-            map.AutoMap();
-            map.MapIdMember(x => x.Id);
-        });
+        
     }
 
     public static IServiceCollection AddMongoRepository<TEntity, TIdentifiable>(this IServiceCollection services)

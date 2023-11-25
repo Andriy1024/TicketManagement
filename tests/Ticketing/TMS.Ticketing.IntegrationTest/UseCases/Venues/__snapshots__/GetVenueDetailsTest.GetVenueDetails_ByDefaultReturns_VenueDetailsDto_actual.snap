@@ -1,0 +1,33 @@
+﻿{
+  "Sections": [
+    {
+      "SectionId": "163da73d-fb49-474f-b4d3-a0d4a51613db",
+      "VenueId": "831d534f-4859-4af3-8cd6-8898d7b7a923",
+      "Name": "Section 1",
+      "Type": "Designated",
+      "Seats": [
+        {
+          "SeatId": "f1a7a4cb-d2da-498b-87e6-25ca72fefd32",
+          "SeatNumber": 1,
+          "RowNumber": 1
+        },
+        {
+          "SeatId": "061b1a51-5e76-425e-9881-ba1b90fe17ac",
+          "SeatNumber": 2,
+          "RowNumber": 1
+        }
+      ]
+    }
+  ],
+  "Id": "831d534f-4859-4af3-8cd6-8898d7b7a923",
+  "Name": "Venue #3",
+  "Country": "USA",
+  "City": "Denver",
+  "Street": "Steet 45",
+  "Details": [
+    {
+      "Name": "Detail 1",
+      "Value": "Detail Value"
+    }
+  ]
+}

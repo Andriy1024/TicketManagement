@@ -15,9 +15,6 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
 
     protected IMongoCollection<TEntity> Collection { get; }
 
-    // TEMP
-    public IQueryable<TEntity> Qearyable => Collection.AsQueryable();
-
     public MongoRepository(IMongoDatabase database)
     {
         Collection = database.GetCollection<TEntity>(CollectionName);
@@ -27,7 +24,9 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
         => GetAsync(e => e.Id.Equals(id), cancellationToken);
 
     public Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
         => Collection.Find(predicate).FirstOrDefaultAsync(cancellationToken);
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 
     public async Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         => await Collection.AsQueryable().ToListAsync(cancellationToken);

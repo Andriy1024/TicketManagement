@@ -19,7 +19,6 @@ public class ServicesBuilder<T> where T : ServicesBuilder<T>
     {
         InMemoryConfig = new();
         ConfigBuilder = new();
-        ConfigBuilder.AddInMemoryCollection(InMemoryConfig);
         Services = new();
     }
 
@@ -46,6 +45,8 @@ public class ServicesBuilder<T> where T : ServicesBuilder<T>
 
     public T BuildConfiguration()
     {
+        ConfigBuilder.AddInMemoryCollection(InMemoryConfig);
+
         Config = ConfigBuilder.Build();
 
         Services.AddSingleton<IConfiguration>(Config);
