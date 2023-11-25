@@ -42,7 +42,7 @@ internal sealed class CreateVenueBookingHandler : IRequestHandler<CreateVenueBoo
 
         if (!IsDateRangeAvailable(venueBookings, request.Start, request.End))
         {
-            throw AppError
+            throw ApiError
                 .InvalidData("Requested date range is not available")
                 .ToException();
         }

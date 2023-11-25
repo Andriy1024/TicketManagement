@@ -35,7 +35,7 @@ public sealed class OrderEntity : IEntity<Guid>
     {
         if (orderItems.IsNullOrEmpty())
         {
-            throw AppError.InvalidData("Order items are empty")
+            throw ApiError.InvalidData("Order items are empty")
                 .ToException();
         }
 
@@ -45,7 +45,7 @@ public sealed class OrderEntity : IEntity<Guid>
 
             if (eventSeat.State != SeatState.Available)
             {
-                throw AppError.InvalidData("Seat is not available").ToException();
+                throw ApiError.InvalidData("Seat is not available").ToException();
             }
 
             eventSeat.State = SeatState.Booked;

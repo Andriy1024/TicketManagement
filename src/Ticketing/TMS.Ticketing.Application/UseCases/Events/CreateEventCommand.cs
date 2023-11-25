@@ -9,7 +9,7 @@ public sealed class CreateEventCommand : IRequest<EventDetailsDto>
 {
     public string Name { get; set; }
 
-    public List<KeyValePair>? Details { get; set; }
+    public List<Detail>? Details { get; set; }
 
     public DateTime Start { get; set; }
 

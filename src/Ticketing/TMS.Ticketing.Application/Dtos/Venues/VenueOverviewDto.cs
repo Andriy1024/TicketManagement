@@ -15,7 +15,7 @@ public class VenueOverviewDto
 
     public string Street { get; set; }
 
-    public List<KeyValePair>? Details { get; set; }
+    public List<Detail>? Details { get; set; }
 
     public static VenueOverviewDto Map(VenueEntity venue) => new()
     {

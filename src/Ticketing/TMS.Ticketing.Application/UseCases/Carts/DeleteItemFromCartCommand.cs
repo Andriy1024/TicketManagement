@@ -27,7 +27,7 @@ internal sealed class DeleteItemFromCartHandler : IRequestHandler<DeleteItemFrom
 
         var orderItem = cart.OrderItems
             .Find(x => x.EventId == request.EventId && x.SeatId == request.SeatId)
-                ?? throw AppError.NotFound("Cart item not found").ToException();
+                ?? throw ApiError.NotFound("Cart item not found").ToException();
 
         cart.OrderItems.Remove(orderItem);
 

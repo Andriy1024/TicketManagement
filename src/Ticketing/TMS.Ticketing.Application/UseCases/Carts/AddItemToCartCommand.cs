@@ -51,7 +51,7 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
 
         var @event = await _eventsRepo.GetAsync(request.EventId);
 
-        if (@event == null) throw AppError
+        if (@event == null) throw ApiError
             .NotFound("Event was not found")
             .ToException();
 
@@ -59,12 +59,12 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
         var price = @event.Prices.Find(x => x.Id == request.PriceId);
         var offer = @event.Offers.Find(x => x.SeatId == request.SeatId && x.PriceId == request.PriceId);
 
-        AppError? validationError = (seat, price, offer) switch
+        ApiError? validationError = (seat, price, offer) switch
         {
-            { seat: null } => AppError.NotFound("Seat was not found"),
-            { price: null } => AppError.NotFound("Price was not found"),
-            { offer: null } => AppError.NotFound("Offer was not found"),
-            { seat.State: not SeatState.Available } => AppError.NotFound("Seat is not available"),
+            { seat: null } => ApiError.NotFound("Seat was not found"),
+            { price: null } => ApiError.NotFound("Price was not found"),
+            { offer: null } => ApiError.NotFound("Offer was not found"),
+            { seat.State: not SeatState.Available } => ApiError.NotFound("Seat is not available"),
             _ => null
         };
 

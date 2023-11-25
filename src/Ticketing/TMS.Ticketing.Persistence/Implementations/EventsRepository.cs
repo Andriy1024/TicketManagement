@@ -17,6 +17,6 @@ internal sealed class EventsRepository : MongoRepository<EventEntity, Guid>, IEv
     public async Task<EventEntity> GetRequiredAsync(Guid eventId)
     {
         return await GetAsync(eventId)
-            ?? throw AppError.NotFound($"Event not found: {eventId}").ToException();
+            ?? throw ApiError.NotFound($"Event not found: {eventId}").ToException();
     }
 }

@@ -17,6 +17,6 @@ public sealed class VenueSection
     public VenueSeat GetSeat(Guid seatId) 
     {
         return Seats.Find(x => x.SeatId == seatId)
-            ?? throw AppError.NotFound($"Seat not found: {seatId}").ToException();
+            ?? throw ApiError.NotFound($"Seat not found: {seatId}").ToException();
     }
 }

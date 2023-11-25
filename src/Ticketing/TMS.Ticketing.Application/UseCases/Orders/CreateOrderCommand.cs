@@ -40,12 +40,12 @@ internal sealed class CreateOrderHandler : IRequestHandler<CreateOrderCommand, C
 
         if (cart.AccountId != user.Id)
         {
-            throw AppError.Forbidden("Cart does not belong the the user").ToException();
+            throw ApiError.Forbidden("Cart does not belong the the user").ToException();
         }
 
         if (cart.OrderItems.IsNullOrEmpty())
         {
-            throw AppError.InvalidData("Cart is empty").ToException();
+            throw ApiError.InvalidData("Cart is empty").ToException();
         }
 
         var paymentId = Guid.NewGuid();

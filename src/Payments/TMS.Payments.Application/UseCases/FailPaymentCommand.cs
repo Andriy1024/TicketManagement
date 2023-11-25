@@ -29,7 +29,7 @@ public sealed class FailPaymentHandler : IRequestHandler<FailPaymentCommand, Fai
 
         if (payment == null)
         {
-            throw AppError.NotFound("Payment not found").ToException();
+            throw ApiError.NotFound("Payment not found").ToException();
         }
 
         payment.Failed();

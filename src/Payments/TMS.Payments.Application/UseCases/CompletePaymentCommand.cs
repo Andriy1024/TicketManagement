@@ -30,7 +30,7 @@ public sealed class CompletePaymentHandler : IRequestHandler<CompletePaymentComm
 
         if (payment == null)
         {
-            throw AppError.NotFound("Payment not found").ToException();
+            throw ApiError.NotFound("Payment not found").ToException();
         }
 
         payment.Completed();

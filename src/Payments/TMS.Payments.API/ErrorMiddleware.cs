@@ -22,7 +22,7 @@ internal class ErrorMiddleware
             var error = e switch
             {
                 AppException app => app.Error,
-                _ => AppError.InternalServerError(e.Message)
+                _ => ApiError.InternalServerError(e.Message)
             };
 
             context.Response.StatusCode = (int)error.StatusCode;

@@ -17,6 +17,6 @@ internal sealed class CartsRepository : MongoRepository<CartEntity, Guid>, ICart
     public async Task<CartEntity> GetRequiredAsync(Guid id)
     {
         return await GetAsync(id)
-            ?? throw AppError.NotFound($"Cart not found: {id}").ToException();
+            ?? throw ApiError.NotFound($"Cart not found: {id}").ToException();
     }
 }

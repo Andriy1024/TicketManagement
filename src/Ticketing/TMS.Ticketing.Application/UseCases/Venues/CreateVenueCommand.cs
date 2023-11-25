@@ -13,7 +13,7 @@ public sealed class CreateVenueCommand : IRequest<VenueDetailsDto>
 
     public string Street { get; set; }
 
-    public List<KeyValePair>? Details { get; set; }
+    public List<Detail>? Details { get; set; }
 }
 
 internal sealed class CreateVenueHandler : IRequestHandler<CreateVenueCommand, VenueDetailsDto>

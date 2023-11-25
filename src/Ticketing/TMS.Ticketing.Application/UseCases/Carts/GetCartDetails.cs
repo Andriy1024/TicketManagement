@@ -25,7 +25,7 @@ internal sealed class GetCartDetailsHandler : IRequestHandler<GetCartDetails, Ca
 
         if (cart.AccountId != user.Id)
         {
-            throw AppError.Forbidden("Cart does not belong to the user")
+            throw ApiError.Forbidden("Cart does not belong to the user")
                 .ToException();
         }
 

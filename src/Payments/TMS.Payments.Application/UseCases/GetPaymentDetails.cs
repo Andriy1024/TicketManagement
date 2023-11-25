@@ -23,7 +23,7 @@ internal sealed class GetPaymentDetailsHandler : IRequestHandler<GetPaymentDetai
 
         if (payment == null)
         {
-            throw AppError.NotFound("Payment not found").ToException();
+            throw ApiError.NotFound("Payment not found").ToException();
         }
 
         return payment;

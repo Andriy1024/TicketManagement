@@ -17,6 +17,6 @@ internal sealed class VenuesRepository : MongoRepository<VenueEntity, Guid>, IVe
     public async Task<VenueEntity> GetRequiredAsync(Guid venueId)
     {
         return await GetAsync(venueId)
-            ?? throw AppError.NotFound($"Venue not found: {venueId}").ToException();
+            ?? throw ApiError.NotFound($"Venue not found: {venueId}").ToException();
     }
 }

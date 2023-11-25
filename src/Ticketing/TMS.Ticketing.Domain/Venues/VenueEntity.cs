@@ -22,6 +22,6 @@ public sealed class VenueEntity : IEntity<Guid>
     public VenueSection GetSection(Guid sectionId)
     {
         return Sections.Find(x => x.SectionId == sectionId) 
-            ?? throw AppError.NotFound($"Section not found: {sectionId}").ToException();
+            ?? throw ApiError.NotFound($"Section not found: {sectionId}").ToException();
     }
 }
