@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TMS.Ticketing.Domain.Events.Event">
+    <Position X="5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAAASARQAACAgAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\Event.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Seats" />
+      <Property Name="Prices" />
+      <Property Name="Offers" />
+      <Property Name="Details" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Events.Offer">
+    <Position X="2" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Events\Offer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Events.Price">
+    <Position X="2" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAgAAAAAAAAAAAAAASACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\Price.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Events.EventSeat">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAABAAAAAA=</HashCode>
+      <FileName>Events\EventSeat.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="State" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TMS.Ticketing.Domain.Common.KeyValePair">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Common\KeyValePair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="TMS.Ticketing.Domain.Events.SeatState">
+    <Position X="7.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAABBAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events\SeatState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

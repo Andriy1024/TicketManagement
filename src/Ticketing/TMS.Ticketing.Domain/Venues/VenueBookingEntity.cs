@@ -3,13 +3,13 @@
 /// <summary>
 /// (VenueId, BookingNumber) - Forms Unique Constraint to handle concurrency, and prevent venue booking that has overlapping DateTime Range.
 /// </summary>
-public sealed class VenueBooking
+public sealed class VenueBookingEntity : IEntity<Guid>
 {
-    public required int BookingId { get; set; }
+    public required Guid Id { get; set; }
 
-    public required int VenueId { get; set; }
+    public required Guid VenueId { get; set; }
 
-    public required int EventId { get; set; }
+    public required Guid EventId { get; set; }
 
     public required int BookingNumber { get; set; }
 

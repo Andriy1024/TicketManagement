@@ -2,13 +2,13 @@
 
 public sealed class Section
 {
-    public required int SectionId { get; init; }
+    public required Guid SectionId { get; init; }
 
-    public required int VenueId { get; init; }
+    public required Guid VenueId { get; init; }
 
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
-    public required SectionType Type { get; init; }
+    public required SectionType Type { get; set; }
 
-    public required List<SectionRow> Rows { get; init; } = new();
+    public required List<Seat> Seats { get; init; } = new();
 }

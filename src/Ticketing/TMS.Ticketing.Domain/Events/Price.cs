@@ -1,10 +1,10 @@
 ﻿namespace TMS.Ticketing.Domain.Events;
 
-public sealed class PriceType
+public sealed class Price
 {
-    public required int EventId { get; set; }
+    public required Guid Id { get; set; }
 
-    public required int Id { get; set; }
+    public required Guid EventId { get; set; }
 
     public required decimal Amount { get; set; }
 
