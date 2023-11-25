@@ -36,7 +36,7 @@ internal class MongoSeedTask : IStartupTask
                 City = "Krakow",
                 Country = "Poland",
                 Street = "Steet 45",
-                Details = new List<KeyValePair>() 
+                Details = new List<Detail>() 
                 {
                     new()
                     {
