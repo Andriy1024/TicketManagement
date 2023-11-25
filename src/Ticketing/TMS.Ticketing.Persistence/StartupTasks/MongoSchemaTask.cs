@@ -6,7 +6,7 @@ using TMS.Common.Interfaces;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Persistence.Helpers;
 
-namespace TMS.Ticketing.Persistence.Setup;
+namespace TMS.Ticketing.Persistence.StartupTask;
 
 internal sealed class MongoSchemaTask : IStartupTask
 {

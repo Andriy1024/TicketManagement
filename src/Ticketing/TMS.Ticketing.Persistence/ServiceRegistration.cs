@@ -1,9 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TMS.Common.Interfaces;
 using TMS.Ticketing.Domain;
 using TMS.Ticketing.Domain.Events;
@@ -12,12 +15,15 @@ using TMS.Ticketing.Domain.Tickets;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Implementations;
+using TMS.Ticketing.Persistence.StartupTask;
 
-namespace TMS.Ticketing.Persistence.Setup;
+namespace TMS.Ticketing.Persistence;
 
-public static class MongoSetupExtensions
+public static class ServiceRegistration
 {
-    public static IServiceCollection AddMongoServices(this IServiceCollection services, IConfiguration configuration) 
+    public static IServiceCollection AddPersistenceServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services
             .AddOptions<MongoConfig>()
@@ -26,17 +32,17 @@ public static class MongoSetupExtensions
         var options = configuration.GetSection(nameof(MongoConfig)).Get<MongoConfig>()
             ?? throw new ArgumentNullException(nameof(MongoConfig));
 
-        services.AddSingleton<IMongoClient>(provider => 
+        services.AddSingleton<IMongoClient>(provider =>
         {
             return new MongoClient(options.ConnectionString);
         });
-            
+
         services.AddTransient(provider =>
         {
             var client = provider.GetRequiredService<IMongoClient>();
             return client.GetDatabase(options.DatabaseName);
         });
-        
+
         ConfigureClassMapp();
 
         return services
@@ -50,7 +56,7 @@ public static class MongoSetupExtensions
             .AddScoped<ITicketsRepository, TicketsRepository>();
     }
 
-    private static void ConfigureClassMapp() 
+    private static void ConfigureClassMapp()
     {
         BsonClassMap.RegisterClassMap<VenueEntity>(map =>
         {

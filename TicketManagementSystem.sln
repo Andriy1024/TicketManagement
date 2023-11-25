@@ -29,11 +29,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Ticketing.API", "src\Ti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Ticketing.Application", "src\Ticketing\TMS.Ticketing.Application\TMS.Ticketing.Application.csproj", "{4E63BD4D-D86F-4B67-92F3-AF6BC2F3BEB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Payments.Application", "src\Payments\TMS.Payments.Application\TMS.Payments.Application.csproj", "{95EFC475-391F-40DC-BC3D-B7C0B16EB501}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Payments.Application", "src\Payments\TMS.Payments.Application\TMS.Payments.Application.csproj", "{95EFC475-391F-40DC-BC3D-B7C0B16EB501}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Payments.Persistence", "src\Payments\TMS.Payments.Persistence\TMS.Payments.Persistence.csproj", "{DA34FA72-0F91-4A5C-B98E-AA75857E528F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Payments.Persistence", "src\Payments\TMS.Payments.Persistence\TMS.Payments.Persistence.csproj", "{DA34FA72-0F91-4A5C-B98E-AA75857E528F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Payments.API", "src\Payments\TMS.Payments.API\TMS.Payments.API.csproj", "{6AFB81E7-5775-4ACF-B8A1-EB56CF674F59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Payments.API", "src\Payments\TMS.Payments.API\TMS.Payments.API.csproj", "{6AFB81E7-5775-4ACF-B8A1-EB56CF674F59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{29C9B6F2-7D1E-435A-9EA2-82E3B6F04277}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ticketing", "Ticketing", "{3B6F609A-0758-44DC-9E29-A2746D804A22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Ticketing.IntegrationTest", "tests\Ticketing\TMS.Ticketing.IntegrationTest\TMS.Ticketing.IntegrationTest.csproj", "{0F18809E-192E-4972-A6F0-D74138BFB35C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Test.Common", "tests\TMS.Test.Common\TMS.Test.Common.csproj", "{AA7A8D2E-A15F-455D-B351-F333A13E6FD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +89,14 @@ Global
 		{6AFB81E7-5775-4ACF-B8A1-EB56CF674F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AFB81E7-5775-4ACF-B8A1-EB56CF674F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AFB81E7-5775-4ACF-B8A1-EB56CF674F59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F18809E-192E-4972-A6F0-D74138BFB35C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F18809E-192E-4972-A6F0-D74138BFB35C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F18809E-192E-4972-A6F0-D74138BFB35C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F18809E-192E-4972-A6F0-D74138BFB35C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA7A8D2E-A15F-455D-B351-F333A13E6FD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA7A8D2E-A15F-455D-B351-F333A13E6FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA7A8D2E-A15F-455D-B351-F333A13E6FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA7A8D2E-A15F-455D-B351-F333A13E6FD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +117,9 @@ Global
 		{95EFC475-391F-40DC-BC3D-B7C0B16EB501} = {A4BD9A9A-8A13-4EDF-8993-8AE7ED6F6CCA}
 		{DA34FA72-0F91-4A5C-B98E-AA75857E528F} = {A4BD9A9A-8A13-4EDF-8993-8AE7ED6F6CCA}
 		{6AFB81E7-5775-4ACF-B8A1-EB56CF674F59} = {A4BD9A9A-8A13-4EDF-8993-8AE7ED6F6CCA}
+		{3B6F609A-0758-44DC-9E29-A2746D804A22} = {29C9B6F2-7D1E-435A-9EA2-82E3B6F04277}
+		{0F18809E-192E-4972-A6F0-D74138BFB35C} = {3B6F609A-0758-44DC-9E29-A2746D804A22}
+		{AA7A8D2E-A15F-455D-B351-F333A13E6FD1} = {29C9B6F2-7D1E-435A-9EA2-82E3B6F04277}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03841D9E-D332-4F6A-BEE6-9A2EEB5C71B4}
