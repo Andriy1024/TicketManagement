@@ -1,10 +1,10 @@
 ﻿namespace TMS.Common.Errors;
 
-public class AppException : Exception
+public class ApiException : Exception
 {
     public ApiError Error { get; }
 
-    public AppException(ApiError error)
+    public ApiException(ApiError error)
     {
         Error = error;
     }

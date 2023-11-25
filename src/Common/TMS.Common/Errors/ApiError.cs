@@ -26,5 +26,5 @@ public class ApiError
     public static ApiError InternalServerError(string message)
        => new(message, HttpStatusCode.InternalServerError);
 
-    public AppException ToException() => new(this);
+    public ApiException ToException() => new(this);
 }
