@@ -1,5 +1,6 @@
 using TMS.Common.Extensions;
 using TMS.Common.Users;
+using TMS.Common.Validation;
 
 using TMS.Payments.API;
 using TMS.Payments.Application.MessageBrocker;
@@ -8,6 +9,8 @@ using TMS.Payments.Application.UseCases;
 using TMS.Payments.Persistence;
 
 using Refit;
+
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,7 @@ builder.Services
     .AddPeristence(builder.Configuration)
     .AddScoped<IUserContext, UserContext>()
     .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<CreatePaymentCommand>())
+    .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
     .AddTransient<IMessageBrocker, MessageBrocker>()
     .AddRefitClient<ITicketingApi>()
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(ticketingConfig.TicketingUri));

@@ -21,6 +21,7 @@ public static class ServiceRegistration
         services
             .AddScoped<IUserContext, UserContext>()
             .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetCartDetails>())
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
             .AddTransient<IPaymentsService, PaymentsService>()
             .AddRefitClient<IPaymentsApi>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri(paymentsConfig.PaymentsUri));

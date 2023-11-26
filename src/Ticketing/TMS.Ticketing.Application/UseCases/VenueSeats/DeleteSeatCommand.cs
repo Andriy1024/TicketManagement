@@ -1,12 +1,22 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.VenueSeats;
 
-public class DeleteSeatCommand : IRequest<VenueDetailsDto>
+public class DeleteSeatCommand : IRequest<VenueDetailsDto>, IValidatable
 {
     public required Guid VenueId { get; init; }
 
     public required Guid SectionId { get; init; }
 
     public required Guid SeatId { get; init; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.VenueId).NotEmpty();
+            x.RuleFor(y => y.SectionId).NotEmpty();
+            x.RuleFor(y => y.SeatId).NotEmpty();
+        });
+    }
 }
 
 public class DeleteSeatHandler : IRequestHandler<DeleteSeatCommand, VenueDetailsDto>

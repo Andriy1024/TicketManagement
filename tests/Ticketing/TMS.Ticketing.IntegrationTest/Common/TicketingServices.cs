@@ -1,6 +1,4 @@
-﻿using TMS.Test.Common;
-
-using TMS.Ticketing.Persistence;
+﻿using TMS.Ticketing.Persistence;
 using TMS.Ticketing.Application;
 
 namespace TMS.Ticketing.IntegrationTest.Common;

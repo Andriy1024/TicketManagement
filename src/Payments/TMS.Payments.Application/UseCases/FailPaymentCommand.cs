@@ -1,6 +1,4 @@
-﻿using MediatR;
-using TMS.Common.Enums;
-using TMS.Common.Errors;
+﻿using TMS.Common.Enums;
 using TMS.Common.IntegrationEvents;
 using TMS.Payments.Application.Interfaces;
 using TMS.Payments.Application.MessageBrocker;
@@ -8,7 +6,14 @@ using TMS.Payments.Domain.Entities;
 
 namespace TMS.Payments.Application.UseCases;
 
-public sealed record FailPaymentCommand(Guid PaymentId) : IRequest<FailPaymentResult>;
+public sealed record FailPaymentCommand(Guid PaymentId) : IRequest<FailPaymentResult>, IValidatable 
+{
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+            x.RuleFor(y => y.PaymentId).NotEmpty());
+    }
+};
 
 public sealed record FailPaymentResult(Guid PaymentId, PaymentStatus Status);
 

@@ -1,11 +1,3 @@
-using FluentAssertions;
-
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-
-using NSubstitute;
-
-using TMS.Test.Common;
 using TMS.Ticketing.Application.Dtos;
 using TMS.Ticketing.Application.Repositories;
 using TMS.Ticketing.Application.Services.Payments;

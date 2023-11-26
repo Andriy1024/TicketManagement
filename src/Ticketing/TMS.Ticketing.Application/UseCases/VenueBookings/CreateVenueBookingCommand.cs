@@ -1,11 +1,9 @@
-﻿using TMS.Common.Errors;
-
-using TMS.Ticketing.Domain.Events;
+﻿using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Venues;
 
 namespace TMS.Ticketing.Application.UseCases.VenueBookings;
 
-public sealed class CreateVenueBookingCommand : IRequest<VenueBookingDto>
+public sealed class CreateVenueBookingCommand : IRequest<VenueBookingDto>, IValidatable
 {
     public Guid VenueId { get; set; }
 
@@ -14,6 +12,23 @@ public sealed class CreateVenueBookingCommand : IRequest<VenueBookingDto>
     public DateTime Start { get; set; }
 
     public DateTime End { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.VenueId).NotEmpty();
+            x.RuleFor(y => y.EventId).NotEmpty();
+
+            x.RuleFor(y => y.Start)
+             .NotEmpty()
+             .GreaterThanOrEqualTo(DateTime.UtcNow.Date);
+
+            x.RuleFor(y => y.End)
+             .NotEmpty()
+             .GreaterThanOrEqualTo(x => x.Start);
+        });
+    }
 }
 
 internal sealed class CreateVenueBookingHandler : IRequestHandler<CreateVenueBookingCommand, VenueBookingDto>

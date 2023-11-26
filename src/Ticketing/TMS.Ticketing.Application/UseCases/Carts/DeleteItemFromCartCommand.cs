@@ -1,15 +1,22 @@
-﻿
-using TMS.Common.Errors;
+﻿namespace TMS.Ticketing.Application.UseCases.Carts;
 
-namespace TMS.Ticketing.Application.UseCases.Carts;
-
-public sealed class DeleteItemFromCartCommand : IRequest<CartDetailsDto>
+public sealed class DeleteItemFromCartCommand : IRequest<CartDetailsDto>, IValidatable
 {
     public required Guid CartId { get; init; }
 
     public required Guid EventId { get; init; }
 
     public required Guid SeatId { get; init; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.CartId).NotEmpty();
+            x.RuleFor(y => y.EventId).NotEmpty();
+            x.RuleFor(y => y.SeatId).NotEmpty();
+        });
+    }
 }
 
 internal sealed class DeleteItemFromCartHandler : IRequestHandler<DeleteItemFromCartCommand, CartDetailsDto>

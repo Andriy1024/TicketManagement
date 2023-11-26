@@ -2,13 +2,23 @@
 
 namespace TMS.Ticketing.Application.UseCases.Offers;
 
-public sealed class CreateOfferCommand : IRequest<EventDetailsDto>
+public sealed class CreateOfferCommand : IRequest<EventDetailsDto>, IValidatable
 {
     public Guid EventId { get; set; }
 
     public Guid SeatId { get; set; }
 
     public Guid PriceId { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.EventId).NotEmpty();
+            x.RuleFor(y => y.SeatId).NotEmpty();
+            x.RuleFor(y => y.PriceId).NotEmpty();
+        });
+    }
 }
 
 internal sealed class CreateOfferHandler : IRequestHandler<CreateOfferCommand, EventDetailsDto>

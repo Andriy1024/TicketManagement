@@ -1,13 +1,11 @@
-﻿using TMS.Common.Errors;
-using TMS.Common.Users;
-
+﻿using TMS.Common.Users;
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public sealed class AddItemToCartCommand : IRequest<CartDetailsDto>
+public sealed class AddItemToCartCommand : IRequest<CartDetailsDto>, IValidatable
 {
     public Guid CartId { get; set; }
 
@@ -16,6 +14,17 @@ public sealed class AddItemToCartCommand : IRequest<CartDetailsDto>
     public Guid SeatId { get; set; }
 
     public Guid PriceId { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x => 
+        {
+            x.RuleFor(y => y.CartId).NotEmpty();
+            x.RuleFor(y => y.EventId).NotEmpty();
+            x.RuleFor(y => y.SeatId).NotEmpty();
+            x.RuleFor(y => y.PriceId).NotEmpty();
+        });
+    }
 }
 
 internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, CartDetailsDto>

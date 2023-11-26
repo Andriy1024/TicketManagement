@@ -1,10 +1,19 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.VenueSections;
 
-public sealed class DeleteSectionCommand : IRequest<VenueDetailsDto>
+public sealed class DeleteSectionCommand : IRequest<VenueDetailsDto>, IValidatable
 {
     public required Guid SectionId { get; init; }
 
     public required Guid VenueId { get; init; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.SectionId).NotEmpty();
+            x.RuleFor(y => y.VenueId).NotEmpty();
+        });
+    }
 }
 
 internal sealed class DeleteSectionHandler : IRequestHandler<DeleteSectionCommand, VenueDetailsDto>

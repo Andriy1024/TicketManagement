@@ -1,6 +1,13 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed record GetEventDetails(Guid EventId) : IRequest<EventDetailsDto>;
+public sealed record GetEventDetails(Guid EventId) : IRequest<EventDetailsDto>, IValidatable 
+{
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+            x.RuleFor(y => y.EventId).NotEmpty());
+    }
+};
 
 internal sealed class GetEventDetailsHandler : IRequestHandler<GetEventDetails, EventDetailsDto>
 {

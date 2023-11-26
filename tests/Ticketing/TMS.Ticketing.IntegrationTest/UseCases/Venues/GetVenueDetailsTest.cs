@@ -1,15 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Net;
 
-using MediatR;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using NSubstitute;
-
-using System.Net;
-
-using TMS.Common.Errors;
-using TMS.Test.Common;
 using TMS.Ticketing.Application.Dtos;
 using TMS.Ticketing.Application.Repositories;
 using TMS.Ticketing.Application.Services.Payments;

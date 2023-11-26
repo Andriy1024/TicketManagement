@@ -2,13 +2,23 @@
 
 namespace TMS.Ticketing.Application.UseCases.Prices;
 
-public sealed class CreatePriceCommand : IRequest<EventDetailsDto>
+public sealed class CreatePriceCommand : IRequest<EventDetailsDto>, IValidatable
 {
     public Guid EventId { get; set; }
 
     public decimal Amount { get; set; }
 
     public string Name { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.EventId).NotEmpty();
+            x.RuleFor(y => y.Amount).NotEmpty();
+            x.RuleFor(y => y.Name).NotEmpty();
+        });
+    }
 }
 
 internal sealed class CreatePriceHandler : IRequestHandler<CreatePriceCommand, EventDetailsDto>

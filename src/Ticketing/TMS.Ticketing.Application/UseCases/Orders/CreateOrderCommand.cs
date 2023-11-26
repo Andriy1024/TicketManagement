@@ -1,12 +1,19 @@
-﻿using TMS.Common.Errors;
-using TMS.Common.Extensions;
+﻿using TMS.Common.Extensions;
 using TMS.Common.Users;
+
 using TMS.Ticketing.Application.Services.Payments;
 using TMS.Ticketing.Domain.Ordering;
 
 namespace TMS.Ticketing.Application.UseCases.Orders;
 
-public record CreateOrderCommand(Guid CartId) : IRequest<CreateOrderCommandResult>;
+public record CreateOrderCommand(Guid CartId) : IRequest<CreateOrderCommandResult>, IValidatable 
+{
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+            x.RuleFor(y => y.CartId).NotEmpty());
+    }
+};
 
 public record CreateOrderCommandResult(Guid PaymentId);
 

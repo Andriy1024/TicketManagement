@@ -1,12 +1,12 @@
-﻿using MediatR;
-using TMS.Common.Enums;
+﻿using TMS.Common.Enums;
+
 using TMS.Payments.Application.Interfaces;
 using TMS.Payments.Domain.Entities;
 using TMS.Payments.Domain.Enums;
 
 namespace TMS.Payments.Application.UseCases;
 
-public sealed class CreatePaymentCommand : IRequest<CreatePaymentResult>
+public sealed class CreatePaymentCommand : IRequest<CreatePaymentResult>, IValidatable
 {
     public Guid PaymentId { get; set; }
 
@@ -14,6 +14,16 @@ public sealed class CreatePaymentCommand : IRequest<CreatePaymentResult>
     public int AccountId { get; set; }
 
     public decimal Amount { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.PaymentId).NotEmpty();
+            x.RuleFor(y => y.AccountId).NotEmpty();
+            x.RuleFor(y => y.Amount).NotEmpty();
+        });
+    }
 }
 
 public sealed record CreatePaymentResult(Guid PaymentId, PaymentStatus Status);

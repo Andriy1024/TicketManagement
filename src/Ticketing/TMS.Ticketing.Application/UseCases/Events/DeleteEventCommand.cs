@@ -1,6 +1,13 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed record DeleteEventCommand(Guid EventId) : IRequest<Unit>;
+public sealed record DeleteEventCommand(Guid EventId) : IRequest<Unit>, IValidatable 
+{
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x => 
+            x.RuleFor(y => y.EventId).NotEmpty());
+    }
+};
 
 internal sealed class DeleteEventHandler : IRequestHandler<DeleteEventCommand, Unit>
 {

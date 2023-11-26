@@ -38,7 +38,7 @@ public sealed class VenuesController : ControllerBase
 
     [HttpDelete("{venueId}")]
     public Task<Unit> DeleteVenueAsync(Guid venueId)
-        => _mediator.Send(new DeleteVenueCommand() { Id = venueId });
+        => _mediator.Send(new DeleteVenueCommand(venueId));
 
     #endregion
 

@@ -1,9 +1,17 @@
-﻿using TMS.Common.Errors;
-using TMS.Common.Users;
+﻿using TMS.Common.Users;
 
 namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public sealed record GetCartDetails(Guid CartId) : IRequest<CartDetailsDto>;
+public sealed record GetCartDetails(Guid CartId) : IRequest<CartDetailsDto>, IValidatable 
+{
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.CartId).NotEmpty();
+        });
+    }
+};
 
 internal sealed class GetCartDetailsHandler : IRequestHandler<GetCartDetails, CartDetailsDto>
 {
