@@ -1,4 +1,5 @@
 ﻿using TMS.Common.Users;
+
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Domain.Ordeting;
@@ -38,9 +39,9 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
         IEventsRepository eventsRepo, 
         IUserContext userContext)
     {
-        this._cartRepo = cartRepo;
-        this._eventsRepo = eventsRepo;
-        this._userContext = userContext;
+        _cartRepo = cartRepo;
+        _eventsRepo = eventsRepo;
+        _userContext = userContext;
     }
 
     public async Task<CartDetailsDto> Handle(AddItemToCartCommand request, CancellationToken cancellationToken)

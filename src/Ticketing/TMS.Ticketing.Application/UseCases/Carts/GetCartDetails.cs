@@ -11,7 +11,7 @@ public sealed record GetCartDetails(Guid CartId) : IRequest<CartDetailsDto>, IVa
             x.RuleFor(y => y.CartId).NotEmpty();
         });
     }
-};
+}
 
 internal sealed class GetCartDetailsHandler : IRequestHandler<GetCartDetails, CartDetailsDto>
 {
@@ -21,8 +21,8 @@ internal sealed class GetCartDetailsHandler : IRequestHandler<GetCartDetails, Ca
 
     public GetCartDetailsHandler(ICartsRepository cartRepository, IUserContext userContext)
     {
-        this._cartRepository = cartRepository;
-        this._userContext = userContext;
+        _cartRepository = cartRepository;
+        _userContext = userContext;
     }
 
     public async Task<CartDetailsDto> Handle(GetCartDetails request, CancellationToken cancellationToken)

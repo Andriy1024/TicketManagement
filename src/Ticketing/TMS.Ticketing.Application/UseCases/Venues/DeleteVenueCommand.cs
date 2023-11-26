@@ -15,7 +15,7 @@ internal sealed class DeleteVenueHandler : IRequestHandler<DeleteVenueCommand, U
 
     public DeleteVenueHandler(IVenuesRepository repository)
     {
-        this._repository = repository;
+        _repository = repository;
     }
 
     public async Task<Unit> Handle(DeleteVenueCommand request, CancellationToken cancellationToken)

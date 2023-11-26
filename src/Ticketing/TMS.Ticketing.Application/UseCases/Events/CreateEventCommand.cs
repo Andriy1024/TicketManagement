@@ -20,14 +20,13 @@ public sealed class CreateEventCommand : IRequest<EventDetailsDto>, IValidatable
         return this.Validate(x =>
         {
             x.RuleFor(y => y.Name).NotEmpty();
-            
+
             x.RuleFor(y => y.Start)
-             .NotEmpty()
-             .GreaterThanOrEqualTo(DateTime.UtcNow.Date);
+             .NotEmpty();
             
             x.RuleFor(y => y.End)
              .NotEmpty()
-             .GreaterThanOrEqualTo(y => y.Start);
+             .GreaterThan(y => y.Start);
         });
     }
 }

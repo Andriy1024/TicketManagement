@@ -42,9 +42,9 @@ public class GetVenueDetailsTest
         // Act
         using (var scope = services.CreateScope())
         {
-            var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<GetVenueDetails, VenueDetailsDto>>();
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-            actual = await handler.Handle(new GetVenueDetails(venueId), CancellationToken.None);
+            actual = await mediator.Send(new GetVenueDetails(venueId), CancellationToken.None);
         }
 
         // Assert
@@ -74,11 +74,11 @@ public class GetVenueDetailsTest
         // Act
         using (var scope = services.CreateScope())
         {
-            var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<GetVenueDetails, VenueDetailsDto>>();
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
             try
             {
-                _ = await handler.Handle(new GetVenueDetails(Guid.NewGuid()), CancellationToken.None);
+                _ = await mediator.Send(new GetVenueDetails(Guid.NewGuid()), CancellationToken.None);
             }
             catch (Exception e)
             {

@@ -8,7 +8,7 @@ public sealed class CreateSeatCommand : IRequest<VenueDetailsDto>, IValidatable
 
     public required Guid SectionId { get; init; }
 
-    public required int? RowNumber { get; init; }
+    public int? RowNumber { get; init; }
 
     public IEnumerable<ValidationFailure> Validate()
     {

@@ -21,8 +21,7 @@ public sealed class CreateVenueBookingCommand : IRequest<VenueBookingDto>, IVali
             x.RuleFor(y => y.EventId).NotEmpty();
 
             x.RuleFor(y => y.Start)
-             .NotEmpty()
-             .GreaterThanOrEqualTo(DateTime.UtcNow.Date);
+             .NotEmpty();
 
             x.RuleFor(y => y.End)
              .NotEmpty()

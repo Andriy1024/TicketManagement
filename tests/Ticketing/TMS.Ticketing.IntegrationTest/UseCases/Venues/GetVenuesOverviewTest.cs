@@ -36,9 +36,9 @@ public class GetVenuesOverviewTest
         // Act
         using (var scope = services.CreateScope()) 
         {
-            var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<GetVenuesOverview, IEnumerable<VenueOverviewDto>>>();
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-            actual = await handler.Handle(new GetVenuesOverview(), CancellationToken.None);
+            actual = await mediator.Send(new GetVenuesOverview(), CancellationToken.None);
         }
 
         // Assert

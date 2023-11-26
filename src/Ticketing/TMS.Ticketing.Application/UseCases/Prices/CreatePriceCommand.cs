@@ -15,7 +15,7 @@ public sealed class CreatePriceCommand : IRequest<EventDetailsDto>, IValidatable
         return this.Validate(x =>
         {
             x.RuleFor(y => y.EventId).NotEmpty();
-            x.RuleFor(y => y.Amount).NotEmpty();
+            x.RuleFor(y => y.Amount).GreaterThan(0);
             x.RuleFor(y => y.Name).NotEmpty();
         });
     }
