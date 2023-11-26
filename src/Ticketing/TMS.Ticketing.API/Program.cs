@@ -29,3 +29,5 @@ app.MapControllers();
 await app.Services.RunStartupTasksAsync();
 
 await app.RunAsync();
+
+public partial class Program { }

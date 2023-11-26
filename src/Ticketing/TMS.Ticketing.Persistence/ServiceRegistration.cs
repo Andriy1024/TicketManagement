@@ -49,11 +49,6 @@ public static class ServiceRegistration
             .AddScoped<ITicketsRepository, TicketsRepository>();
     }
 
-    private static void ConfigureClassMapp()
-    {
-        
-    }
-
     public static IServiceCollection AddMongoRepository<TEntity, TIdentifiable>(this IServiceCollection services)
         where TEntity : IEntity<TIdentifiable>
         where TIdentifiable : notnull
