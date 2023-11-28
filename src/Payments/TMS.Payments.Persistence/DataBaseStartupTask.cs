@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Npgsql;
 
 using TMS.Common.Interfaces;
+using TMS.Payments.Domain.Views;
 
 namespace TMS.Payments.Persistence;
 
@@ -36,7 +37,8 @@ public sealed class DataBaseStartupTask : IStartupTask
     {
         var documentSession = _serviceProvider.GetRequiredService<IDocumentSession>();
 
-       // documentSession.Query<ConversationView>().FirstOrDefault();
+        documentSession.Query<PaymentDetailsView>().FirstOrDefault();
+        documentSession.Query<UserPaymentsView>().FirstOrDefault();
     }
 
     private void CreateDbIfNotExists()

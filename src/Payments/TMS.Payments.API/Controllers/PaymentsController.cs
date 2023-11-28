@@ -18,9 +18,9 @@ public class PaymentsController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("my")]
-    public Task<UserPaymentsView> GetUserPaymentsAsync(CancellationToken token)
-        => _mediator.Send(new GetUserPayments(), token);
+    [HttpGet("/api/users/{userId}/payments")]
+    public Task<UserPaymentsView> GetUserPaymentsAsync(int userId, CancellationToken token)
+        => _mediator.Send(new GetUserPayments(userId), token);
 
     [HttpGet("{paymentId}")]
     public Task<PaymentDetailsView> GetPaymentDetailsAsync([FromRoute] Guid paymentId, CancellationToken token)
