@@ -1,10 +1,10 @@
 ﻿using TMS.Ticketing.Application.UseCases.Carts;
 
-namespace TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+namespace TMS.Ticketing.Applications.Test.Validation.Data;
 
-public class CartRequestTestGenerator : RequestTestGenerator
+public class CartRequestData : RequestTestGenerator
 {
-    public CartRequestTestGenerator()
+    public CartRequestData()
     {
         #region AddItemToCartCommand
 

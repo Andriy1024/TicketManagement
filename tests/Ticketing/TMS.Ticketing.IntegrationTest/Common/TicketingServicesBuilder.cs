@@ -3,12 +3,10 @@ using TMS.Ticketing.Application;
 
 namespace TMS.Ticketing.IntegrationTest.Common;
 
-public class TicketingServices : ServicesBuilder<TicketingServices>
+public class TicketingServicesBuilder : ServicesBuilder<TicketingServicesBuilder>
 {
-    public TicketingServices AddMongoConnection(string connectionString, string dbName)
+    public TicketingServicesBuilder AddMongoConnection(string connectionString, string dbName)
     {
-        // "mongodb://mongo:mongo@127.0.0.1:54359/"
-
         AddConfigValue(
             $"{nameof(MongoConfig)}:{nameof(MongoConfig.DatabaseName)}",
             dbName);
@@ -20,7 +18,7 @@ public class TicketingServices : ServicesBuilder<TicketingServices>
         return this;
     }
 
-    public TicketingServices AddTicketingServices() 
+    public TicketingServicesBuilder AddTicketingServices() 
     {
         ArgumentNullException.ThrowIfNull(Config);
 

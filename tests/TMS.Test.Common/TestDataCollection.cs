@@ -2,7 +2,7 @@
 
 namespace TMS.Test.Common;
 
-public class TestGenerator<TTest> : IEnumerable<object[]>
+public class TestDataCollection<TTest> : IEnumerable<object[]>
     where TTest : notnull
 {
     protected readonly List<TTest> _testCases = new();

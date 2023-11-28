@@ -46,24 +46,17 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
 
     public async Task<CartDetailsDto> Handle(AddItemToCartCommand request, CancellationToken cancellationToken)
     {
-        var cart = await _cartRepo.GetRequiredAsync(request.CartId);
+        var cart = await _cartRepo.GetAsync(request.CartId);
 
-        if (cart == null)
+        bool isNewCart = cart == null;
+
+        cart ??= new CartEntity
         {
-            cart = new CartEntity
-            {
-                Id = request.CartId,
-                AccountId = _userContext.GetUser().Id
-            };
+            Id = request.CartId,
+            AccountId = _userContext.GetUser().Id
+        };
 
-            await _cartRepo.AddAsync(cart);
-        }
-
-        var @event = await _eventsRepo.GetAsync(request.EventId);
-
-        if (@event == null) throw ApiError
-            .NotFound("Event was not found")
-            .ToException();
+        var @event = await _eventsRepo.GetRequiredAsync(request.EventId);
 
         var seat = @event.Seats.Find(x => x.SeatId == request.SeatId);
         var price = @event.Prices.Find(x => x.Id == request.PriceId);
@@ -74,11 +67,12 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
             { seat: null } => ApiError.NotFound("Seat was not found"),
             { price: null } => ApiError.NotFound("Price was not found"),
             { offer: null } => ApiError.NotFound("Offer was not found"),
-            { seat.State: not SeatState.Available } => ApiError.NotFound("Seat is not available"),
+            { seat.State: not SeatState.Available } => ApiError.InvalidData("Seat is not available"),
             _ => null
         };
 
-        if (validationError != null) throw validationError.ToException();
+        if (validationError != null) 
+            throw validationError.ToException();
 
         var orderItem = new OrderItem
         {
@@ -90,8 +84,11 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
 
         cart.OrderItems.Add(orderItem);
 
-        await _cartRepo.UpdateAsync(cart);
+        if (isNewCart) 
+            await _cartRepo.AddAsync(cart);
+        else
+            await _cartRepo.UpdateAsync(cart);
 
-        return new CartDetailsDto();
+        return CartDetailsDto.Map(cart);
     }
 }

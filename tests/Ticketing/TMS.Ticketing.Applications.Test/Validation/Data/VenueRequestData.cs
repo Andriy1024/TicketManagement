@@ -3,11 +3,11 @@ using TMS.Ticketing.Application.UseCases.VenueSeats;
 using TMS.Ticketing.Application.UseCases.VenueSections;
 using TMS.Ticketing.Domain.Venues;
 
-namespace TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+namespace TMS.Ticketing.Applications.Test.Validation.Data;
 
-public class VenueRequestTestGenerator : RequestTestGenerator
+public class VenueRequestData : RequestTestGenerator
 {
-    public VenueRequestTestGenerator()
+    public VenueRequestData()
     {
         #region CreateVenueCommand
 

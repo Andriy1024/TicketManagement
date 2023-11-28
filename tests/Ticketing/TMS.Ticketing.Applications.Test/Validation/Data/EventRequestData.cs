@@ -1,10 +1,10 @@
 ﻿using TMS.Ticketing.Application.UseCases.Events;
 
-namespace TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+namespace TMS.Ticketing.Applications.Test.Validation.Data;
 
-public class EventRequestTestGenerator : RequestTestGenerator
+public class EventRequestData : RequestTestGenerator
 {
-    public EventRequestTestGenerator()
+    public EventRequestData()
     {
         #region CreateEventCommand
 

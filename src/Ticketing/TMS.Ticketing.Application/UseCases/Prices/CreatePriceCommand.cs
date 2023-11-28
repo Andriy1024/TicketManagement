@@ -40,6 +40,8 @@ internal sealed class CreatePriceHandler : IRequestHandler<CreatePriceCommand, E
             Name = request.Name
         });
 
+        @event.AddPrice(request.Name, request.Amount);
+
         await _eventsRepository.UpdateAsync(@event);
 
         return EventDetailsDto.Map(@event);

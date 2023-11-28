@@ -1,8 +1,8 @@
-﻿namespace TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+﻿namespace TMS.Ticketing.Applications.Test.Validation.Data;
 
-public record RequestTestCase(bool SuccessCase, IValidatable Payload);
+public record RequestData(bool SuccessCase, IValidatable Payload);
 
-public class RequestTestGenerator : TestGenerator<RequestTestCase>
+public class RequestTestGenerator : TestDataCollection<RequestData>
 {
     protected void ValidCase(IValidatable payload)
     {

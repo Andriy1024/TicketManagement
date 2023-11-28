@@ -1,10 +1,10 @@
 ﻿using TMS.Ticketing.Application.UseCases.Prices;
 
-namespace TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+namespace TMS.Ticketing.Applications.Test.Validation.Data;
 
-public class PriceRequestTestGenerator : RequestTestGenerator
+public class PriceRequestData : RequestTestGenerator
 {
-    public PriceRequestTestGenerator()
+    public PriceRequestData()
     {
         #region CreatePriceCommand
 

@@ -1,20 +1,20 @@
 ﻿using System.Net;
 
-using TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+using TMS.Ticketing.Applications.Test.Validation.Data;
 
 namespace TMS.Ticketing.Applications.Test.Validation;
 
 public class RequestValidationTest
 {
     [Theory]
-    [ClassData(typeof(VenueRequestTestGenerator))]
-    [ClassData(typeof(VenueBookingRequestTestGenerator))]
-    [ClassData(typeof(PriceRequestTestGenerator))]
-    [ClassData(typeof(OrderRequestTestGenerator))]
-    [ClassData(typeof(OfferRequestTestGenerator))]
-    [ClassData(typeof(EventRequestTestGenerator))]
-    [ClassData(typeof(CartRequestTestGenerator))]
-    public void Request_Validates_AsExpected(RequestTestCase testCase)
+    [ClassData(typeof(VenueRequestData))]
+    [ClassData(typeof(VenueBookingRequestData))]
+    [ClassData(typeof(PriceRequestData))]
+    [ClassData(typeof(OrderRequestData))]
+    [ClassData(typeof(OfferRequestData))]
+    [ClassData(typeof(EventRequestData))]
+    [ClassData(typeof(CartRequestData))]
+    public void Request_IsValidated_As_Expected(RequestData testCase)
     {
         // Act
         var act = () => testCase.Payload.Validate().ThrowIfInvalid();

@@ -7,7 +7,7 @@ using TMS.Ticketing.Application.Repositories;
 using TMS.Ticketing.Application.UseCases.VenueBookings;
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.IntegrationTest.Common;
-using TMS.Ticketing.IntegrationTest.Common.Factories;
+using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
 using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
@@ -28,24 +28,24 @@ public class CreateVenueBookingApiTest : IClassFixture<MongoDbFactory>
     [Fact]
     public async Task CreateVenueBooking_ByDefault_CreatesBooking()
     {
+        // Arrange
         var seedResult = await SeedDataAsync(_apiFactory.Services);
 
-        var startDate = DateTime.UtcNow;
-        var endDate = startDate.AddDays(1);
+        var startDate = DateTime.UtcNow.Date;
         var createBooking = new CreateVenueBookingCommand
         {
             VenueId = seedResult.VenueId,
             EventId = seedResult.EventId,
             Start = startDate,
-            End = endDate
+            End = startDate.AddDays(1).Date
         };
 
-        var client = _apiFactory.CreateApiClient();
-
+        // Act
+        using var client = _apiFactory.CreateApiClient();
         var httpResponse = await client.PostAsJsonAsync("api/venues/book", createBooking);
-
         var response = await httpResponse.Content.ReadFromJsonAsync<VenueBookingDto>();
 
+        // Assert
         response.Should().NotBeNull();
         response!.EventId.Should().Be(createBooking.EventId);
         response.VenueId.Should().Be(createBooking.VenueId);
@@ -54,33 +54,28 @@ public class CreateVenueBookingApiTest : IClassFixture<MongoDbFactory>
         response.Id.Should().NotBe(Guid.Empty);
     }
 
-    private async Task<(Guid VenueId, Guid EventId)> SeedDataAsync(IServiceProvider serviceProvider) 
+    private static async Task<(Guid VenueId, Guid EventId)> SeedDataAsync(IServiceProvider serviceProvider) 
     {
-        var venueId = Guid.NewGuid();
-        var eventId = Guid.NewGuid();
+        var venue = FakeVenueFactory.Create(venueId: Guid.NewGuid(), name: "Venue #4");
+
+        var @event = new EventEntity
+        {
+            Id = Guid.NewGuid(),
+            Name = "Event #2",
+            CreatorId = UserContext.DefaultId,
+            Start = DateTime.UtcNow,
+            End = DateTime.UtcNow.AddDays(1)
+        };
 
         using (var scope = serviceProvider.CreateScope())
         {
             var eventsRepo = scope.ServiceProvider.GetRequiredService<IEventsRepository>();
-            
             var venuesRepo = scope.ServiceProvider.GetRequiredService<IVenuesRepository>();
 
-            var venue = VenueTestFactory.Create(venueId: venueId, name: "Venue #4");
-            
-            var @event = new EventEntity
-            {
-                Id = eventId,
-                Name = "Event #2",
-                CreatorId = UserContext.DefaultId,
-                Start = DateTime.UtcNow,
-                End = DateTime.UtcNow.AddDays(1)
-            };
-
             await venuesRepo.AddAsync(venue);
-
             await eventsRepo.AddAsync(@event);
         }
 
-        return (venueId, eventId);
+        return (venue.Id, @event.Id);
     }
 }

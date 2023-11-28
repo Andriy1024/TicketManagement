@@ -4,8 +4,9 @@ using TMS.Ticketing.Application.Dtos;
 using TMS.Ticketing.Application.Repositories;
 using TMS.Ticketing.Application.Services.Payments;
 using TMS.Ticketing.Application.UseCases.Venues;
+using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.IntegrationTest.Common;
-using TMS.Ticketing.IntegrationTest.Common.Factories;
+using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
 using TMS.Ticketing.IntegrationTest.UseCases.Venues.Common;
 
 namespace TMS.Ticketing.IntegrationTest.UseCases.Venues;
@@ -13,13 +14,13 @@ namespace TMS.Ticketing.IntegrationTest.UseCases.Venues;
 [Collection(VenuesDatabaseCollection.Name)]
 public class GetVenueDetailsTest
 {
-    private readonly TicketingServices _services;
+    private readonly TicketingServicesBuilder _services;
 
     private readonly static Guid DatabaseName = Guid.NewGuid();
 
     public GetVenueDetailsTest(MongoDbFactory mongoDb)
     {
-        _services = new TicketingServices()
+        _services = new TicketingServicesBuilder()
           .AddJsonConfig("appsettings", "appsettings.test.json")
           .AddMongoConnection(mongoDb.ConnectionString, DatabaseName.ToString())
           .BuildConfiguration()
@@ -33,9 +34,7 @@ public class GetVenueDetailsTest
         // Arrange
         var services = _services.BuildServiceProvider();
 
-        var venueId = Guid.NewGuid();
-
-        await SeedDataAsync(services, venueId);
+        var venue = await SeedDataAsync(services);
 
         VenueDetailsDto actual;
 
@@ -44,21 +43,17 @@ public class GetVenueDetailsTest
         {
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-            actual = await mediator.Send(new GetVenueDetails(venueId), CancellationToken.None);
+            actual = await mediator.Send(new GetVenueDetails(venue.Id), CancellationToken.None);
         }
 
         // Assert
         actual.Should().NotBeNull();
 
-        actual.Should().MatchSnapshot(nameof(actual), matchOptions: o =>
-        {
-            o.IgnoreField($"**.{nameof(VenueOverviewDto.Id)}");
-            o.IgnoreField($"**.{nameof(SectionDto.VenueId)}");
-            o.IgnoreField($"**.{nameof(SectionDto.SectionId)}");
-            o.IgnoreField($"**.{nameof(SeatDto.SeatId)}");
-
-            return o;
-        });
+        actual.Should().MatchSnapshot(nameof(actual), matchOptions: opt => opt
+            .IgnoreField($"**.{nameof(VenueOverviewDto.Id)}")
+            .IgnoreField($"**.{nameof(SectionDto.VenueId)}")
+            .IgnoreField($"**.{nameof(SectionDto.SectionId)}")
+            .IgnoreField($"**.{nameof(SeatDto.SeatId)}"));
     }
 
     [Fact]
@@ -67,7 +62,7 @@ public class GetVenueDetailsTest
         // Arrange
         var services = _services.BuildServiceProvider();
 
-        await SeedDataAsync(services, Guid.NewGuid());
+        _ = await SeedDataAsync(services);
 
         Exception? actual = null;
 
@@ -93,14 +88,16 @@ public class GetVenueDetailsTest
             .Should().Match<ApiError>(x => x.StatusCode == HttpStatusCode.NotFound);
     }
 
-    private static async Task SeedDataAsync(IServiceProvider services, Guid venueId)
+    private static async Task<VenueEntity> SeedDataAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();
 
         var repo = scope.ServiceProvider.GetRequiredService<IVenuesRepository>();
 
-        var firstVenue = VenueTestFactory.Create(venueId: venueId, name: "Venue #3");
+        var venue = FakeVenueFactory.Create(venueId: Guid.NewGuid(), name: "Venue #3");
 
-        await repo.AddAsync(firstVenue);
+        await repo.AddAsync(venue);
+
+        return venue;
     }
 }

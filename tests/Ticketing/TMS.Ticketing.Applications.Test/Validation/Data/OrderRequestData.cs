@@ -1,10 +1,10 @@
 ﻿using TMS.Ticketing.Application.UseCases.Orders;
 
-namespace TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+namespace TMS.Ticketing.Applications.Test.Validation.Data;
 
-public class OrderRequestTestGenerator : RequestTestGenerator
+public class OrderRequestData : RequestTestGenerator
 {
-    public OrderRequestTestGenerator()
+    public OrderRequestData()
     {
         #region CreateOrderCommand
 

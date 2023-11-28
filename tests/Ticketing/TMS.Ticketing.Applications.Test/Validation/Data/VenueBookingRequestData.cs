@@ -1,10 +1,10 @@
 ﻿using TMS.Ticketing.Application.UseCases.VenueBookings;
 
-namespace TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+namespace TMS.Ticketing.Applications.Test.Validation.Data;
 
-public class VenueBookingRequestTestGenerator : RequestTestGenerator
+public class VenueBookingRequestData : RequestTestGenerator
 {
-    public VenueBookingRequestTestGenerator()
+    public VenueBookingRequestData()
     {
         #region GetVenueBookings
 

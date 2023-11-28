@@ -1,10 +1,10 @@
 ﻿using TMS.Ticketing.Application.UseCases.Offers;
 
-namespace TMS.Ticketing.Applications.Test.Validation.TestGenerators;
+namespace TMS.Ticketing.Applications.Test.Validation.Data;
 
-public class OfferRequestTestGenerator : RequestTestGenerator
+public class OfferRequestData : RequestTestGenerator
 {
-    public OfferRequestTestGenerator()
+    public OfferRequestData()
     {
         #region CreateOfferCommand
 

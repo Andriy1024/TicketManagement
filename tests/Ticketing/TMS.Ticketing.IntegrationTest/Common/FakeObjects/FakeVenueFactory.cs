@@ -1,9 +1,9 @@
 ﻿using TMS.Ticketing.Domain.Common;
 using TMS.Ticketing.Domain.Venues;
 
-namespace TMS.Ticketing.IntegrationTest.Common.Factories;
+namespace TMS.Ticketing.IntegrationTest.Common.FakeObjects;
 
-public class VenueTestFactory
+public class FakeVenueFactory
 {
     public static VenueEntity Create(Guid? venueId = null, string? name = null)
     {
