@@ -1,51 +1,45 @@
-﻿using TMS.Payments.Domain.DomainEvents;
+﻿using TMS.Common.Enums;
+using TMS.Payments.Domain.Abstractions;
+using TMS.Payments.Domain.DomainEvents;
 using TMS.Payments.Domain.Enums;
-using TMS.Payments.Domain.Interfaces;
 
 namespace TMS.Payments.Domain.Entities;
 
-public sealed class PaymentAggregate
+public sealed class PaymentAggregate : EventSourcedAggregate
 {
+    public override string GetId() => PaymentId.ToString();
+
     public Guid PaymentId { get; private set; }
+
+    public int AccountId { get; private set; }
 
     public PaymentType Type { get; private set; }
 
     public PaymentStatus Status { get; private set; }
 
+    public decimal Amount { get; private set; }
+
     public DateTime Created { get; private set; }
 
     public DateTime Updated { get; private set; }
 
-    /// <summary>
-    /// The Changes that should be committed to an event store.
-    /// </summary>
-    public IReadOnlyCollection<IPaymentEvent> Changes => _changes;
-
-    private readonly List<IPaymentEvent> _changes = new();
-
-    /// <summary>
-    /// The Paymen's event history.
-    /// </summary>
-    public IReadOnlyCollection<IPaymentEvent> History => _history;
-
-    private readonly List<IPaymentEvent> _history = new();
-
-    /// <summary>
-    /// Version represents the number of commits events, and used to handle concurrency.
-    /// </summary>
-    public int Version { get; private set; }
-
-    public static PaymentAggregate Create(Guid id, PaymentType type)
+    public static PaymentAggregate Create(
+        Guid id,  
+        decimal amount,
+        int accountId,
+        PaymentType type)
     {
         var aggregate = new PaymentAggregate();
 
         var @event = new PaymentCreatedEvent()
         {
             PaymentId = id,
+            AccountId = accountId,
             Type = type,
-            Created = DateTime.UtcNow,
+            Amount = amount,
             Status = PaymentStatus.Pending,
-            Message = "Payment created."
+            Message = "Payment created.",
+            Created = DateTime.UtcNow,
         };
 
         aggregate.Apply(@event);
@@ -57,22 +51,9 @@ public sealed class PaymentAggregate
     {
         var aggregate = new PaymentAggregate();
 
-        foreach (var @event in events)
-        {
-            aggregate.When((dynamic)@event);
-            aggregate._history.Add(@event);
-            aggregate.Version++;
-        }
+        aggregate.Load(events.Cast<IDomainEvent>());
 
         return aggregate;
-    }
-
-    private void Apply(IPaymentEvent evt)
-    {
-        When((dynamic)evt);
-        _changes.Add(evt);
-        _history.Add(evt);
-        Version++;
     }
 
     public void Completed()
@@ -80,6 +61,7 @@ public sealed class PaymentAggregate
         var @event = new PaymentStatusUpdated()
         {
             PaymentId = PaymentId,
+            AccountId = AccountId,
             Status = PaymentStatus.Completed,
             CreateAt = DateTime.UtcNow,
             Message = "Payment completed"
@@ -93,6 +75,7 @@ public sealed class PaymentAggregate
         var @event = new PaymentStatusUpdated()
         {
             PaymentId = PaymentId,
+            AccountId = AccountId,
             Status = PaymentStatus.Failed,
             CreateAt = DateTime.UtcNow,
             Message = "Payment failed"
@@ -101,11 +84,28 @@ public sealed class PaymentAggregate
         Apply(@event);
     }
 
+    protected override void When(IDomainEvent @event)
+    {
+        switch (@event)
+        {
+            case PaymentCreatedEvent e:
+                When(e);
+                break;
+            case PaymentStatusUpdated e:
+                When(e);
+                break;
+            default:
+                throw new NotImplementedException($"Unknown event type: {@event.GetType().Name}.");
+        }
+    }
+
     private void When(PaymentCreatedEvent @event)
     {
         PaymentId = @event.PaymentId;
+        AccountId = @event.AccountId;
         Type = @event.Type;
         Status = @event.Status;
+        Amount = @event.Amount;
         Created = @event.Created;
         Updated = @event.Created;
     }

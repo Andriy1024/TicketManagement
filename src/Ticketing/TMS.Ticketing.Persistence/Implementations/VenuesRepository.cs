@@ -1,8 +1,7 @@
 ﻿using MongoDB.Driver;
-
+using TMS.Common.Errors;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Persistence.Abstractions;
-using TMS.Ticketing.Persistence.Database;
 using TMS.Ticketing.Persistence.Helpers;
 
 namespace TMS.Ticketing.Persistence.Implementations;
@@ -13,5 +12,11 @@ internal sealed class VenuesRepository : MongoRepository<VenueEntity, Guid>, IVe
 
     public VenuesRepository(IMongoDatabase database) : base(database)
     {
+    }
+
+    public async Task<VenueEntity> GetRequiredAsync(Guid venueId)
+    {
+        return await GetAsync(venueId)
+            ?? throw ApiError.NotFound($"Venue not found: {venueId}").ToException();
     }
 }

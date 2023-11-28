@@ -8,7 +8,5 @@ public sealed class Price
 
     public required decimal Amount { get; set; }
 
-    public required string Currency { get; set; }
-
     public required string Name { get; set; }
 }

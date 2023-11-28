@@ -5,14 +5,12 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 using TMS.Common.Interfaces;
-
 using TMS.Ticketing.Domain;
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Domain.Tickets;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Persistence.Abstractions;
-using TMS.Ticketing.Persistence.Database;
 using TMS.Ticketing.Persistence.Implementations;
 
 namespace TMS.Ticketing.Persistence.Setup;
@@ -43,7 +41,7 @@ public static class MongoSetupExtensions
 
         return services
             .AddScoped<IStartupTask, MongoSchemaTask>()
-            .AddScoped<IStartupTask, MongoSeedTask>()
+            //.AddScoped<IStartupTask, MongoSeedTask>()
             .AddScoped<IVenuesRepository, VenuesRepository>()
             .AddScoped<IVenuesBookingRepository, VenuesBookingRepository>()
             .AddScoped<IEventsRepository, EventsRepository>()
