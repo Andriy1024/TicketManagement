@@ -1,12 +1,17 @@
-﻿namespace TMS.Ticketing.Application.UseCases.Venues;
+﻿using TMS.Ticketing.Application.Cache;
 
-public sealed record DeleteVenueCommand(Guid Id) : IRequest<Unit>, IValidatable
+namespace TMS.Ticketing.Application.UseCases.Venues;
+
+public sealed record DeleteVenueCommand(Guid Id) 
+    : ICommand<Unit>, IValidatable, ICachable
 {
     public IEnumerable<ValidationFailure> Validate()
     {
         return this.Validate(x =>
             x.RuleFor(y => y.Id).NotEmpty());
     }
+
+    public string GetCacheKey() => VenueCacheKey.GetKey(Id);
 }
 
 internal sealed class DeleteVenueHandler : IRequestHandler<DeleteVenueCommand, Unit>

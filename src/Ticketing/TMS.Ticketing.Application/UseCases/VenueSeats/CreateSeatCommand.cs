@@ -1,8 +1,10 @@
-﻿using TMS.Ticketing.Domain.Venues;
+﻿using TMS.Ticketing.Application.Cache;
+using TMS.Ticketing.Domain.Venues;
 
 namespace TMS.Ticketing.Application.UseCases.VenueSeats;
 
-public sealed class CreateSeatCommand : IRequest<VenueDetailsDto>, IValidatable
+public sealed class CreateSeatCommand 
+    : ICommand<VenueDetailsDto>, IValidatable, ICachable
 {
     public required Guid VenueId { get; init; }
 
@@ -18,6 +20,8 @@ public sealed class CreateSeatCommand : IRequest<VenueDetailsDto>, IValidatable
             x.RuleFor(y => y.SectionId).NotEmpty();
         });
     }
+
+    public string GetCacheKey() => VenueCacheKey.GetKey(VenueId);
 }
 
 internal sealed class CreateSeatHandlers : IRequestHandler<CreateSeatCommand, VenueDetailsDto>

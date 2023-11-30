@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
+    <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="9.1.0" />
+    <PackageReference Include="StackExchange.Redis.Extensions.System.Text.Json" Version="9.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\TMS.Caching.Redis\TMS.Caching.Redis.csproj" />
-    <ProjectReference Include="..\TMS.Ticketing.Domain\TMS.Ticketing.Domain.csproj" />
+    <ProjectReference Include="..\TMS.Common\TMS.Common.csproj" />
   </ItemGroup>
-
+	
 </Project>

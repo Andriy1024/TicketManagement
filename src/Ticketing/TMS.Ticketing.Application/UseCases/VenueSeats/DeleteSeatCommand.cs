@@ -1,6 +1,9 @@
-﻿namespace TMS.Ticketing.Application.UseCases.VenueSeats;
+﻿using TMS.Ticketing.Application.Cache;
 
-public class DeleteSeatCommand : IRequest<VenueDetailsDto>, IValidatable
+namespace TMS.Ticketing.Application.UseCases.VenueSeats;
+
+public class DeleteSeatCommand 
+    : ICommand<VenueDetailsDto>, IValidatable, ICachable
 {
     public required Guid VenueId { get; init; }
 
@@ -17,6 +20,8 @@ public class DeleteSeatCommand : IRequest<VenueDetailsDto>, IValidatable
             x.RuleFor(y => y.SeatId).NotEmpty();
         });
     }
+
+    public string GetCacheKey() => VenueCacheKey.GetKey(VenueId);
 }
 
 public class DeleteSeatHandler : IRequestHandler<DeleteSeatCommand, VenueDetailsDto>

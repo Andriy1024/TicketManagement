@@ -1,6 +1,9 @@
-﻿namespace TMS.Ticketing.Application.UseCases.VenueSections;
+﻿using TMS.Ticketing.Application.Cache;
 
-public sealed class DeleteSectionCommand : IRequest<VenueDetailsDto>, IValidatable
+namespace TMS.Ticketing.Application.UseCases.VenueSections;
+
+public sealed class DeleteSectionCommand 
+    : ICommand<VenueDetailsDto>, IValidatable, ICachable
 {
     public required Guid SectionId { get; init; }
 
@@ -14,6 +17,8 @@ public sealed class DeleteSectionCommand : IRequest<VenueDetailsDto>, IValidatab
             x.RuleFor(y => y.VenueId).NotEmpty();
         });
     }
+
+    public string GetCacheKey() => VenueCacheKey.GetKey(VenueId);
 }
 
 internal sealed class DeleteSectionHandler : IRequestHandler<DeleteSectionCommand, VenueDetailsDto>

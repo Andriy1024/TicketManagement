@@ -1,8 +1,10 @@
-﻿using TMS.Ticketing.Domain.Venues;
+﻿using TMS.Ticketing.Application.Cache;
+using TMS.Ticketing.Domain.Venues;
 
 namespace TMS.Ticketing.Application.UseCases.VenueSections;
 
-public sealed class UpdateSectionCommand : IRequest<VenueDetailsDto>, IValidatable
+public sealed class UpdateSectionCommand 
+    : ICommand<VenueDetailsDto>, IValidatable, ICachable
 {
     public required Guid SectionId { get; init; }
 
@@ -22,6 +24,8 @@ public sealed class UpdateSectionCommand : IRequest<VenueDetailsDto>, IValidatab
             x.RuleFor(y => y.Type).IsInEnum();
         });
     }
+
+    public string GetCacheKey() => VenueCacheKey.GetKey(VenueId);
 }
 
 internal sealed class UpdateSectionHandler : IRequestHandler<UpdateSectionCommand, VenueDetailsDto>

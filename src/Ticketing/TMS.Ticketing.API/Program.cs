@@ -4,6 +4,8 @@ using TMS.Ticketing.API;
 using TMS.Ticketing.Persistence;
 using TMS.Ticketing.Application;
 
+using TMS.Caching.Redis;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
@@ -12,7 +14,8 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
     .AddApplicationServices(builder.Configuration)
-    .AddPersistenceServices(builder.Configuration);
+    .AddPersistenceServices(builder.Configuration)
+    .AddRedisServices(builder.Configuration);
     
 var app = builder.Build();
 
@@ -31,3 +34,8 @@ await app.Services.RunStartupTasksAsync();
 await app.RunAsync();
 
 public partial class Program { }
+
+public class Foo 
+{
+    public string Name { get; set; }
+}

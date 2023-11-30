@@ -1,12 +1,17 @@
-﻿namespace TMS.Ticketing.Application.UseCases.Venues;
+﻿using TMS.Ticketing.Application.Cache;
 
-public sealed record GetVenueDetails(Guid Id) : IRequest<VenueDetailsDto>, IValidatable
+namespace TMS.Ticketing.Application.UseCases.Venues;
+
+public sealed record GetVenueDetails(Guid Id) 
+    : IQuery<VenueDetailsDto>, IValidatable, ICachable
 {
     public IEnumerable<ValidationFailure> Validate()
     {
         return this.Validate(x =>
             x.RuleFor(y => y.Id).NotEmpty());
     }
+
+    public string GetCacheKey() => VenueCacheKey.GetKey(Id);
 }
 
 internal sealed class GetVenueDetailsHandler : IRequestHandler<GetVenueDetails, VenueDetailsDto>
