@@ -1,6 +1,6 @@
 ﻿namespace TMS.Common.Caching;
 
-public interface ICoreCacheClient
+public interface ICoreCache
 {
     Task<TOut?> GetAsync<TOut>(string key);
 

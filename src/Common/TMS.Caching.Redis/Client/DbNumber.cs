@@ -1,15 +1,15 @@
 ﻿namespace TMS.Caching.Redis;
 
-public abstract record DbNumber(int Value);
+public abstract record DBNumber(int Value);
 
-public sealed record DB0() : DbNumber(0);
+public sealed record DB0() : DBNumber(0);
 
-public sealed record DB1() : DbNumber(1);
+public sealed record DB1() : DBNumber(1);
 
-public sealed record DB2() : DbNumber(2);
+public sealed record DB2() : DBNumber(2);
 
-public sealed record DB3() : DbNumber(3);
+public sealed record DB3() : DBNumber(3);
 
-public sealed record DB4() : DbNumber(4);
+public sealed record DB4() : DBNumber(4);
 
-public sealed record DB5() : DbNumber(5);
+public sealed record DB5() : DBNumber(5);

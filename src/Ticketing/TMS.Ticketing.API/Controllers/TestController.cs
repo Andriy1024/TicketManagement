@@ -9,9 +9,9 @@ namespace TMS.Ticketing.API.Controllers;
 [ApiController]
 public class TestController : ControllerBase
 {
-    private readonly ICoreCacheClient client;
+    private readonly ICoreCache client;
 
-    public TestController(ICoreCacheClient client)
+    public TestController(ICoreCache client)
     {
         this.client = client;
     }

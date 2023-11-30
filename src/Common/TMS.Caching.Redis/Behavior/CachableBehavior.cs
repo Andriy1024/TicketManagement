@@ -8,10 +8,10 @@ namespace TMS.Caching.Redis.Behavior;
 public sealed class CachableBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly ICoreCacheClient _coreCacheClient;
+    private readonly ICoreCache _cache;
 
-    public CachableBehavior(ICoreCacheClient coreCacheClient)
-        => _coreCacheClient = coreCacheClient;
+    public CachableBehavior(ICoreCache coreCacheClient)
+        => _cache = coreCacheClient;
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
@@ -21,7 +21,7 @@ public sealed class CachableBehavior<TRequest, TResponse> : IPipelineBehavior<TR
 
             if (request is IQuery<TResponse>)
             {
-                return await _coreCacheClient.GetOrAddAsync<TResponse>(
+                return await _cache.GetOrAddAsync(
                     key, TimeSpan.FromMinutes(3), () => next());
             }
 
@@ -29,7 +29,7 @@ public sealed class CachableBehavior<TRequest, TResponse> : IPipelineBehavior<TR
             {
                 var result = await next();
 
-                await _coreCacheClient.DeleteAsync(key);
+                await _cache.DeleteAsync(key);
 
                 return result;
             }

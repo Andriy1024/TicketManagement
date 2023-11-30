@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.System.Text.Json;
-
+using TMS.Caching.Redis.Behavior;
 using TMS.Common.Caching;
 
 namespace TMS.Caching.Redis;
@@ -19,6 +20,9 @@ public static class ServiceRegistration
         return services
             .AddTransient<SystemTextJsonSerializer>()
             .AddStackExchangeRedisExtensions<SystemTextJsonSerializer>(options)
-            .AddSingleton<ICoreCacheClient, CoreCacheClient<DB0>>();
+            .AddSingleton<ICoreCache, CoreCache<DB0>>();
     }
+
+    public static IServiceCollection AddCachableBehavior(this IServiceCollection services)
+        => services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachableBehavior<,>));
 }

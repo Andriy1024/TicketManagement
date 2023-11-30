@@ -7,7 +7,7 @@ using TMS.Common.Users;
 using TMS.Ticketing.Application.Services.Payments;
 using TMS.Ticketing.Application.UseCases.Carts;
 
-using TMS.Caching.Redis.Behavior;
+using TMS.Caching.Redis;
 
 namespace TMS.Ticketing.Application;
 
@@ -24,7 +24,7 @@ public static class ServiceRegistration
             .AddScoped<IUserContext, UserContext>()
             .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetCartDetails>())
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
-            .AddTransient(typeof(IPipelineBehavior<,>), typeof(CachableBehavior<,>))
+            .AddCachableBehavior()
             .AddTransient<IPaymentsService, PaymentsService>()
             .AddRefitClient<IPaymentsApi>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri(paymentsConfig.PaymentsUri));
