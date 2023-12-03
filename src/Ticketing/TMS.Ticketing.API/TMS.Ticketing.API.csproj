@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TMS.Ticketing.Domain\TMS.Ticketing.Domain.csproj" />
+    <ProjectReference Include="..\TMS.Ticketing.Infrastructure\TMS.Ticketing.Infrastructure.csproj" />
     <ProjectReference Include="..\TMS.Ticketing.Persistence\TMS.Ticketing.Persistence.csproj" />
   </ItemGroup>
 
