@@ -13,4 +13,13 @@ public static class DateRangeExtensions
 
         return isAvailable;
     }
+
+    public static bool IsInRange(this IDateRange dateRange,
+        DateTime startDate, DateTime endDate)
+    {
+        return
+            startDate >= dateRange.Start &&
+            startDate <= dateRange.End &&
+            endDate <= dateRange.End;
+    }
 }

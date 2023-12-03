@@ -7,9 +7,9 @@ using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class OrderEntity : IEntity<Guid>
+public sealed class OrderEntity : Entity, IEntity<Guid>
 {
-    public Guid Id { get; init; }
+    public required Guid Id { get; set; }
 
     public Guid EventId { get; init; }
 
@@ -41,14 +41,7 @@ public sealed class OrderEntity : IEntity<Guid>
 
         foreach (var orderItem in orderItems)
         {
-            var eventSeat = @event.GetSeat(orderItem.SeatId);
-
-            if (eventSeat.State != SeatState.Available)
-            {
-                throw ApiError.InvalidData("Seat is not available").ToException();
-            }
-
-            eventSeat.State = SeatState.Booked;
+            @event.BookSeat(orderItem.SeatId);
         }
 
         return new OrderEntity
