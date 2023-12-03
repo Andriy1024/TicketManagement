@@ -1,12 +1,9 @@
 ﻿using TMS.Common.Users;
-
-using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Ordering;
-using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public sealed class AddItemToCartCommand : IRequest<CartDetailsDto>, IValidatable
+public sealed class AddItemToCartCommand : ICommand<CartDetailsDto>, IValidatable
 {
     public Guid CartId { get; set; }
 
@@ -58,31 +55,7 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
 
         var @event = await _eventsRepo.GetRequiredAsync(request.EventId);
 
-        var seat = @event.Seats.Find(x => x.SeatId == request.SeatId);
-        var price = @event.Prices.Find(x => x.Id == request.PriceId);
-        var offer = @event.Offers.Find(x => x.SeatId == request.SeatId && x.PriceId == request.PriceId);
-
-        ApiError? validationError = (seat, price, offer) switch
-        {
-            { seat: null } => ApiError.NotFound("Seat was not found"),
-            { price: null } => ApiError.NotFound("Price was not found"),
-            { offer: null } => ApiError.NotFound("Offer was not found"),
-            { seat.State: not SeatState.Available } => ApiError.InvalidData("Seat is not available"),
-            _ => null
-        };
-
-        if (validationError != null) 
-            throw validationError.ToException();
-
-        var orderItem = new OrderItem
-        {
-            EventId = @event.Id,
-            SeatId = seat!.SeatId,
-            PriceId = price!.Id,
-            Amount = price.Amount
-        };
-
-        cart.OrderItems.Add(orderItem);
+        cart.AddItem(@event, request.SeatId, request.PriceId);
 
         if (isNewCart) 
             await _cartRepo.AddAsync(cart);

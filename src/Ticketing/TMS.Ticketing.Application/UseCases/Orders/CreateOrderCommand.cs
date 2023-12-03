@@ -1,12 +1,11 @@
 ﻿using TMS.Common.Extensions;
 using TMS.Common.Users;
-
-using TMS.Ticketing.Application.Services.Payments;
+using TMS.Ticketing.Application.Interfaces;
 using TMS.Ticketing.Domain.Ordering;
 
 namespace TMS.Ticketing.Application.UseCases.Orders;
 
-public record CreateOrderCommand(Guid CartId) : IRequest<CreateOrderCommandResult>, IValidatable 
+public record CreateOrderCommand(Guid CartId) : ICommand<CreateOrderCommandResult>, IValidatable 
 {
     public IEnumerable<ValidationFailure> Validate()
     {
@@ -68,7 +67,7 @@ internal sealed class CreateOrderHandler : IRequestHandler<CreateOrderCommand, C
             await _ordersRepo.AddAsync(order);
         }
 
-        await _cartRepo.DeleteAsync(cart.Id);
+        await _cartRepo.DeleteAsync(cart);
 
         await _payments.CreatePaymentAsync(paymentId, cart.Total, user.Id);
 

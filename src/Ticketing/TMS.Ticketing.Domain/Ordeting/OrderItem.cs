@@ -1,4 +1,4 @@
-﻿namespace TMS.Ticketing.Domain.Ordeting;
+﻿namespace TMS.Ticketing.Domain.Ordering;
 
 public sealed class OrderItem
 {

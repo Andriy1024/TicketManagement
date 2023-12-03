@@ -1,6 +1,6 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Venues;
 
-public sealed class GetVenuesOverview : IRequest<IEnumerable<VenueOverviewDto>>
+public sealed class GetVenuesOverview : IQuery<IEnumerable<VenueOverviewDto>>
 {
 }
 
@@ -10,7 +10,7 @@ internal sealed class GetVenuesOverviewHandler : IRequestHandler<GetVenuesOvervi
 
     public GetVenuesOverviewHandler(IVenuesRepository repository)
     {
-        this._repository = repository;
+        _repository = repository;
     }
 
     public async Task<IEnumerable<VenueOverviewDto>> Handle(GetVenuesOverview request, CancellationToken cancellationToken)

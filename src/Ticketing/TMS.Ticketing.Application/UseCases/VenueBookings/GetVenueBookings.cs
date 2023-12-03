@@ -1,13 +1,17 @@
-﻿namespace TMS.Ticketing.Application.UseCases.VenueBookings;
+﻿using TMS.Ticketing.Application.Helpers;
 
-public sealed record GetVenueBookings(Guid VenueId) : IRequest<IEnumerable<VenueBookingDto>>, IValidatable 
+namespace TMS.Ticketing.Application.UseCases.VenueBookings;
+
+public sealed record GetVenueBookings(Guid VenueId) : IQuery<IEnumerable<VenueBookingDto>>, IValidatable, ICachable
 {
     public IEnumerable<ValidationFailure> Validate()
     {
         return this.Validate(x =>
             x.RuleFor(y => y.VenueId).NotEmpty());
     }
-};
+
+    public string GetCacheKey() => CacheKeys.GetVenueBookingKey(VenueId);
+}
 
 internal sealed class GetVenueBookingsHandler : IRequestHandler<GetVenueBookings, IEnumerable<VenueBookingDto>>
 {
@@ -15,7 +19,7 @@ internal sealed class GetVenueBookingsHandler : IRequestHandler<GetVenueBookings
 
     public GetVenueBookingsHandler(IVenuesBookingRepository bookingRepo)
     {
-        this._bookingRepo = bookingRepo;
+        _bookingRepo = bookingRepo;
     }
 
     public async Task<IEnumerable<VenueBookingDto>> Handle(GetVenueBookings request, CancellationToken cancellationToken)

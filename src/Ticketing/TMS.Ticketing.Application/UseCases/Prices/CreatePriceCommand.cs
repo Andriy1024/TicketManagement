@@ -1,8 +1,6 @@
-﻿using TMS.Ticketing.Domain.Events;
+﻿namespace TMS.Ticketing.Application.UseCases.Prices;
 
-namespace TMS.Ticketing.Application.UseCases.Prices;
-
-public sealed class CreatePriceCommand : IRequest<EventDetailsDto>, IValidatable
+public sealed class CreatePriceCommand : ICommand<EventDetailsDto>, IValidatable
 {
     public Guid EventId { get; set; }
 
@@ -31,14 +29,6 @@ internal sealed class CreatePriceHandler : IRequestHandler<CreatePriceCommand, E
     public async Task<EventDetailsDto> Handle(CreatePriceCommand request, CancellationToken cancellationToken)
     {
         var @event = await _eventsRepository.GetRequiredAsync(request.EventId);
-
-        @event.Prices.Add(new Price 
-        {
-            Id = Guid.NewGuid(),
-            EventId = @event.Id,
-            Amount = request.Amount,
-            Name = request.Name
-        });
 
         @event.AddPrice(request.Name, request.Amount);
 

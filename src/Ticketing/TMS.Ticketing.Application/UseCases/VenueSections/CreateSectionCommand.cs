@@ -1,10 +1,8 @@
-﻿using TMS.Ticketing.Application.Cache;
-using TMS.Ticketing.Domain.Venues;
+﻿using TMS.Ticketing.Domain.Venues;
 
 namespace TMS.Ticketing.Application.UseCases.VenueSections;
 
-public sealed class CreateSectionCommand 
-    : ICommand<VenueDetailsDto>, IValidatable, ICachable
+public sealed class CreateSectionCommand : ICommand<VenueDetailsDto>, IValidatable
 {
     public required Guid VenueId { get; init; }
 
@@ -21,8 +19,6 @@ public sealed class CreateSectionCommand
             x.RuleFor(y => y.Type).IsInEnum();
         });
     }
-
-    public string GetCacheKey() => VenueCacheKey.GetKey(VenueId);
 }
 
 internal sealed class VenueSectionsHandlers : IRequestHandler<CreateSectionCommand, VenueDetailsDto>
@@ -31,22 +27,14 @@ internal sealed class VenueSectionsHandlers : IRequestHandler<CreateSectionComma
 
     public VenueSectionsHandlers(IVenuesRepository repository)
     {
-        this._repository = repository;
+       _repository = repository;
     }
 
     public async Task<VenueDetailsDto> Handle(CreateSectionCommand request, CancellationToken cancellationToken)
     {
         var venue = await _repository.GetRequiredAsync(request.VenueId);
 
-        var section = new VenueSection
-        {
-            SectionId = Guid.NewGuid(),
-            VenueId = venue.Id,
-            Name = request.Name,
-            Type = request.Type,
-        };
-
-        venue.Sections.Add(section);
+        venue.CreateSection(request.Name, request.Type);
 
         await _repository.UpdateAsync(venue);
 

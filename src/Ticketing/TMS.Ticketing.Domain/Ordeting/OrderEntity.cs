@@ -3,7 +3,6 @@ using TMS.Common.Extensions;
 using TMS.Common.Users;
 
 using TMS.Ticketing.Domain.Events;
-using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Domain.Ordering;
 

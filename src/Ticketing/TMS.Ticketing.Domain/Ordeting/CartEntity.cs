@@ -1,6 +1,5 @@
 ﻿using TMS.Common.Errors;
 using TMS.Ticketing.Domain.Events;
-using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Domain.Ordering;
 

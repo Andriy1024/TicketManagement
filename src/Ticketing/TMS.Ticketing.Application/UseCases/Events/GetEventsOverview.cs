@@ -1,6 +1,6 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed class GetEventsOverview : IRequest<IEnumerable<EventOverviewDto>>
+public sealed class GetEventsOverview : IQuery<IEnumerable<EventOverviewDto>>
 {
 }
 

@@ -1,6 +1,6 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public sealed class DeleteItemFromCartCommand : IRequest<CartDetailsDto>, IValidatable
+public sealed class DeleteItemFromCartCommand : ICommand<CartDetailsDto>, IValidatable
 {
     public required Guid CartId { get; init; }
 

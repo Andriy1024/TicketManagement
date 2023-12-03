@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public sealed class GetUserCarts : IRequest<IEnumerable<UserCartDto>>
+public sealed class GetUserCarts : IQuery<IEnumerable<UserCartDto>>
 {
 }
 

@@ -1,9 +1,6 @@
-﻿using TMS.Ticketing.Application.Cache;
+﻿namespace TMS.Ticketing.Application.UseCases.VenueSeats;
 
-namespace TMS.Ticketing.Application.UseCases.VenueSeats;
-
-public class DeleteSeatCommand 
-    : ICommand<VenueDetailsDto>, IValidatable, ICachable
+public class DeleteSeatCommand : ICommand<VenueDetailsDto>, IValidatable
 {
     public required Guid VenueId { get; init; }
 
@@ -20,37 +17,22 @@ public class DeleteSeatCommand
             x.RuleFor(y => y.SeatId).NotEmpty();
         });
     }
-
-    public string GetCacheKey() => VenueCacheKey.GetKey(VenueId);
 }
 
-public class DeleteSeatHandler : IRequestHandler<DeleteSeatCommand, VenueDetailsDto>
+internal sealed class DeleteSeatHandler : IRequestHandler<DeleteSeatCommand, VenueDetailsDto>
 {
     private readonly IVenuesRepository _repository;
 
     public DeleteSeatHandler(IVenuesRepository repository)
     {
-        this._repository = repository;
+        _repository = repository;
     }
 
     public async Task<VenueDetailsDto> Handle(DeleteSeatCommand request, CancellationToken cancellationToken)
     {
         var venue = await _repository.GetRequiredAsync(request.VenueId);
 
-        var section = venue.GetSection(request.SectionId);
-
-        var seat = section.GetSeat(request.SeatId);
-
-        section.Seats.Remove(seat);
-
-        var rowSeat = section.Seats
-            .Where(x => x.RowNumber == seat.RowNumber)
-            .ToArray();
-
-        for (int i = 0; i < rowSeat.Length; i++)
-        {
-            rowSeat[i].SeatNumber = i + 1;
-        }
+        venue.DeleteSeat(request.SectionId, request.SeatId);
 
         await _repository.UpdateAsync(venue);
 
