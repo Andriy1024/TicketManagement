@@ -12,17 +12,18 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
     .AddInfrastructure(builder.Configuration)
-    .AddPersistenceServices(builder.Configuration);
-    
+    .AddPersistenceServices(builder.Configuration)
+    .AddProblemDetails();
+
 var app = builder.Build();
 
 app.UseSwagger();
 
 app.UseSwaggerUI();
 
-app.UseAuthorization();
-
 app.UseMiddleware<ErrorMiddleware>();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
