@@ -28,7 +28,6 @@ public static class BsonClassMapInitializer
         BsonClassMap.RegisterClassMap<VenueEntity>(map =>
         {
             map.AutoMap();
-
             map.MapIdMember(x => x.Id);
         });
 
