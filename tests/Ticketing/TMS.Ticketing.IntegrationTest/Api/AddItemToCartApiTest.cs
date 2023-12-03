@@ -71,13 +71,16 @@ public class AddItemToCartApiTest
     {
         var venue = FakeVenueFactory.Create(venueId: Guid.NewGuid(), name: "Venue #4");
 
+        var start = DateTime.UtcNow.Date;
+        var end = start.AddDays(1);
+
         var @event = new EventEntity
         {
             Id = Guid.NewGuid(),
             Name = "Event #2",
             CreatorId = UserContext.DefaultId,
-            Start = DateTime.UtcNow,
-            End = DateTime.UtcNow.AddDays(1),
+            Start = start,
+            End = end,
             Details = new List<Detail>() 
             { 
                 new() { Name = "Detail 1", Value = "Value 1" } 
@@ -86,8 +89,7 @@ public class AddItemToCartApiTest
 
         var booking = VenueBookingEntity.Create(
             Array.Empty<VenueBookingEntity>(),
-            DateTime.UtcNow, DateTime.UtcNow.AddDays(1),
-            venue, @event);
+            start, end, venue, @event);
 
         @event.GeneratePrices().GenerateOffers();
 

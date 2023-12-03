@@ -59,13 +59,16 @@ public class CreateVenueBookingApiTest
     {
         var venue = FakeVenueFactory.Create(venueId: Guid.NewGuid(), name: "Venue #4");
 
+        var start = DateTime.UtcNow.Date;
+        var end = start.AddDays(1);
+
         var @event = new EventEntity
         {
             Id = Guid.NewGuid(),
             Name = "Event #2",
             CreatorId = UserContext.DefaultId,
-            Start = DateTime.UtcNow.Date,
-            End = DateTime.UtcNow.AddDays(1).Date
+            Start = start,
+            End = end
         };
 
         using (var scope = serviceProvider.CreateScope())
