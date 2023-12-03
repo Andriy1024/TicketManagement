@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-
+using TMS.Common.Caching;
 using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Common;
@@ -39,6 +41,14 @@ public class TicketingApiFactory : WebApplicationFactory<Program>
         });
 
         return base.CreateHost(builder);
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureTestServices(services => 
+        {
+            services.AddSingleton<ICacheClient>(new FakeCacheClient());
+        });
     }
 
     public HttpClient CreateApiClient()

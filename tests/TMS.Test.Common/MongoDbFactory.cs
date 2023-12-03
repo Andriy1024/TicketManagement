@@ -4,13 +4,13 @@ using Xunit;
 
 namespace TMS.Test.Common;
 
-public class MongoDbFactory : IAsyncLifetime
+public class MongoDBFactory : IAsyncLifetime
 {
     private readonly MongoDbContainer _mongoDb;
 
     public string ConnectionString => _mongoDb.GetConnectionString();
 
-    public MongoDbFactory()
+    public MongoDBFactory()
     {
         var dockerHost = Environment.GetEnvironmentVariable("DOCKER_HOST");
 
