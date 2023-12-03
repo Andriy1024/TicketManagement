@@ -4,12 +4,12 @@ using TMS.Common.Caching;
 
 namespace TMS.Caching.Redis;
 
-public class CoreCache<TDataBase> : ICoreCache
+public class CacheClient<TDataBase> : ICacheClient
     where TDataBase : DBNumber, new()
 {
     private readonly IRedisDatabase _db;
 
-    public CoreCache(IRedisClient redisClient)
+    public CacheClient(IRedisClient redisClient)
         => _db = redisClient.GetDb(new TDataBase().Value);
 
     public Task<TOut?> GetAsync<TOut>(string key)

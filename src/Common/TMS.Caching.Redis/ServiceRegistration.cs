@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.System.Text.Json;
+
 using TMS.Caching.Redis.Behavior;
 using TMS.Common.Caching;
 
@@ -11,7 +12,8 @@ namespace TMS.Caching.Redis;
 
 public static class ServiceRegistration
 {
-    public static IServiceCollection AddRedisServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddRedisServices<TDB>(this IServiceCollection services, IConfiguration configuration)
+        where TDB : DBNumber, new()
     {
         var options = configuration.GetSection("Redis").Get<RedisConfiguration>();
         
@@ -20,7 +22,7 @@ public static class ServiceRegistration
         return services
             .AddTransient<SystemTextJsonSerializer>()
             .AddStackExchangeRedisExtensions<SystemTextJsonSerializer>(options)
-            .AddSingleton<ICoreCache, CoreCache<DB0>>();
+            .AddSingleton<ICacheClient, CacheClient<TDB>>();
     }
 
     public static IServiceCollection AddCachableBehavior(this IServiceCollection services)
