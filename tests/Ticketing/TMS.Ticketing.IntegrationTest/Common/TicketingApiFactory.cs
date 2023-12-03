@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using TMS.Common.Caching;
+using TMS.Ticketing.Application.Interfaces;
 using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Common;
@@ -47,6 +48,10 @@ public class TicketingApiFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureTestServices(services => 
         {
+            services.Remove<IPaymentsService>();
+
+            services.AddSingleton(Substitute.For<IPaymentsService>());
+
             services.AddSingleton<ICacheClient>(new FakeCacheClient());
         });
     }
