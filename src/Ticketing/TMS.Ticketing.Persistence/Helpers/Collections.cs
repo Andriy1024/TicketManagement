@@ -13,5 +13,4 @@ internal static class Collections
     public const string Orders = "Orders";
 
     public const string Tickets = "Tickets";
-
 }

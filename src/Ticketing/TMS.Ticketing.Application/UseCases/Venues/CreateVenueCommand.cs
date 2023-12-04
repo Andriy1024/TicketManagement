@@ -3,7 +3,7 @@ using TMS.Ticketing.Domain.Venues;
 
 namespace TMS.Ticketing.Application.UseCases.Venues;
 
-public sealed class CreateVenueCommand : IRequest<VenueDetailsDto>
+public sealed class CreateVenueCommand : IRequest<VenueDetailsDto>, IValidatable
 {
     public string Name { get; set; }
 
@@ -14,6 +14,12 @@ public sealed class CreateVenueCommand : IRequest<VenueDetailsDto>
     public string Street { get; set; }
 
     public List<Detail>? Details { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+            x.RuleFor(y => y.Name).NotEmpty());
+    }
 }
 
 internal sealed class CreateVenueHandler : IRequestHandler<CreateVenueCommand, VenueDetailsDto>

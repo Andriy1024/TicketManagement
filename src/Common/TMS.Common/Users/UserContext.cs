@@ -9,8 +9,10 @@ public interface IUserContext
 
 public sealed class UserContext : IUserContext
 {
+    public static readonly int DefaultId = 12;
+
     public CurrentUser GetUser()
     {
-        return new(12, "user@fake.com");
+        return new(DefaultId, "user@fake.com");
     }
 }

@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed class UpdateEventCommand : IRequest<EventDetailsDto>
+public sealed class UpdateEventCommand : IRequest<EventDetailsDto>, IValidatable
 {
     public Guid EventId { get; set; }
 
@@ -13,6 +13,24 @@ public sealed class UpdateEventCommand : IRequest<EventDetailsDto>
     public DateTime Start { get; set; }
 
     public DateTime End { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.EventId).NotEmpty();
+
+            x.RuleFor(y => y.Name).NotEmpty();
+
+            x.RuleFor(y => y.Start)
+             .NotEmpty()
+             .GreaterThanOrEqualTo(DateTime.UtcNow.Date);
+
+            x.RuleFor(y => y.End)
+             .NotEmpty()
+             .GreaterThanOrEqualTo(y => y.Start);
+        });
+    }
 }
 
 internal sealed class UpdateEventHandler : IRequestHandler<UpdateEventCommand, EventDetailsDto>

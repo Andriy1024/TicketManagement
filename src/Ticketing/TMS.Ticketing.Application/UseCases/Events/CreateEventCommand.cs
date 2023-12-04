@@ -5,7 +5,7 @@ using TMS.Ticketing.Domain.Events;
 
 namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed class CreateEventCommand : IRequest<EventDetailsDto>
+public sealed class CreateEventCommand : IRequest<EventDetailsDto>, IValidatable
 {
     public string Name { get; set; }
 
@@ -14,6 +14,21 @@ public sealed class CreateEventCommand : IRequest<EventDetailsDto>
     public DateTime Start { get; set; }
 
     public DateTime End { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.Name).NotEmpty();
+
+            x.RuleFor(y => y.Start)
+             .NotEmpty();
+            
+            x.RuleFor(y => y.End)
+             .NotEmpty()
+             .GreaterThan(y => y.Start);
+        });
+    }
 }
 
 internal sealed class CreateEventHandler : IRequestHandler<CreateEventCommand, EventDetailsDto>

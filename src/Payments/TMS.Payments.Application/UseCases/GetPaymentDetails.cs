@@ -1,12 +1,16 @@
-﻿using MediatR;
-
-using TMS.Common.Errors;
-using TMS.Payments.Application.Interfaces;
+﻿using TMS.Payments.Application.Interfaces;
 using TMS.Payments.Domain.Views;
 
 namespace TMS.Payments.Application.UseCases;
 
-public sealed record GetPaymentDetails(Guid PaymentId) : IRequest<PaymentDetailsView>;
+public sealed record GetPaymentDetails(Guid PaymentId) : IRequest<PaymentDetailsView>, IValidatable 
+{
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+            x.RuleFor(y => y.PaymentId).NotEmpty());
+    }
+};
 
 internal sealed class GetPaymentDetailsHandler : IRequestHandler<GetPaymentDetails, PaymentDetailsView>
 {

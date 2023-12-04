@@ -13,5 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\TMS.Ticketing.Application\TMS.Ticketing.Application.csproj" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <InternalsVisibleTo Include="TMS.Ticketing.IntegrationTest" />
+  </ItemGroup>
 
 </Project>

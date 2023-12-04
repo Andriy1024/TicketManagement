@@ -1,30 +1,19 @@
 using TMS.Common.Extensions;
-using TMS.Common.Users;
 
-using TMS.Ticketing.Persistence.Setup;
 using TMS.Ticketing.API;
-using TMS.Ticketing.Application.UseCases.Carts;
-using TMS.Ticketing.Application.Services.Payments;
-
-using Refit;
+using TMS.Ticketing.Persistence;
+using TMS.Ticketing.Application;
 
 var builder = WebApplication.CreateBuilder(args);
-
-var paymentsConfig = builder.Configuration.GetSection(nameof(PaymentsConfig)).Get<PaymentsConfig>()
-    ?? throw new ArgumentNullException(nameof(PaymentsConfig));
 
 builder.Services
     .AddControllers()
     .Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
-    .AddScoped<IUserContext, UserContext>()
-    .AddMongoServices(builder.Configuration)
-    .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetCartDetails>())
-    .AddTransient<IPaymentsService, PaymentsService>()
-    .AddRefitClient<IPaymentsApi>()
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri(paymentsConfig.PaymentsUri));
-
+    .AddApplicationServices(builder.Configuration)
+    .AddPersistenceServices(builder.Configuration);
+    
 var app = builder.Build();
 
 app.UseSwagger();
@@ -40,3 +29,5 @@ app.MapControllers();
 await app.Services.RunStartupTasksAsync();
 
 await app.RunAsync();
+
+public partial class Program { }

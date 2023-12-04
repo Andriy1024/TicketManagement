@@ -2,13 +2,23 @@
 
 namespace TMS.Ticketing.Application.UseCases.VenueSections;
 
-public sealed class CreateSectionCommand : IRequest<VenueDetailsDto>
+public sealed class CreateSectionCommand : IRequest<VenueDetailsDto>, IValidatable
 {
     public required Guid VenueId { get; init; }
 
     public required string Name { get; init; }
 
     public required SectionType Type { get; init; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.VenueId).NotEmpty();
+            x.RuleFor(y => y.Name).NotEmpty();
+            x.RuleFor(y => y.Type).IsInEnum();
+        });
+    }
 }
 
 internal sealed class VenueSectionsHandlers : IRequestHandler<CreateSectionCommand, VenueDetailsDto>

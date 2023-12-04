@@ -2,13 +2,22 @@
 
 namespace TMS.Ticketing.Application.UseCases.VenueSeats;
 
-public sealed class CreateSeatCommand : IRequest<VenueDetailsDto>
+public sealed class CreateSeatCommand : IRequest<VenueDetailsDto>, IValidatable
 {
     public required Guid VenueId { get; init; }
 
     public required Guid SectionId { get; init; }
 
-    public required int? RowNumber { get; init; }
+    public int? RowNumber { get; init; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+        {
+            x.RuleFor(y => y.VenueId).NotEmpty();
+            x.RuleFor(y => y.SectionId).NotEmpty();
+        });
+    }
 }
 
 internal sealed class CreateSeatHandlers : IRequestHandler<CreateSeatCommand, VenueDetailsDto>

@@ -1,6 +1,13 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.VenueBookings;
 
-public sealed record GetVenueBookings(Guid VenueId) : IRequest<IEnumerable<VenueBookingDto>>;
+public sealed record GetVenueBookings(Guid VenueId) : IRequest<IEnumerable<VenueBookingDto>>, IValidatable 
+{
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x =>
+            x.RuleFor(y => y.VenueId).NotEmpty());
+    }
+};
 
 internal sealed class GetVenueBookingsHandler : IRequestHandler<GetVenueBookings, IEnumerable<VenueBookingDto>>
 {

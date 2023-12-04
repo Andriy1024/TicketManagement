@@ -1,0 +1,28 @@
+﻿[
+  {
+    "Id": "0e7d6f7f-ec5d-4c1e-a707-5e7be6bbb837",
+    "Name": "Venue #1",
+    "Country": "USA",
+    "City": "Denver",
+    "Street": "Steet 45",
+    "Details": [
+      {
+        "Name": "Detail 1",
+        "Value": "Detail Value"
+      }
+    ]
+  },
+  {
+    "Id": "be85e499-5f9b-48b7-8dee-724ccebdedab",
+    "Name": "Venue #2",
+    "Country": "USA",
+    "City": "Denver",
+    "Street": "Steet 45",
+    "Details": [
+      {
+        "Name": "Detail 1",
+        "Value": "Detail Value"
+      }
+    ]
+  }
+]

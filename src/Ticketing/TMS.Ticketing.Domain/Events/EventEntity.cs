@@ -1,4 +1,5 @@
-﻿using TMS.Common.Errors;
+﻿using MediatR;
+using TMS.Common.Errors;
 using TMS.Ticketing.Domain.Common;
 
 namespace TMS.Ticketing.Domain.Events;
@@ -28,4 +29,17 @@ public sealed class EventEntity : IEntity<Guid>
             ?? throw ApiError
                 .InvalidData($"Seat not found: {seatId}")
                 .ToException();
+
+    public EventEntity AddPrice(string name, decimal amount) 
+    {
+        Prices.Add(new Price
+        {
+            Id = Guid.NewGuid(),
+            EventId = Id,
+            Name = name,
+            Amount = amount
+        });
+
+        return this;
+    }
 }

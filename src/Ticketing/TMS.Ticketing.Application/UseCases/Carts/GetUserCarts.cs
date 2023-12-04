@@ -14,8 +14,8 @@ internal sealed class GetUserCartsHandler : IRequestHandler<GetUserCarts, IEnume
 
     public GetUserCartsHandler(ICartsRepository cartsRepository, IUserContext userContext)
     {
-        this._cartsRepository = cartsRepository;
-        this._userContext = userContext;
+        _cartsRepository = cartsRepository;
+        _userContext = userContext;
     }
 
     public async Task<IEnumerable<UserCartDto>> Handle(GetUserCarts request, CancellationToken cancellationToken)

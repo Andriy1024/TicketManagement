@@ -1,5 +1,4 @@
-﻿using TMS.Common.Errors;
-using TMS.Common.Users;
+﻿using TMS.Common.Users;
 
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Ordering;
@@ -7,7 +6,7 @@ using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public sealed class AddItemToCartCommand : IRequest<CartDetailsDto>
+public sealed class AddItemToCartCommand : IRequest<CartDetailsDto>, IValidatable
 {
     public Guid CartId { get; set; }
 
@@ -16,6 +15,17 @@ public sealed class AddItemToCartCommand : IRequest<CartDetailsDto>
     public Guid SeatId { get; set; }
 
     public Guid PriceId { get; set; }
+
+    public IEnumerable<ValidationFailure> Validate()
+    {
+        return this.Validate(x => 
+        {
+            x.RuleFor(y => y.CartId).NotEmpty();
+            x.RuleFor(y => y.EventId).NotEmpty();
+            x.RuleFor(y => y.SeatId).NotEmpty();
+            x.RuleFor(y => y.PriceId).NotEmpty();
+        });
+    }
 }
 
 internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, CartDetailsDto>
@@ -29,31 +39,24 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
         IEventsRepository eventsRepo, 
         IUserContext userContext)
     {
-        this._cartRepo = cartRepo;
-        this._eventsRepo = eventsRepo;
-        this._userContext = userContext;
+        _cartRepo = cartRepo;
+        _eventsRepo = eventsRepo;
+        _userContext = userContext;
     }
 
     public async Task<CartDetailsDto> Handle(AddItemToCartCommand request, CancellationToken cancellationToken)
     {
-        var cart = await _cartRepo.GetRequiredAsync(request.CartId);
+        var cart = await _cartRepo.GetAsync(request.CartId);
 
-        if (cart == null)
+        bool isNewCart = cart == null;
+
+        cart ??= new CartEntity
         {
-            cart = new CartEntity
-            {
-                Id = request.CartId,
-                AccountId = _userContext.GetUser().Id
-            };
+            Id = request.CartId,
+            AccountId = _userContext.GetUser().Id
+        };
 
-            await _cartRepo.AddAsync(cart);
-        }
-
-        var @event = await _eventsRepo.GetAsync(request.EventId);
-
-        if (@event == null) throw ApiError
-            .NotFound("Event was not found")
-            .ToException();
+        var @event = await _eventsRepo.GetRequiredAsync(request.EventId);
 
         var seat = @event.Seats.Find(x => x.SeatId == request.SeatId);
         var price = @event.Prices.Find(x => x.Id == request.PriceId);
@@ -64,11 +67,12 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
             { seat: null } => ApiError.NotFound("Seat was not found"),
             { price: null } => ApiError.NotFound("Price was not found"),
             { offer: null } => ApiError.NotFound("Offer was not found"),
-            { seat.State: not SeatState.Available } => ApiError.NotFound("Seat is not available"),
+            { seat.State: not SeatState.Available } => ApiError.InvalidData("Seat is not available"),
             _ => null
         };
 
-        if (validationError != null) throw validationError.ToException();
+        if (validationError != null) 
+            throw validationError.ToException();
 
         var orderItem = new OrderItem
         {
@@ -80,8 +84,11 @@ internal class AddItemToCartHandler : IRequestHandler<AddItemToCartCommand, Cart
 
         cart.OrderItems.Add(orderItem);
 
-        await _cartRepo.UpdateAsync(cart);
+        if (isNewCart) 
+            await _cartRepo.AddAsync(cart);
+        else
+            await _cartRepo.UpdateAsync(cart);
 
-        return new CartDetailsDto();
+        return CartDetailsDto.Map(cart);
     }
 }

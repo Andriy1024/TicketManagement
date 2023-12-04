@@ -1,9 +1,13 @@
-﻿namespace TMS.Ticketing.Domain.Venues;
+﻿using TMS.Common.Errors;
+using TMS.Ticketing.Domain.DateRanges;
+using TMS.Ticketing.Domain.Events;
+
+namespace TMS.Ticketing.Domain.Venues;
 
 /// <summary>
 /// (VenueId, BookingNumber) - Forms Unique Constraint to handle concurrency, and prevent venue booking that has overlapping DateTime Range.
 /// </summary>
-public sealed class VenueBookingEntity : IEntity<Guid>
+public sealed class VenueBookingEntity : IEntity<Guid>, IDateRange
 {
     public required Guid Id { get; set; }
 
@@ -16,4 +20,44 @@ public sealed class VenueBookingEntity : IEntity<Guid>
     public required DateTime Start { get; set; }
 
     public required DateTime End { get; set; }
+
+    public static VenueBookingEntity Create(
+        IEnumerable<VenueBookingEntity> booked,
+        DateTime start,
+        DateTime end,
+        VenueEntity venue,
+        EventEntity @event)
+    {
+        if (!booked.IsDateRangeAvailable(start, end))
+        {
+            throw ApiError
+                .InvalidData("Requested date range is not available")
+                .ToException();
+        }
+
+        var bookingNumber = booked.Any()
+            ? booked.Max(x => x.BookingNumber) + 1
+            : 1;
+
+        var booking = new VenueBookingEntity
+        {
+            Id = Guid.NewGuid(),
+            VenueId = venue.Id,
+            EventId = @event.Id,
+            Start = start,
+            End = end,
+            BookingNumber = bookingNumber
+        };
+
+        @event.Seats = venue.Sections
+            .SelectMany(x => x.Seats)
+            .Select(x => new EventSeat
+            {
+                SeatId = x.SeatId,
+                State = SeatState.Available
+            })
+            .ToList();
+
+        return booking;
+    }
 }
