@@ -1,5 +1,4 @@
-﻿using TMS.Common.Enums;
-using TMS.Common.IntegrationEvents;
+﻿using TMS.Common.IntegrationEvents;
 
 using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Domain.Tickets;
@@ -25,16 +24,9 @@ internal sealed class PaymentStatusUpdatedHandler : IRequestHandler<IntegrationE
 
         var orders = await _ordersRepo.FindAsync(x => x.Id == payload.PaymentId);
 
-        var newOrderStatus = payload.Status switch
-        {
-            PaymentStatus.Completed => OrderStatus.Completed,
-            PaymentStatus.Failed => OrderStatus.Failed,
-            _ => throw new NotImplementedException($"Unexpected Payment Status: {payload.Status}")
-        };
-
         foreach (var order in orders) 
         {
-            order.Status = newOrderStatus;
+            order.UpdateStatus(request.Payload.Status);
 
             var @event = await _eventsRepo.GetRequiredAsync(order.EventId);
 

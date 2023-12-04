@@ -79,6 +79,13 @@ public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
 
     public EventEntity CreateSeats(VenueEntity venue)
     {
+        if (Seats.Any(x => x.State != SeatState.Available))
+        {
+            throw ApiError
+                .InternalServerError($"Events can't reset seats, because there are already seats in use")
+                .ToException();
+        }
+
         Seats = venue.Sections
             .SelectMany(x => x.Seats)
             .Select(x => new EventSeat
@@ -132,7 +139,8 @@ public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
         {
             SeatState.Booked => ApiError.InvalidData($"Seat {seatId} already booked"),
             SeatState.Sold => ApiError.InvalidData($"Seat {seatId} already sold"),
-            _ => null
+            SeatState.Available => null,
+            _ => ApiError.InternalServerError($"Unexpected seat state: {eventSeat.State}")
         };
 
         if (error != null) throw error.ToException();
@@ -154,7 +162,8 @@ public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
             {
                 SeatState.Available => ApiError.InvalidData($"Seat {seatId} booking was cancelled"),
                 SeatState.Sold => ApiError.InvalidData($"Seat {seatId} already sold"),
-                _ => null
+                SeatState.Booked => null,
+                _ => ApiError.InternalServerError($"Unexpected seat state: {eventSeat.State}")
             };
 
             if (error != null) throw error.ToException();
@@ -177,7 +186,8 @@ public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
             {
                 SeatState.Available => ApiError.InvalidData($"Seat {seatId} is already available"),
                 SeatState.Sold => ApiError.InvalidData($"Seat {seatId} already sold"),
-                _ => null
+                SeatState.Booked => null,
+                _ => ApiError.InternalServerError($"Unexpected seat state: {eventSeat.State}")
             };
 
             if (error != null) throw error.ToException();

@@ -1,4 +1,5 @@
-﻿using TMS.Common.Errors;
+﻿using TMS.Common.Enums;
+using TMS.Common.Errors;
 using TMS.Common.Extensions;
 using TMS.Common.Users;
 
@@ -54,5 +55,33 @@ public sealed class OrderEntity : Entity, IEntity<Guid>
             Status = OrderStatus.Pending,
             PaymentId = paymentId
         };
+    }
+
+    public OrderEntity UpdateStatus(PaymentStatus payment)
+    {
+        var newOrderStatus = payment switch
+        {
+            PaymentStatus.Completed => OrderStatus.Completed,
+            PaymentStatus.Failed => OrderStatus.Failed,
+            _ => throw new NotImplementedException($"Unexpected Payment Status: {payment}")
+        };
+
+        return UpdateStatus(newOrderStatus);
+    }
+
+    public OrderEntity UpdateStatus(OrderStatus newStatus)
+    {
+        var error = newStatus switch
+        {
+            OrderStatus.Completed when Status == OrderStatus.Pending => null,
+            OrderStatus.Failed when Status == OrderStatus.Pending => null,
+            _ => ApiError.InvalidData($"Current order status: {Status} doesn't allow update to: {newStatus}")
+        };
+
+        if (error != null) throw error.ToException();
+
+        Status = newStatus;
+
+        return this;
     }
 }

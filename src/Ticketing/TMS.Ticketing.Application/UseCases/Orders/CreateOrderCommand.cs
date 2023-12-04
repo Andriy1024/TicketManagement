@@ -12,7 +12,7 @@ public record CreateOrderCommand(Guid CartId) : ICommand<CreateOrderCommandResul
         return this.Validate(x =>
             x.RuleFor(y => y.CartId).NotEmpty());
     }
-};
+}
 
 public record CreateOrderCommandResult(Guid PaymentId);
 
