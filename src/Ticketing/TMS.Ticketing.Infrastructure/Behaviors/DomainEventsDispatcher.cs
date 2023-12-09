@@ -19,18 +19,16 @@ internal sealed class DomainEventsDispatcher<TRequest, TResponse> : IPipelineBeh
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
+        var result = await next();
+
         if (request is ICommand<TResponse>)
         {
-            var result = await next();
-
             foreach (var domainEvent in _domainEvents.ExtractEvents())
             {
                 await _mediator.Publish(domainEvent);
             }
-
-            return result;
         }
 
-        return await next();
+        return result;
     }
 }
