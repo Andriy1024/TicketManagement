@@ -1,11 +1,8 @@
 ﻿using System.Linq.Expressions;
 
-
-using TMS.Ticketing.Domain;
+using TMS.Ticketing.Persistence.Sessions;
 
 namespace TMS.Ticketing.Persistence.Abstractions;
-
-
 
 internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TEntity, TIdentifiable>
     where TEntity : IEntity<TIdentifiable>
@@ -15,9 +12,12 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
 
     protected IMongoCollection<TEntity> Collection { get; }
 
-    public MongoRepository(IMongoDatabase database)
+    protected MongoTransactionScope TransactionScope { get; }
+
+    public MongoRepository(IMongoDatabase database, MongoTransactionScope transactionScope)
     {
         Collection = database.GetCollection<TEntity>(CollectionName);
+        TransactionScope = transactionScope;
     }
 
     public Task<TEntity?> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default)
@@ -35,20 +35,26 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
         => await Collection.Find(predicate).ToListAsync(cancellationToken);
 
     public virtual Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
-        => Collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
+        => TransactionScope.HasTransaction
+            ? Collection.InsertOneAsync(TransactionScope.GetTransaction(), entity, cancellationToken: cancellationToken)
+            : Collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
 
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         => UpdateAsync(entity, e => e.Id.Equals(entity.Id), cancellationToken: cancellationToken);
 
     public virtual Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-        => Collection.ReplaceOneAsync(predicate, entity, cancellationToken: cancellationToken);
-
+        => TransactionScope.HasTransaction
+            ? Collection.ReplaceOneAsync(TransactionScope.GetTransaction(), predicate, entity, cancellationToken: cancellationToken)
+            : Collection.ReplaceOneAsync(predicate, entity, cancellationToken: cancellationToken);
+    
     public virtual Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         => DeleteAsync(e => e.Id.Equals(entity.Id), cancellationToken);
 
     public Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-        => Collection.DeleteOneAsync(predicate, cancellationToken: cancellationToken);
-
+        => TransactionScope.HasTransaction
+            ? Collection.DeleteOneAsync(TransactionScope.GetTransaction(), predicate, cancellationToken: cancellationToken)
+            : Collection.DeleteOneAsync(predicate, cancellationToken: cancellationToken);
+    
     public Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         => Collection.Find(predicate).AnyAsync(cancellationToken);
 }

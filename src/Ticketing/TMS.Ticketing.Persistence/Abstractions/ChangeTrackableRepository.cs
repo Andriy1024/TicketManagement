@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 using TMS.Ticketing.Infrastructure.ChangeTracker;
+using TMS.Ticketing.Persistence.Sessions;
 
 namespace TMS.Ticketing.Persistence.Abstractions;
 
@@ -10,8 +11,8 @@ internal abstract class ChangeTrackableRepository<TEntity, TIdentifiable> : Mong
 {
     private readonly IEntityChangeTracker _changeTracker;
 
-    protected ChangeTrackableRepository(IMongoDatabase database, IEntityChangeTracker domainEvents)
-        : base(database)
+    protected ChangeTrackableRepository(IMongoDatabase database, MongoTransactionScope transactionScope, IEntityChangeTracker domainEvents)
+        : base(database, transactionScope)
     {
         _changeTracker = domainEvents;
     }

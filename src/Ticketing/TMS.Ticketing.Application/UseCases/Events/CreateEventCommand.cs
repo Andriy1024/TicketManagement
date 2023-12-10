@@ -55,7 +55,7 @@ internal sealed class CreateEventHandler : IRequestHandler<CreateEventCommand, E
             CreatorId = _userContext.GetUser().Id
         };
 
-        await _eventsRepo.UpdateAsync(@event);
+        await _eventsRepo.AddAsync(@event);
 
         return EventDetailsDto.Map(@event);
     }

@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using MongoDB.Driver;
-
 using TMS.Common.Interfaces;
 
-using TMS.Ticketing.Domain;
+using TMS.Ticketing.Infrastructure.Transactions;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Implementations;
+using TMS.Ticketing.Persistence.Sessions;
 using TMS.Ticketing.Persistence.StartupTask;
 
 namespace TMS.Ticketing.Persistence;
@@ -46,7 +45,10 @@ public static class ServiceRegistration
             .AddScoped<IEventsRepository, EventsRepository>()
             .AddScoped<ICartsRepository, CartsRepository>()
             .AddScoped<IOrdersRepository, OrdersRepository>()
-            .AddScoped<ITicketsRepository, TicketsRepository>();
+            .AddScoped<ITicketsRepository, TicketsRepository>()
+            .AddScoped<ITransactionManager, MongoTransactionManager>()
+            .AddScoped<MongoTransactionScope>()
+            .AddScoped<MongoTransactionScopeFactory>();
     }
 
     public static IServiceCollection AddMongoRepository<TEntity, TIdentifiable>(this IServiceCollection services)
