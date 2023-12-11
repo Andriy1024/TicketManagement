@@ -27,6 +27,8 @@ public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
 
     public List<Offer> Offers { get; set; } = new();
 
+    public int Version { get; set; } = 1;
+
     public EventSeat GetSeat(Guid seatId) 
         => Seats.Find(x => x.SeatId == seatId)
             ?? throw ApiError
@@ -199,4 +201,6 @@ public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
 
         return this;
     }
+
+    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

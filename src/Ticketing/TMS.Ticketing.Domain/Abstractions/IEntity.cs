@@ -14,4 +14,8 @@ public interface IEntity
 public interface IEntity<out TKey> : IEntity
 {
     TKey Id { get; }
+
+    public int Version { get; }
+
+    public (int Old, int New) IncreaseVersion();
 }

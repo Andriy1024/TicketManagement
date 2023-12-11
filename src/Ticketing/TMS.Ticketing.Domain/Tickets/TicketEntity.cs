@@ -19,4 +19,8 @@ public sealed class TicketEntity : Entity, IEntity<Guid>
     public required DateTime UpdatedAt { get; set; }
 
     public required string ValidationHashCode { get; init; }
+
+    public int Version { get; set; } = 1;
+
+    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

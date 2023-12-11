@@ -20,6 +20,8 @@ public sealed class VenueEntity : Entity, IEntity<Guid>
 
     public List<VenueSection> Sections { get; set; } = new();
 
+    public int Version { get; set; } = 1;
+
     public VenueSection GetSection(Guid sectionId)
     {
         return Sections.Find(x => x.SectionId == sectionId) 
@@ -118,4 +120,6 @@ public sealed class VenueEntity : Entity, IEntity<Guid>
 
         return this;
     }
+
+    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

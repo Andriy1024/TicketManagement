@@ -22,6 +22,8 @@ public sealed class VenueBookingEntity : Entity, IEntity<Guid>, IDateRange
 
     public required DateTime End { get; set; }
 
+    public int Version { get; set; } = 1;
+
     public static VenueBookingEntity Create(
         IEnumerable<VenueBookingEntity> booked,
         DateTime start,
@@ -63,4 +65,6 @@ public sealed class VenueBookingEntity : Entity, IEntity<Guid>, IDateRange
 
         return booking;
     }
+
+    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

@@ -27,6 +27,8 @@ public sealed class OrderEntity : Entity, IEntity<Guid>
 
     public DateTime UpdatedAt { get; set; }
 
+    public int Version { get; set; } = 1;
+
     public static OrderEntity Create(
         CurrentUser user, 
         EventEntity @event,
@@ -84,4 +86,6 @@ public sealed class OrderEntity : Entity, IEntity<Guid>
 
         return this;
     }
+
+    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

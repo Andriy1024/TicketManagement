@@ -13,6 +13,8 @@ public sealed class CartEntity : Entity, IEntity<Guid>
 
     public List<OrderItem> OrderItems { get; set; } = new();
 
+    public int Version { get; set; } = 1;
+
     public CartEntity AddItem(
         EventEntity @event,
         Guid seatId,
@@ -37,4 +39,6 @@ public sealed class CartEntity : Entity, IEntity<Guid>
         
         return this;
     }
+
+    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

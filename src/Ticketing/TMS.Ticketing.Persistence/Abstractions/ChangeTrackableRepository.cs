@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-using TMS.Ticketing.Infrastructure.ChangeTracker;
+﻿using TMS.Ticketing.Infrastructure.ChangeTracker;
 using TMS.Ticketing.Persistence.Sessions;
 
 namespace TMS.Ticketing.Persistence.Abstractions;
@@ -31,10 +29,10 @@ internal abstract class ChangeTrackableRepository<TEntity, TIdentifiable> : Mong
         return base.DeleteAsync(entity, cancellationToken);
     }
 
-    public override Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+    public override Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _changeTracker.Add(entity);
 
-        return base.UpdateAsync(entity, predicate, cancellationToken);
+        return base.UpdateAsync(entity, cancellationToken);
     }
 }
