@@ -14,12 +14,12 @@ using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 
-[Collection(MongoDBCollection.Name)]
+[Collection(MongoDBReplicaSetCollection.Name)]
 public class CreateOrderApiTest
 {
     private readonly TicketingApiFactory _apiFactory;
 
-    public CreateOrderApiTest(MongoDBFactory mongo)
+    public CreateOrderApiTest(MongoReplicaSetFactory mongo)
     {
         _apiFactory = new TicketingApiFactory(new MongoConfig
         {

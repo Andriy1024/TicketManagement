@@ -7,12 +7,12 @@ using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
 
 namespace TMS.Ticketing.IntegrationTest.UseCases.Venues;
 
-[Collection(MongoDBCollection.Name)]
+[Collection(MongoDBReplicaSetCollection.Name)]
 public class GetVenuesOverviewTest
 {
     private readonly TicketingServicesBuilder _services;
 
-    public GetVenuesOverviewTest(MongoDBFactory mongoDb)
+    public GetVenuesOverviewTest(MongoReplicaSetFactory mongoDb)
     {
         _services = new TicketingServicesBuilder()
           .AddJsonConfig("appsettings", "appsettings.test.json")

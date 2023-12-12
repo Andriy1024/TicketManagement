@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Caching.Redis", "src\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Ticketing.Infrastructure", "src\Ticketing\TMS.Ticketing.Infrastructure\TMS.Ticketing.Infrastructure.csproj", "{58924280-B0A3-42FE-AECC-47D466F7E49A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Observability", "src\Common\TMS.Observability\TMS.Observability.csproj", "{96AE9376-3FC9-46DE-A484-8C8367C94397}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Observability", "src\Common\TMS.Observability\TMS.Observability.csproj", "{96AE9376-3FC9-46DE-A484-8C8367C94397}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

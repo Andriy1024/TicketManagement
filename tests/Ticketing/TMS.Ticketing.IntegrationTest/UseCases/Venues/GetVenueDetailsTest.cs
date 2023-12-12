@@ -10,14 +10,14 @@ using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
 
 namespace TMS.Ticketing.IntegrationTest.UseCases.Venues;
 
-[Collection(MongoDBCollection.Name)]
+[Collection(MongoDBReplicaSetCollection.Name)]
 public class GetVenueDetailsTest
 {
     private readonly TicketingServicesBuilder _services;
 
     private readonly static Guid DatabaseName = Guid.NewGuid();
 
-    public GetVenueDetailsTest(MongoDBFactory mongoDb)
+    public GetVenueDetailsTest(MongoReplicaSetFactory mongoDb)
     {
         _services = new TicketingServicesBuilder()
           .AddJsonConfig("appsettings", "appsettings.test.json")

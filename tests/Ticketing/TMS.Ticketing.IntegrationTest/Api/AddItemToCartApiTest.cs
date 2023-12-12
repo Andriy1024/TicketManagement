@@ -14,12 +14,12 @@ using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 
-[Collection(MongoDBCollection.Name)]
+[Collection(MongoDBReplicaSetCollection.Name)]
 public class AddItemToCartApiTest
 {
     private readonly TicketingApiFactory _apiFactory;
 
-    public AddItemToCartApiTest(MongoDBFactory mongo)
+    public AddItemToCartApiTest(MongoReplicaSetFactory mongo)
     {
         _apiFactory = new TicketingApiFactory(new MongoConfig
         {
