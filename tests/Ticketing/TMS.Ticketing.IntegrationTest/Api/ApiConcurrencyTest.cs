@@ -4,33 +4,27 @@ using TMS.Ticketing.Domain.Common;
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Domain.Venues;
-
 using TMS.Ticketing.Application.Repositories;
-using TMS.Ticketing.Application.UseCases.Orders;
-
 using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
 using TMS.Ticketing.IntegrationTest.Common;
-
 using TMS.Ticketing.Persistence;
 
-using System.Net.Http.Json;
 using System.Net;
-using System.Threading;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 
-public class ApiConcurrencyTest
+public class ApiConcurrencyTest : IClassFixture<MongoReplicaSetFactory>
 {
     private readonly TicketingApiFactory _apiFactory;
 
     private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(0);
 
-    public ApiConcurrencyTest()
+    public ApiConcurrencyTest(MongoReplicaSetFactory dbFactory)
     {
         _apiFactory = new TicketingApiFactory(new MongoConfig
         {
-            ConnectionString = "mongodb://127.0.0.1:27017/?replicaSet=dbrs",
-            DatabaseName = "TMS_Concurrency_Test"
+            ConnectionString = dbFactory.ConnectionString,
+            DatabaseName = Guid.NewGuid().ToString()
         });
     }
 
@@ -40,31 +34,40 @@ public class ApiConcurrencyTest
         // Arrange
         var cart = await SeedDataAsync(_apiFactory.Services);
 
-        // Act
-        var tasks = Enumerable
-            .Range(0, 10)
-            .Select(x =>
-                Task.Run(() => RunRequest(_apiFactory, cart))
-            );
+        var numberOfRequests = 10;
 
-        Console.WriteLine("Before Delay");
+        var act = async () =>
+        {
+            using (var client = _apiFactory.CreateApiClient())
+            {
+                _semaphore.Wait();
+
+                var httpResponse = await client.PostAsync($"api/orders/carts/{cart.Id}/book", content: null);
+
+                var strResponse = await httpResponse.Content.ReadAsStringAsync();
+
+                return (httpResponse.StatusCode, strResponse);
+            }
+        };
+
+        // Act
+        var tasks = Enumerable.Range(0, numberOfRequests).Select(x => Task.Run(() => act()));
 
         await Task.Delay(TimeSpan.FromSeconds(2));
 
-        Console.WriteLine("After Delay");
-
-        _semaphore.Release(10);
+        _semaphore.Release(numberOfRequests);
 
         var httpResults = await Task.WhenAll(tasks);
 
-        var successResults = httpResults.Where(x => x.Code == HttpStatusCode.OK).ToArray();
+        var successResults = httpResults.Where(x => x.StatusCode == HttpStatusCode.OK).ToArray();
 
         var orders = await GetOrdersAsync(_apiFactory.Services);
 
         // Assert
         successResults.Should().HaveCount(1);
-
+        
         orders.Should().HaveCount(1);
+        
         orders.Should().SatisfyRespectively(x =>
         {
             x.Total.Should().Be(cart.Total);
@@ -73,38 +76,23 @@ public class ApiConcurrencyTest
         });
     }
 
-    private record HttpTestResult(HttpStatusCode Code, string Response);
-
-    private async Task<HttpTestResult> RunRequest(TicketingApiFactory apiFactory, CartEntity cart)
-    {
-        using var client = _apiFactory.CreateApiClient();
-
-        _semaphore.Wait();
-
-        var httpResponse = await client.PostAsync($"api/orders/carts/{cart.Id}/book", content: null);
-
-        var strResponse = await httpResponse.Content.ReadAsStringAsync();
-
-        return new HttpTestResult(httpResponse.StatusCode, strResponse);
-    }
-
     private static async Task<CartEntity> SeedDataAsync(IServiceProvider serviceProvider)
     {
-        var venue = FakeVenueFactory.Create(venueId: Guid.NewGuid(), name: "Venue #4");
+        var venue = FakeVenueFactory.Create(venueId: Guid.Parse("3cdd7140-2333-4d85-a75e-a1ea27125413"), name: "Venue #44");
 
         var start = DateTime.UtcNow.Date;
         var end = start.AddDays(1);
 
         var @event = new EventEntity
         {
-            Id = Guid.NewGuid(),
-            Name = "Event #2",
+            Id = Guid.Parse("4bbc7579-9808-41fc-a3c5-004338114bf3"),
+            Name = "Event #44",
             CreatorId = UserContext.DefaultId,
             Start = start,
             End = end,
             Details = new List<Detail>()
             {
-                new() { Name = "Detail 1", Value = "Value 1" }
+                new() { Name = "Detail 44", Value = "Value 1" }
             }
         };
 
@@ -117,7 +105,7 @@ public class ApiConcurrencyTest
 
         var cart = new CartEntity
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("d094312b-3bf9-484e-b940-f590d9705622"),
             AccountId = UserContext.DefaultId,
         };
 
@@ -153,39 +141,10 @@ public class ApiConcurrencyTest
 
     private static async Task<IEnumerable<OrderEntity>> GetOrdersAsync(IServiceProvider serviceProvider)
     {
-        using (var scope = serviceProvider.CreateScope())
-        {
-            var ordersRepo = scope.ServiceProvider.GetRequiredService<IOrdersRepository>();
+        using var scope = serviceProvider.CreateScope();
 
-            return await ordersRepo.GetAllAsync();
-        }
+        return await scope.ServiceProvider
+            .GetRequiredService<IOrdersRepository>()
+            .GetAllAsync();
     }
 }
-
-public class SafeResult
-{
-    public Exception? Error { get; private set; }
-
-    public bool IsFailed => Error != null;
-
-    public static SafeResult Failed(Exception? error) => new() { Error = error };
-
-    public static SafeResult Success() => new();
-}
-
-//public static class SafeExtension
-//{
-//    public static SafeResult Safe(Func<Task> act)
-//    {
-//        try
-//        {
-//            await act();
-
-//            return SafeResult.Success();
-//        }
-//        catch (Exception e)
-//        {
-//            return SafeResult.Failed(e);
-//        }
-//    }
-//}
