@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed class UpdateEventCommand : IRequest<EventDetailsDto>, IValidatable
+public sealed class UpdateEventCommand : ICommand<EventDetailsDto>, IValidatable
 {
     public Guid EventId { get; set; }
 
@@ -46,10 +46,11 @@ internal sealed class UpdateEventHandler : IRequestHandler<UpdateEventCommand, E
     {
         var @event = await _eventsRepo.GetRequiredAsync(request.EventId);
 
-        @event.Name = request.Name;
-        @event.Details = request.Details;
-        @event.Start = request.Start;
-        @event.End = request.End;
+        @event.Update(
+            request.Name,
+            request.Details,
+            request.Start,
+            request.End);
 
         await _eventsRepo.UpdateAsync(@event);
 

@@ -1,4 +1,4 @@
-﻿using TMS.Ticketing.Domain.Ordeting;
+﻿using TMS.Ticketing.Domain.Ordering;
 
 namespace TMS.Ticketing.Application.Dtos;
 

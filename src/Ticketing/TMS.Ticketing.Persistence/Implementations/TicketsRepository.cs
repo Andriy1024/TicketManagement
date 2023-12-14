@@ -1,6 +1,4 @@
-﻿using MongoDB.Driver;
-
-using TMS.Ticketing.Domain.Tickets;
+﻿using TMS.Ticketing.Domain.Tickets;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Helpers;
 
@@ -10,7 +8,5 @@ internal sealed class TicketsRepository : MongoRepository<TicketEntity, Guid>, I
 {
     protected override string CollectionName => Collections.Tickets;
 
-    public TicketsRepository(IMongoDatabase database) : base(database)
-    {
-    }
+    public TicketsRepository(IMongoDatabase database) : base(database) {}
 }

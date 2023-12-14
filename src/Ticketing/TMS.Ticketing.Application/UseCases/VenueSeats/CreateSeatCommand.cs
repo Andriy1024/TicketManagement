@@ -1,8 +1,6 @@
-﻿using TMS.Ticketing.Domain.Venues;
+﻿namespace TMS.Ticketing.Application.UseCases.VenueSeats;
 
-namespace TMS.Ticketing.Application.UseCases.VenueSeats;
-
-public sealed class CreateSeatCommand : IRequest<VenueDetailsDto>, IValidatable
+public sealed class CreateSeatCommand : ICommand<VenueDetailsDto>, IValidatable
 {
     public required Guid VenueId { get; init; }
 
@@ -26,31 +24,14 @@ internal sealed class CreateSeatHandlers : IRequestHandler<CreateSeatCommand, Ve
 
     public CreateSeatHandlers(IVenuesRepository repository)
     {
-        this._repository = repository;
+        _repository = repository;
     }
 
     public async Task<VenueDetailsDto> Handle(CreateSeatCommand request, CancellationToken cancellationToken)
     {
         var venue = await _repository.GetRequiredAsync(request.VenueId);
 
-        var section = venue.GetSection(request.SectionId);
-
-        var rowSeats = section.Seats
-            .Where(x => x.RowNumber == request.RowNumber)
-            .ToArray();
-
-        var newSeatNumber = rowSeats.Length == 0 ? 1
-            : section.Seats[rowSeats.Length - 1].SeatNumber + 1;
-
-        var seat = new VenueSeat
-        {
-            SeatId = Guid.NewGuid(),
-            SectionId = section.SectionId,
-            RowNumber = request.RowNumber,
-            SeatNumber = newSeatNumber
-        };
-
-        section.Seats.Add(seat);
+        venue.CreateSeat(request.SectionId, request.RowNumber);
 
         await _repository.UpdateAsync(venue);
 

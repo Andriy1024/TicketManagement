@@ -24,6 +24,7 @@ public sealed class VenuesController : ControllerBase
 
     #region Venues
 
+    [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
     [HttpGet("overview")]
     public Task<IEnumerable<VenueOverviewDto>> GetVenuesOverviewAsync(CancellationToken token)
         => _mediator.Send(new GetVenuesOverview(), token);

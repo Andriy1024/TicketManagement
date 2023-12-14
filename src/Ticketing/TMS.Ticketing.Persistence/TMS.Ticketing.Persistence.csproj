@@ -9,13 +9,13 @@
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\TMS.Ticketing.Application\TMS.Ticketing.Application.csproj" />
-  </ItemGroup>
 	
   <ItemGroup>
     <InternalsVisibleTo Include="TMS.Ticketing.IntegrationTest" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\TMS.Ticketing.Infrastructure\TMS.Ticketing.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

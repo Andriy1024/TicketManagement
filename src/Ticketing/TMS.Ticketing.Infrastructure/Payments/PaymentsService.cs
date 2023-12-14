@@ -1,4 +1,8 @@
-﻿namespace TMS.Ticketing.Application.Services.Payments;
+﻿using TMS.Ticketing.Application.Interfaces;
+
+using TMS.Ticketing.Infrastructure.Payments.API;
+
+namespace TMS.Ticketing.Infrastructure.Payments;
 
 public sealed class PaymentsService : IPaymentsService
 {

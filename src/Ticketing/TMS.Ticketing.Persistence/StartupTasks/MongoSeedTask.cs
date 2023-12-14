@@ -2,7 +2,6 @@
 
 using TMS.Ticketing.Domain.Common;
 using TMS.Ticketing.Domain.Venues;
-using TMS.Ticketing.Persistence.Abstractions;
 
 namespace TMS.Ticketing.Persistence.StartupTask;
 

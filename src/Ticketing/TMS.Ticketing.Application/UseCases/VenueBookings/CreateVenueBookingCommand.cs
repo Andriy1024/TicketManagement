@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Application.UseCases.VenueBookings;
 
-public sealed class CreateVenueBookingCommand : IRequest<VenueBookingDto>, IValidatable
+public sealed class CreateVenueBookingCommand : ICommand<VenueBookingDto>, IValidatable
 {
     public Guid VenueId { get; set; }
 

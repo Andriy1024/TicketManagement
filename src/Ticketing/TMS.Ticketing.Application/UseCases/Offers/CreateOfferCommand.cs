@@ -1,8 +1,6 @@
-﻿using TMS.Ticketing.Domain.Events;
+﻿namespace TMS.Ticketing.Application.UseCases.Offers;
 
-namespace TMS.Ticketing.Application.UseCases.Offers;
-
-public sealed class CreateOfferCommand : IRequest<EventDetailsDto>, IValidatable
+public sealed class CreateOfferCommand : ICommand<EventDetailsDto>, IValidatable
 {
     public Guid EventId { get; set; }
 
@@ -32,11 +30,7 @@ internal sealed class CreateOfferHandler : IRequestHandler<CreateOfferCommand, E
     {
         var @event = await _eventsRepository.GetRequiredAsync(request.EventId);
 
-        @event.Offers.Add(new Offer
-        {
-            PriceId = request.PriceId,
-            SeatId = request.SeatId,
-        });
+        @event.AddOffer(request.PriceId, request.SeatId);
 
         await _eventsRepository.UpdateAsync(@event);
 

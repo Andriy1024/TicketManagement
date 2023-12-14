@@ -1,30 +1,30 @@
 ﻿using System.Net;
 
 using TMS.Ticketing.Application.Dtos;
+using TMS.Ticketing.Application.Interfaces;
 using TMS.Ticketing.Application.Repositories;
-using TMS.Ticketing.Application.Services.Payments;
 using TMS.Ticketing.Application.UseCases.Venues;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.IntegrationTest.Common;
 using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
-using TMS.Ticketing.IntegrationTest.UseCases.Venues.Common;
 
 namespace TMS.Ticketing.IntegrationTest.UseCases.Venues;
 
-[Collection(VenuesDatabaseCollection.Name)]
+[Collection(MongoDBCollection.Name)]
 public class GetVenueDetailsTest
 {
     private readonly TicketingServicesBuilder _services;
 
     private readonly static Guid DatabaseName = Guid.NewGuid();
 
-    public GetVenueDetailsTest(MongoDbFactory mongoDb)
+    public GetVenueDetailsTest(MongoDBFactory mongoDb)
     {
         _services = new TicketingServicesBuilder()
           .AddJsonConfig("appsettings", "appsettings.test.json")
           .AddMongoConnection(mongoDb.ConnectionString, DatabaseName.ToString())
           .BuildConfiguration()
           .AddTicketingServices()
+          .SetFakeCache()
           .OverrideService(Substitute.For<IPaymentsService>());
     }
 

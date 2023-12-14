@@ -1,11 +1,11 @@
-﻿using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+﻿using System.Linq.Expressions;
+
 
 using TMS.Ticketing.Domain;
 
-using System.Linq.Expressions;
-
 namespace TMS.Ticketing.Persistence.Abstractions;
+
+
 
 internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TEntity, TIdentifiable>
     where TEntity : IEntity<TIdentifiable>
@@ -34,17 +34,17 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
     public async Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         => await Collection.Find(predicate).ToListAsync(cancellationToken);
 
-    public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public virtual Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         => Collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
 
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         => UpdateAsync(entity, e => e.Id.Equals(entity.Id), cancellationToken: cancellationToken);
 
-    public Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+    public virtual Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         => Collection.ReplaceOneAsync(predicate, entity, cancellationToken: cancellationToken);
 
-    public Task DeleteAsync(TIdentifiable id, CancellationToken cancellationToken = default)
-        => DeleteAsync(e => e.Id.Equals(id), cancellationToken);
+    public virtual Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        => DeleteAsync(e => e.Id.Equals(entity.Id), cancellationToken);
 
     public Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         => Collection.DeleteOneAsync(predicate, cancellationToken: cancellationToken);

@@ -1,15 +1,15 @@
-﻿using TMS.Common.Errors;
+﻿using TMS.Common.Enums;
+using TMS.Common.Errors;
 using TMS.Common.Extensions;
 using TMS.Common.Users;
 
 using TMS.Ticketing.Domain.Events;
-using TMS.Ticketing.Domain.Ordeting;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class OrderEntity : IEntity<Guid>
+public sealed class OrderEntity : Entity, IEntity<Guid>
 {
-    public Guid Id { get; init; }
+    public required Guid Id { get; set; }
 
     public Guid EventId { get; init; }
 
@@ -41,14 +41,7 @@ public sealed class OrderEntity : IEntity<Guid>
 
         foreach (var orderItem in orderItems)
         {
-            var eventSeat = @event.GetSeat(orderItem.SeatId);
-
-            if (eventSeat.State != SeatState.Available)
-            {
-                throw ApiError.InvalidData("Seat is not available").ToException();
-            }
-
-            eventSeat.State = SeatState.Booked;
+            @event.BookSeat(orderItem.SeatId);
         }
 
         return new OrderEntity
@@ -62,5 +55,33 @@ public sealed class OrderEntity : IEntity<Guid>
             Status = OrderStatus.Pending,
             PaymentId = paymentId
         };
+    }
+
+    public OrderEntity UpdateStatus(PaymentStatus payment)
+    {
+        var newOrderStatus = payment switch
+        {
+            PaymentStatus.Completed => OrderStatus.Completed,
+            PaymentStatus.Failed => OrderStatus.Failed,
+            _ => throw new NotImplementedException($"Unexpected Payment Status: {payment}")
+        };
+
+        return UpdateStatus(newOrderStatus);
+    }
+
+    public OrderEntity UpdateStatus(OrderStatus newStatus)
+    {
+        var error = newStatus switch
+        {
+            OrderStatus.Completed when Status == OrderStatus.Pending => null,
+            OrderStatus.Failed when Status == OrderStatus.Pending => null,
+            _ => ApiError.InvalidData($"Current order status: {Status} doesn't allow update to: {newStatus}")
+        };
+
+        if (error != null) throw error.ToException();
+
+        Status = newStatus;
+
+        return this;
     }
 }

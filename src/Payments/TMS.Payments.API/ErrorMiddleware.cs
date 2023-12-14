@@ -4,18 +4,21 @@ namespace TMS.Payments.API;
 
 internal class ErrorMiddleware
 {
-    private readonly RequestDelegate next;
+    private readonly RequestDelegate _next;
 
-    public ErrorMiddleware(RequestDelegate next)
+    private readonly IProblemDetailsService _problemDetailsService;
+
+    public ErrorMiddleware(RequestDelegate next, IProblemDetailsService problemDetailsService)
     {
-        this.next = next;
+        _next = next;
+        _problemDetailsService = problemDetailsService;
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await next(context);
+            await _next(context);
         }
         catch (Exception e)
         {
@@ -27,7 +30,21 @@ internal class ErrorMiddleware
 
             context.Response.StatusCode = (int)error.StatusCode;
 
-            await context.Response.WriteAsJsonAsync(error);
+            var problems = new ProblemDetailsContext
+            {
+                HttpContext = context,
+                ProblemDetails =
+                {
+                    Title = error.Message,
+                    Detail = e.Message,
+                    Type = error.GetType().Name,
+                    Status = (int)error.StatusCode
+                }
+            };
+
+            problems.ProblemDetails.Extensions.Add("StackTrace", e.StackTrace);
+
+            await _problemDetailsService.WriteAsync(problems);
         }
     }
 }

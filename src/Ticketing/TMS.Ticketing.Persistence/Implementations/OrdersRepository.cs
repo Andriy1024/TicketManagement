@@ -1,6 +1,4 @@
-﻿using MongoDB.Driver;
-
-using TMS.Ticketing.Domain.Ordering;
+﻿using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Helpers;
 
@@ -10,7 +8,5 @@ internal sealed class OrdersRepository : MongoRepository<OrderEntity, Guid>, IOr
 {
     protected override string CollectionName => Collections.Orders;
 
-    public OrdersRepository(IMongoDatabase database) : base(database)
-    {
-    }
+    public OrdersRepository(IMongoDatabase database) : base(database) {}
 }

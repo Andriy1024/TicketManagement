@@ -1,5 +1,6 @@
-﻿using TMS.Ticketing.Persistence;
-using TMS.Ticketing.Application;
+﻿using TMS.Common.Caching;
+using TMS.Ticketing.Persistence;
+using TMS.Ticketing.Infrastructure;
 
 namespace TMS.Ticketing.IntegrationTest.Common;
 
@@ -23,8 +24,15 @@ public class TicketingServicesBuilder : ServicesBuilder<TicketingServicesBuilder
         ArgumentNullException.ThrowIfNull(Config);
 
         Services
-            .AddApplicationServices(Config)
+            .AddInfrastructure(Config)
             .AddPersistenceServices(Config);
+
+        return this;
+    }
+
+    public TicketingServicesBuilder SetFakeCache()
+    {
+        OverrideService<ICacheClient>(new FakeCacheClient());
 
         return this;
     }

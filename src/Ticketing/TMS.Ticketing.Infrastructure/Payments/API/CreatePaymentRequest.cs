@@ -1,4 +1,4 @@
-﻿namespace TMS.Ticketing.Application.Services.Payments;
+﻿namespace TMS.Ticketing.Infrastructure.Payments.API;
 
 public sealed class CreatePaymentRequest
 {

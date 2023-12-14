@@ -1,6 +1,6 @@
 ﻿namespace TMS.Ticketing.Domain.Tickets;
 
-public sealed class TicketEntity : IEntity<Guid>
+public sealed class TicketEntity : Entity, IEntity<Guid>
 {
     public required Guid Id { get; init; }
 
