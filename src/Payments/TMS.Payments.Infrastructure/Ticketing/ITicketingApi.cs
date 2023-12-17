@@ -2,7 +2,7 @@
 
 using TMS.Common.IntegrationEvents;
 
-namespace TMS.Payments.Application.Ticketing;
+namespace TMS.Payments.Infrastructure.Ticketing;
 
 public interface ITicketingApi
 {

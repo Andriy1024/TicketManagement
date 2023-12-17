@@ -7,7 +7,7 @@ using TMS.RabbitMq.Subscriber;
 
 namespace TMS.RabbitMq.Configuration;
 
-public static class MessageBusServiceCollectionExtensions
+public static class ServiceRegistration
 {
     public static IServiceCollection AddRabbitMqMessageBus(this IServiceCollection services, IConfiguration configuration)
         => services.AddRabbitMqMessageBus<MessageDispatcher>(configuration);
@@ -18,7 +18,6 @@ public static class MessageBusServiceCollectionExtensions
     {
         return services
             .Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMq"))
-            .AddSingleton<IMessageBroker, MessageBroker>()
             .AddSingleton<IRabbitMqSubscriber, RabbitMqSubscriber>()
             .AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>()
             .AddSingleton<IMessageSerializer, DefaultMessageSerializer>()

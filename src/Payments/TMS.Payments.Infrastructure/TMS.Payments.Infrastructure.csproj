@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
+	<PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
   </ItemGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\TMS.Caching.Redis\TMS.Caching.Redis.csproj" />
     <ProjectReference Include="..\..\Common\TMS.RabbitMq\TMS.RabbitMq.csproj" />
-    <ProjectReference Include="..\TMS.Ticketing.Application\TMS.Ticketing.Application.csproj" />
+    <ProjectReference Include="..\TMS.Payments.Application\TMS.Payments.Application.csproj" />
   </ItemGroup>
 
 </Project>

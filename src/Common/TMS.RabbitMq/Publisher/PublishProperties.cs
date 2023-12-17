@@ -23,16 +23,6 @@ public record PublishProperties
         Exchange = exchange;
     }
 
-    public static PublishProperties Validate(PublishProperties properties, bool allowEmptyRoutingKey = false) 
-    {
-        if (!allowEmptyRoutingKey) 
-        {
-            ArgumentNullException.ThrowIfNullOrEmpty(properties.RoutingKey);
-        }
-            
-        return properties;
-    }
-
     public static string CreateRoutingKey<T>(T integrationEvent)
         where T : IIntegrationEvent
     { 

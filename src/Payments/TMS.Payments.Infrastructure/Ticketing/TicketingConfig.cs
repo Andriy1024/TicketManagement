@@ -1,4 +1,4 @@
-﻿namespace TMS.Payments.Application.Ticketing;
+﻿namespace TMS.Payments.Infrastructure.Ticketing;
 
 public class TicketingConfig
 {

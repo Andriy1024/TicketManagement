@@ -43,14 +43,14 @@ public sealed class RabbitMqPublisher : IRabbitMqPublisher
 
     public void AddPublisher(PublishProperties eventBusProperties)
     {
-        InitPublisher(PublishProperties.Validate(eventBusProperties));
+        InitPublisher(eventBusProperties);
     }
 
     public bool RemovePublisher(PublishProperties eventBusProperties)
     {
-        var properties = PublishProperties.Validate(eventBusProperties);
+        ArgumentNullException.ThrowIfNullOrEmpty(eventBusProperties.RoutingKey);
 
-        var key = new SubscriptionKey(properties.Exchange.Name, properties.RoutingKey);
+        var key = new SubscriptionKey(eventBusProperties.Exchange.Name, eventBusProperties.RoutingKey);
 
         PublisherContext publisher = null;
 
@@ -91,16 +91,14 @@ public sealed class RabbitMqPublisher : IRabbitMqPublisher
     public void Publish<T>(T integrationEvent, PublishProperties eventBusProperties)
         where T : IIntegrationEvent
     {
-        var properties = PublishProperties.Validate(eventBusProperties, allowEmptyRoutingKey: true);
-
-        if (string.IsNullOrEmpty(properties.RoutingKey)) 
+        if (string.IsNullOrEmpty(eventBusProperties.RoutingKey)) 
         {
-            properties.RoutingKey = PublishProperties.CreateRoutingKey(integrationEvent);
+            eventBusProperties.RoutingKey = PublishProperties.CreateRoutingKey(integrationEvent);
         }
 
         var body = _serializer.SerializeToBytes(integrationEvent, integrationEvent.GetType());
 
-        var publisher = InitPublisher(properties);
+        var publisher = InitPublisher(eventBusProperties);
 
         var props = publisher.Channel.CreateBasicProperties();
 

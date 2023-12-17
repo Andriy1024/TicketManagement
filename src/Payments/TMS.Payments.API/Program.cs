@@ -1,21 +1,10 @@
 using TMS.Common.Extensions;
-using TMS.Common.Users;
-using TMS.Common.Validation;
 
 using TMS.Payments.API;
-using TMS.Payments.Application.MessageBrocker;
-using TMS.Payments.Application.Ticketing;
-using TMS.Payments.Application.UseCases;
 using TMS.Payments.Persistence;
-
-using Refit;
-
-using MediatR;
+using TMS.Payments.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-
-var ticketingConfig = builder.Configuration.GetSection(nameof(TicketingConfig)).Get<TicketingConfig>()
-    ?? throw new ArgumentNullException(nameof(TicketingConfig));
 
 builder.Services
     .AddControllers()
@@ -23,13 +12,8 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
     .AddPeristence(builder.Configuration)
-    .AddScoped<IUserContext, UserContext>()
-    .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<CreatePaymentCommand>())
-    .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
-    .AddTransient<IMessageBrocker, MessageBrocker>()
-    .AddProblemDetails()
-    .AddRefitClient<ITicketingApi>()
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri(ticketingConfig.TicketingUri));
+    .AddInfrastructure(builder.Configuration)
+    .AddProblemDetails();
 
 var app = builder.Build();
 

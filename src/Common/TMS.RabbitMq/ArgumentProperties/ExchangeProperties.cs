@@ -4,7 +4,7 @@ public record ExchangeProperties
 {
     public string Name { get; set; }
 
-    public string Type { get; set; }
+    public string Type { get; set; } = Exchange.Type.Direct;
 
     public bool AutoDelete { get; set; } = true;
 

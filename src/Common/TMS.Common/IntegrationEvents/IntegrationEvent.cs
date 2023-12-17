@@ -7,7 +7,7 @@ using TMS.Common.Validation;
 
 namespace TMS.Common.IntegrationEvents;
 
-public class IntegrationEvent<TPayload> : IRequest<Unit>, IValidatable
+public class IntegrationEvent<TPayload> : IIntegrationEvent, IValidatable
 {
     public TPayload Payload { get; set; }
 
@@ -34,7 +34,7 @@ public interface IHasTransaction
 /// <summary>
 /// The interface represents an event that is sent to message broker (RabbitMq).
 /// </summary>
-public interface IIntegrationEvent : IRequest
+public interface IIntegrationEvent : IRequest<Unit>
 {
 }
 

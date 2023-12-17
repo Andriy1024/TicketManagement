@@ -1,7 +1,6 @@
 ﻿using TMS.Common.Enums;
 using TMS.Common.IntegrationEvents;
 using TMS.Payments.Application.Interfaces;
-using TMS.Payments.Application.MessageBrocker;
 using TMS.Payments.Domain.Entities;
 
 namespace TMS.Payments.Application.UseCases;
@@ -20,9 +19,9 @@ public sealed record CompletePaymentResult(Guid PaymentId, PaymentStatus Status)
 public sealed class CompletePaymentHandler : IRequestHandler<CompletePaymentCommand, CompletePaymentResult>
 {
     private readonly IPaymentsEventStore _eventStore;
-    private readonly IMessageBrocker _messageBrocker;
+    private readonly IPaymentsMessageBrocker _messageBrocker;
 
-    public CompletePaymentHandler(IPaymentsEventStore eventStore, IMessageBrocker messageBrocker)
+    public CompletePaymentHandler(IPaymentsEventStore eventStore, IPaymentsMessageBrocker messageBrocker)
     {
         _eventStore = eventStore;
         _messageBrocker = messageBrocker;

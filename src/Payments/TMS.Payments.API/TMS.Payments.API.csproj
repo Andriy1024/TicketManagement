@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TMS.Payments.Infrastructure\TMS.Payments.Infrastructure.csproj" />
     <ProjectReference Include="..\TMS.Payments.Persistence\TMS.Payments.Persistence.csproj" />
   </ItemGroup>
 
