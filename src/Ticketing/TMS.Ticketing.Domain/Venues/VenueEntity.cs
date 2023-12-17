@@ -4,10 +4,8 @@ using TMS.Ticketing.Domain.DomainEvents;
 
 namespace TMS.Ticketing.Domain.Venues;
 
-public sealed class VenueEntity : Entity, IEntity<Guid>
+public sealed class VenueEntity : Entity<Guid>
 {
-    public required Guid Id { get; init; }
-
     public required string Name { get; set; }
     
     public required string Country { get; set; }
@@ -19,8 +17,6 @@ public sealed class VenueEntity : Entity, IEntity<Guid>
     public List<Detail>? Details { get; set; }
 
     public List<VenueSection> Sections { get; set; } = new();
-
-    public int Version { get; set; } = 1;
 
     public VenueSection GetSection(Guid sectionId)
     {
@@ -120,6 +116,4 @@ public sealed class VenueEntity : Entity, IEntity<Guid>
 
         return this;
     }
-
-    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

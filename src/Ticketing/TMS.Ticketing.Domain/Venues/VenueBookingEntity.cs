@@ -8,10 +8,8 @@ namespace TMS.Ticketing.Domain.Venues;
 /// <summary>
 /// (VenueId, BookingNumber) - Forms Unique Constraint to handle concurrency, and prevent venue booking that has overlapping DateTime Range.
 /// </summary>
-public sealed class VenueBookingEntity : Entity, IEntity<Guid>, IDateRange
+public sealed class VenueBookingEntity : Entity<Guid>, IDateRange
 {
-    public required Guid Id { get; set; }
-
     public required Guid VenueId { get; set; }
 
     public required Guid EventId { get; set; }
@@ -21,8 +19,6 @@ public sealed class VenueBookingEntity : Entity, IEntity<Guid>, IDateRange
     public required DateTime Start { get; set; }
 
     public required DateTime End { get; set; }
-
-    public int Version { get; set; } = 1;
 
     public static VenueBookingEntity Create(
         IEnumerable<VenueBookingEntity> booked,
@@ -65,6 +61,4 @@ public sealed class VenueBookingEntity : Entity, IEntity<Guid>, IDateRange
 
         return booking;
     }
-
-    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

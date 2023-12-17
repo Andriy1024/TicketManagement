@@ -1,9 +1,7 @@
 ﻿namespace TMS.Ticketing.Domain.Tickets;
 
-public sealed class TicketEntity : Entity, IEntity<Guid>
+public sealed class TicketEntity : Entity<Guid>
 {
-    public required Guid Id { get; init; }
-
     public required Guid EventId { get; init; }
 
     public required Guid OrderId { get; init; }
@@ -19,8 +17,4 @@ public sealed class TicketEntity : Entity, IEntity<Guid>
     public required DateTime UpdatedAt { get; set; }
 
     public required string ValidationHashCode { get; init; }
-
-    public int Version { get; set; } = 1;
-
-    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

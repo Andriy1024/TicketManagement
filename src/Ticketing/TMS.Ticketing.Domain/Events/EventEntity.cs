@@ -7,10 +7,8 @@ using TMS.Ticketing.Domain.Venues;
 
 namespace TMS.Ticketing.Domain.Events;
 
-public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
+public sealed class EventEntity : Entity<Guid>, IDateRange
 {
-    public required Guid Id { get; set; }
-
     public required string Name { get; set; }
 
     public List<Detail>? Details { get; set; }
@@ -26,8 +24,6 @@ public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
     public List<Price> Prices { get; set; } = new();
 
     public List<Offer> Offers { get; set; } = new();
-
-    public int Version { get; set; } = 1;
 
     public EventSeat GetSeat(Guid seatId) 
         => Seats.Find(x => x.SeatId == seatId)
@@ -201,6 +197,4 @@ public sealed class EventEntity : Entity, IEntity<Guid>, IDateRange
 
         return this;
     }
-
-    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

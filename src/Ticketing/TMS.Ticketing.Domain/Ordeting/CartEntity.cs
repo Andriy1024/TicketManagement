@@ -3,17 +3,13 @@ using TMS.Ticketing.Domain.Events;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class CartEntity : Entity, IEntity<Guid>
+public sealed class CartEntity : Entity<Guid>
 {
-    public required Guid Id { get; set; }
-
     public required int AccountId { get; init; }
 
     public decimal Total => this.OrderItems.Sum(x => x.Amount);
 
     public List<OrderItem> OrderItems { get; set; } = new();
-
-    public int Version { get; set; } = 1;
 
     public CartEntity AddItem(
         EventEntity @event,
@@ -39,6 +35,4 @@ public sealed class CartEntity : Entity, IEntity<Guid>
         
         return this;
     }
-
-    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }

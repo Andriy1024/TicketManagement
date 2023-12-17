@@ -20,7 +20,7 @@ public class IntegrationEvent<TPayload> : IRequest<Unit>, IValidatable
 
         if (Payload is IValidatable validatable)
         {
-            result.Concat(validatable.Validate());
+            result = result.Concat(validatable.Validate());
         }
 
         return result;

@@ -7,10 +7,8 @@ using TMS.Ticketing.Domain.Events;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class OrderEntity : Entity, IEntity<Guid>
+public sealed class OrderEntity : Entity<Guid>
 {
-    public required Guid Id { get; set; }
-
     public Guid EventId { get; init; }
 
     public int AccountId { get; init; }
@@ -26,8 +24,6 @@ public sealed class OrderEntity : Entity, IEntity<Guid>
     public DateTime CreatedAt { get; init; }
 
     public DateTime UpdatedAt { get; set; }
-
-    public int Version { get; set; } = 1;
 
     public static OrderEntity Create(
         CurrentUser user, 
@@ -86,6 +82,4 @@ public sealed class OrderEntity : Entity, IEntity<Guid>
 
         return this;
     }
-
-    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
 }
