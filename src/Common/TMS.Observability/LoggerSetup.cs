@@ -1,18 +1,21 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
 using Serilog;
 using Serilog.Events;
 using Serilog.Enrichers.Span;
 using Serilog.Formatting.Compact;
+using Microsoft.Extensions.Configuration;
 
 namespace TMS.Observability;
 
 public static class LoggerSetup
 {
-    public static IHostBuilder UseLogger(this IHostBuilder host)
+    public static WebApplicationBuilder AddLogger(this WebApplicationBuilder app)
     {
-        host.UseSerilog((context, services, config) =>
+        var seq = app.Configuration.GetSection(nameof(SeqConfig)).Get<SeqConfig>()
+            ?? throw new ArgumentNullException(nameof(SeqConfig));
+
+        app.Host.UseSerilog((context, services, config) =>
         {
             config
                  .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
@@ -31,9 +34,14 @@ public static class LoggerSetup
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 30))
                  .ReadFrom.Configuration(context.Configuration);
+
+            if (seq.Enabled)
+            {
+                config.WriteTo.Seq(seq.Url);
+            }
         });
 
-        return host;
+        return app;
     }
 
     public static IApplicationBuilder UseRequestLogging(this IApplicationBuilder app)

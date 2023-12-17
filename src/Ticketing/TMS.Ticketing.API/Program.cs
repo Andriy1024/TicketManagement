@@ -16,7 +16,7 @@ builder.Services
     .AddPersistenceServices(builder.Configuration)
     .AddProblemDetails();
 
-builder.Host.UseLogger();
+builder.AddLogger();
 builder.AddOpenTelemetry();
 
 var app = builder.Build();
