@@ -23,7 +23,7 @@ public static class LoggerSetup
                  .Enrich.FromLogContext()
                  //.Enrich.WithExceptionDetails()
                  .Enrich.WithSpan()
-                 .WriteTo.Async(wt => wt.Console(new CompactJsonFormatter()))
+                 .WriteTo.Async(wt => wt.Console())
                  .WriteTo.Async(wt => wt.File(
                     new CompactJsonFormatter(),
                     path: "logs/log.txt",

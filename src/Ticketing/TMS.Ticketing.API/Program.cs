@@ -17,6 +17,7 @@ builder.Services
     .AddProblemDetails();
 
 builder.Host.UseLogger();
+builder.AddOpenTelemetry();
 
 var app = builder.Build();
 
