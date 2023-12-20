@@ -3,6 +3,7 @@ using TMS.Ticketing.Infrastructure.ChangeTracker;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Helpers;
+using TMS.Ticketing.Persistence.Sessions;
 
 namespace TMS.Ticketing.Persistence.Implementations;
 
@@ -10,8 +11,8 @@ internal class VenuesRepository : ChangeTrackableRepository<VenueEntity, Guid>, 
 {
     protected override string CollectionName => Collections.Venues;
 
-    public VenuesRepository(IMongoDatabase database, IEntityChangeTracker domainEvents)
-         : base(database, domainEvents) {}
+    public VenuesRepository(IMongoDatabase database, MongoTransactionScope transactionScope, IEntityChangeTracker domainEvents)
+         : base(database, transactionScope, domainEvents) {}
 
     public async Task<VenueEntity> GetRequiredAsync(Guid venueId)
         => await GetAsync(venueId)

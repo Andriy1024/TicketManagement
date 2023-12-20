@@ -3,10 +3,8 @@ using TMS.Ticketing.Domain.Events;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class CartEntity : Entity, IEntity<Guid>
+public sealed class CartEntity : Entity<Guid>
 {
-    public required Guid Id { get; set; }
-
     public required int AccountId { get; init; }
 
     public decimal Total => this.OrderItems.Sum(x => x.Amount);

@@ -26,3 +26,12 @@ public abstract class Entity : IEntity
         return result;
     }
 }
+
+public abstract class Entity<TKey> : Entity, IEntity<TKey>
+{
+    public required TKey Id { get; init; }
+
+    public int Version { get; set; } = 1;
+
+    public (int Old, int New) IncreaseVersion() => (Version, ++Version);
+}

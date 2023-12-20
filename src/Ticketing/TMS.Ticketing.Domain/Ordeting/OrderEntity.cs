@@ -7,10 +7,8 @@ using TMS.Ticketing.Domain.Events;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class OrderEntity : Entity, IEntity<Guid>
+public sealed class OrderEntity : Entity<Guid>
 {
-    public required Guid Id { get; set; }
-
     public Guid EventId { get; init; }
 
     public int AccountId { get; init; }

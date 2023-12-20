@@ -12,12 +12,12 @@ using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 
-[Collection(MongoDBCollection.Name)]
+[Collection(MongoDBReplicaSetCollection.Name)]
 public class CreateVenueBookingApiTest
 {
     private readonly TicketingApiFactory _apiFactory;
 
-    public CreateVenueBookingApiTest(MongoDBFactory mongo)
+    public CreateVenueBookingApiTest(MongoReplicaSetFactory mongo)
     {
         _apiFactory = new TicketingApiFactory(new MongoConfig
         {

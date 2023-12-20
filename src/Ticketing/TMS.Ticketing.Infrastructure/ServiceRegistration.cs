@@ -18,6 +18,7 @@ using TMS.Ticketing.Infrastructure.DomainEvents;
 using TMS.Ticketing.Infrastructure.Payments;
 using TMS.Ticketing.Infrastructure.Payments.API;
 using TMS.Ticketing.Application.UseCases.Carts;
+using TMS.Ticketing.Infrastructure.Transactions;
 
 namespace TMS.Ticketing.Infrastructure;
 
@@ -34,6 +35,7 @@ public static class ServiceRegistration
             .AddMediatR(x => x.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly(), typeof(GetCartDetails).Assembly))
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
             .AddCachableBehavior()
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>))
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(DomainEventsDispatcher<,>))
             .AddScoped<IUserContext, UserContext>()
             .AddScoped<IEntityChangeTracker, EntityChangeTracker>()
