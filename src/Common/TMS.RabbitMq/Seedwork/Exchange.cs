@@ -10,8 +10,8 @@ public class Exchange
 
     public sealed class Name
     {
-        public readonly static string Payments = "ProjectX.Payments";
-        public readonly static string Notifications = "ProjectX.Notifications";
-        public readonly static string Realtime = "ProjectX.Realtime";
+        public readonly static string Payments = "TMS.Payments";
+        public readonly static string Notifications = "TMS.Notifications";
+        public readonly static string Realtime = "TMS.Realtime";
     }
 }
