@@ -3,7 +3,7 @@ using TMS.Ticketing.Domain.Events;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class CartEntity : Entity<Guid>
+public sealed class CartEntity : EventDrivenEntity<Guid>
 {
     public required int AccountId { get; init; }
 

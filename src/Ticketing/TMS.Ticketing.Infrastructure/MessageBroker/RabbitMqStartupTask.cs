@@ -20,6 +20,7 @@ internal class RabbitMqStartupTask : IStartupTask
         {
             o.Exchange.Name = Exchange.Name.Payments;
             o.Exchange.Type = Exchange.Type.Direct;
+            o.Queue.RoutingKey = typeof(PaymentStatusUpdated).Name;
             o.Queue.AutoDelete = false;
             o.Queue.Exclusive = false;
             o.Consumer.Autoack = false;

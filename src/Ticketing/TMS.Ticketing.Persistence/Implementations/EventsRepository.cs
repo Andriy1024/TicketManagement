@@ -3,7 +3,6 @@ using TMS.Ticketing.Infrastructure.ChangeTracker;
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Helpers;
-using TMS.Ticketing.Persistence.Sessions;
 
 namespace TMS.Ticketing.Persistence.Implementations;
 

@@ -1,4 +1,4 @@
-﻿namespace TMS.Ticketing.Domain.Ordering;
+﻿namespace TMS.Common.Enums;
 
 public enum OrderStatus
 {

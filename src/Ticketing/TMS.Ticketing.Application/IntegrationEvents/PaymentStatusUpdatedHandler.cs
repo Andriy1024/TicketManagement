@@ -1,4 +1,5 @@
-﻿using TMS.Common.IntegrationEvents;
+﻿using TMS.Common.Enums;
+using TMS.Common.IntegrationEvents;
 
 using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Domain.Tickets;
@@ -20,9 +21,11 @@ internal sealed class PaymentStatusUpdatedHandler : IRequestHandler<IntegrationE
 
     public async Task<Unit> Handle(IntegrationEvent<PaymentStatusUpdated> request, CancellationToken cancellationToken)
     {
+        // TODO: Use transactional inbox pattern
+        
         var payload = request.Payload;
 
-        var orders = await _ordersRepo.FindAsync(x => x.Id == payload.PaymentId);
+        var orders = await _ordersRepo.FindAsync(x => x.PaymentId == payload.PaymentId);
 
         foreach (var order in orders) 
         {

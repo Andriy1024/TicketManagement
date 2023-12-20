@@ -1,8 +1,6 @@
-﻿using TMS.Common.Interfaces;
+﻿namespace TMS.Common.Interfaces;
 
-namespace TMS.Ticketing.Domain;
-
-public interface IEntity
+public interface IEventDrivenEntity
 {
     public IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
 
@@ -11,11 +9,15 @@ public interface IEntity
     IReadOnlyCollection<IDomainEvent> ExtractDomainEvents();
 }
 
-public interface IEntity<out TKey> : IEntity
+public interface IEntity<out TKey>
 {
     TKey Id { get; }
 
     public int Version { get; }
 
     public (int Old, int New) IncreaseVersion();
+}
+
+public interface IEventDrivenEntity<out TKey> : IEventDrivenEntity, IEntity<TKey>
+{
 }

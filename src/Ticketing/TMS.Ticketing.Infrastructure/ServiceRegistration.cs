@@ -12,16 +12,16 @@ using TMS.Common.Validation;
 
 using TMS.Caching.Redis;
 
+using TMS.Common.Interfaces;
 using TMS.Ticketing.Application.Interfaces;
+using TMS.Ticketing.Application.UseCases.Carts;
 using TMS.Ticketing.Infrastructure.ChangeTracker;
 using TMS.Ticketing.Infrastructure.DomainEvents;
 using TMS.Ticketing.Infrastructure.Payments;
 using TMS.Ticketing.Infrastructure.Payments.API;
-using TMS.Ticketing.Application.UseCases.Carts;
 using TMS.Ticketing.Infrastructure.Transactions;
-using TMS.RabbitMq.Configuration;
-using TMS.Common.Interfaces;
 using TMS.Ticketing.Infrastructure.MessageBroker;
+using TMS.RabbitMq.Configuration;
 
 namespace TMS.Ticketing.Infrastructure;
 
@@ -48,7 +48,8 @@ public static class ServiceRegistration
             .Services
             .AddRedisServices<DB1>(configuration)
             .AddRabbitMqMessageBus(configuration)
-            .AddTransient<IStartupTask, RabbitMqStartupTask>();
+            .AddTransient<IStartupTask, RabbitMqStartupTask>()
+            .AddScoped<ITicketingMessageBrocker, TicketingMessageBrocker>();
     }
 }
 

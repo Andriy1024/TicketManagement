@@ -1,10 +1,15 @@
-﻿using TMS.Ticketing.Infrastructure.ChangeTracker;
-using TMS.Ticketing.Persistence.Sessions;
+﻿using TMS.Common.Interfaces;
+
+using TMS.Ticketing.Infrastructure.ChangeTracker;
+
+using TMS.MongoDB.Repositories;
+using TMS.MongoDB.Transactions;
+
 
 namespace TMS.Ticketing.Persistence.Abstractions;
 
 internal abstract class ChangeTrackableRepository<TEntity, TIdentifiable> : MongoRepository<TEntity, TIdentifiable>
-    where TEntity : IEntity<TIdentifiable>
+    where TEntity : IEventDrivenEntity<TIdentifiable>
     where TIdentifiable : notnull
 {
     private readonly IEntityChangeTracker _changeTracker;

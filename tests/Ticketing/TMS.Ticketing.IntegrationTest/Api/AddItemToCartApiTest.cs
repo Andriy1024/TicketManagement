@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 
 using TMS.Common.Users;
-
+using TMS.MongoDB;
 using TMS.Ticketing.Application.Dtos;
 using TMS.Ticketing.Application.Repositories;
 using TMS.Ticketing.Application.UseCases.Carts;
@@ -10,7 +10,6 @@ using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.IntegrationTest.Common;
 using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
-using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 

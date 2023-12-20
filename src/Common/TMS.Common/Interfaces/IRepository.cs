@@ -1,8 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-using TMS.Ticketing.Domain;
-
-namespace TMS.Ticketing.Application.Repositories;
+namespace TMS.Common.Interfaces;
 
 public interface IRepository<TEntity, TIdentifiable>
     where TEntity : IEntity<TIdentifiable>

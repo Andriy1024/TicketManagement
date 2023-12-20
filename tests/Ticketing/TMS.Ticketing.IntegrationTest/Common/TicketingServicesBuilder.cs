@@ -1,6 +1,7 @@
 ﻿using TMS.Common.Caching;
 using TMS.Ticketing.Persistence;
 using TMS.Ticketing.Infrastructure;
+using TMS.MongoDB;
 
 namespace TMS.Ticketing.IntegrationTest.Common;
 

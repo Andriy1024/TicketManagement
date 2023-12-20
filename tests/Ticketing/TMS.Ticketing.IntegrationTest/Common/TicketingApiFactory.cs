@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using TMS.Common.Caching;
+using TMS.MongoDB;
 using TMS.Ticketing.Application.Interfaces;
-using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Common;
 

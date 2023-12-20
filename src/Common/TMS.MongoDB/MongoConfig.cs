@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TMS.Ticketing.Persistence;
+namespace TMS.MongoDB;
 
 public class MongoConfig
 {

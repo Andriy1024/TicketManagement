@@ -1,28 +1,23 @@
 ﻿using TMS.Common.IntegrationEvents;
+
 using TMS.Payments.Application.Interfaces;
-using TMS.Payments.Infrastructure.Ticketing;
+
 using TMS.RabbitMq;
 
 namespace TMS.Payments.Infrastructure.MessageBrocker;
 
 public sealed class PaymentsMessageBrocker : IPaymentsMessageBrocker
 {
-    private readonly ITicketingApi _ticketingApi;
     private readonly IRabbitMqPublisher _rabbitMqPublisher;
 
-    public PaymentsMessageBrocker(ITicketingApi ticketingApi, IRabbitMqPublisher rabbitMqPublisher)
+    public PaymentsMessageBrocker(IRabbitMqPublisher rabbitMqPublisher)
     {
-        _ticketingApi = ticketingApi;
         _rabbitMqPublisher = rabbitMqPublisher;
     }
 
     public Task SendAsync(PaymentStatusUpdated @event)
     {
-        //// This webhook will be reimplemented as message brocker message in the message queues module
-        //return _ticketingApi.PaymentStatusUpdatedAsync(new IntegrationEvent<PaymentStatusUpdated>
-        //{
-        //    Payload = @event
-        //});
+        // TODO: Use transactional outbox pattern
 
         _rabbitMqPublisher.Publish(new IntegrationEvent<PaymentStatusUpdated>
         {
@@ -32,6 +27,7 @@ public sealed class PaymentsMessageBrocker : IPaymentsMessageBrocker
         {
             p.Exchange.Name = Exchange.Name.Payments;
             p.Exchange.Type = Exchange.Type.Direct;
+            p.RoutingKey = typeof(PaymentStatusUpdated).Name;
             p.EnableRetryPolicy = true;
         });
 

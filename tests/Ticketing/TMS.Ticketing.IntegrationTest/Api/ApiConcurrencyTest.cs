@@ -7,7 +7,7 @@ using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Application.Repositories;
 using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
 using TMS.Ticketing.IntegrationTest.Common;
-using TMS.Ticketing.Persistence;
+using TMS.MongoDB;
 
 using System.Net;
 

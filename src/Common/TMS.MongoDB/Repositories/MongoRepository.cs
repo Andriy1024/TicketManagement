@@ -1,11 +1,14 @@
-﻿using System.Linq.Expressions;
+﻿using MongoDB.Driver;
 
-using TMS.Ticketing.Persistence.Exceptions;
-using TMS.Ticketing.Persistence.Sessions;
+using System.Linq.Expressions;
 
-namespace TMS.Ticketing.Persistence.Abstractions;
+using TMS.Common.Interfaces;
+using TMS.MongoDB.Exceptions;
+using TMS.MongoDB.Transactions;
 
-internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TEntity, TIdentifiable>
+namespace TMS.MongoDB.Repositories;
+
+public abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TEntity, TIdentifiable>
     where TEntity : IEntity<TIdentifiable>
     where TIdentifiable : notnull
 {
@@ -46,7 +49,7 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
     {
         var versionInfo = entity.IncreaseVersion();
 
-        FilterDefinition<TEntity> filter = 
+        FilterDefinition<TEntity> filter =
              Builders<TEntity>.Filter.Eq(r => r.Id, entity.Id)
            & Builders<TEntity>.Filter.Eq(r => r.Version, versionInfo.Old);
 
@@ -64,7 +67,7 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
             throw new MongoDbException($"This operation conflicted with another operation. MongoDB modified count expected to be one, actual: {result.ModifiedCount}. Please retry your operation.");
         }
     }
-    
+
     public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         var versionInfo = entity.IncreaseVersion();
@@ -87,7 +90,7 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
             throw new MongoDbException($"This operation conflicted with another operation. MongoDB delete count expected to be one, actual: {result.DeletedCount}. Please retry your operation.");
         }
     }
-    
+
     public Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         => Collection.Find(predicate).AnyAsync(cancellationToken);
 }

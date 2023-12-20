@@ -1,14 +1,14 @@
 ﻿using TMS.Ticketing.Domain.Ordering;
+using TMS.Ticketing.Infrastructure.ChangeTracker;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Helpers;
-using TMS.Ticketing.Persistence.Sessions;
 
 namespace TMS.Ticketing.Persistence.Implementations;
 
-internal sealed class OrdersRepository : MongoRepository<OrderEntity, Guid>, IOrdersRepository
+internal sealed class OrdersRepository : ChangeTrackableRepository<OrderEntity, Guid>, IOrdersRepository
 {
     protected override string CollectionName => Collections.Orders;
 
-    public OrdersRepository(IMongoDatabase database, MongoTransactionScope transactionScope) 
-        : base(database, transactionScope) {}
+    public OrdersRepository(IMongoDatabase database, MongoTransactionScope transactionScope, IEntityChangeTracker domainEvents) 
+        : base(database, transactionScope, domainEvents) {}
 }

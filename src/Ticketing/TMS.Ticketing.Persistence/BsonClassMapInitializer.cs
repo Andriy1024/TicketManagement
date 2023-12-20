@@ -25,7 +25,7 @@ public static class BsonClassMapInitializer
             IsInitialize = true;
         }
 
-        BsonClassMap.RegisterClassMap<Entity<Guid>>(map =>
+        BsonClassMap.RegisterClassMap<EventDrivenEntity<Guid>>(map =>
         {
             map.AutoMap();
             map.MapIdMember(x => x.Id);

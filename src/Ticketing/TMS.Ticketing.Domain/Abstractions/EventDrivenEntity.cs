@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Domain;
 
-public abstract class Entity : IEntity
+public abstract class EventDrivenEntity : IEventDrivenEntity
 {
     private static readonly IReadOnlyCollection<IDomainEvent> _emptyEvents = new List<IDomainEvent>(0);
 
@@ -27,7 +27,7 @@ public abstract class Entity : IEntity
     }
 }
 
-public abstract class Entity<TKey> : Entity, IEntity<TKey>
+public abstract class EventDrivenEntity<TKey> : EventDrivenEntity, IEventDrivenEntity<TKey>
 {
     public required TKey Id { get; init; }
 

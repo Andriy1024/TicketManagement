@@ -1,6 +1,8 @@
-﻿namespace TMS.Ticketing.Persistence.Sessions;
+﻿using MongoDB.Driver;
 
-internal sealed class MongoTransactionScopeFactory
+namespace TMS.MongoDB.Transactions;
+
+public sealed class MongoTransactionScopeFactory
 {
     private readonly IMongoClient _client;
 

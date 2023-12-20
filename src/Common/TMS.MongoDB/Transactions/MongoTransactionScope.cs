@@ -1,6 +1,8 @@
-﻿namespace TMS.Ticketing.Persistence.Sessions;
+﻿using MongoDB.Driver;
 
-internal sealed class MongoTransactionScope 
+namespace TMS.MongoDB.Transactions;
+
+public sealed class MongoTransactionScope
 {
     private IClientSessionHandle? _transaction = null;
 

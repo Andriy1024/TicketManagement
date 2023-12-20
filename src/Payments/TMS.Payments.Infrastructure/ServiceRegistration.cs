@@ -11,6 +11,7 @@ using TMS.Payments.Application.UseCases;
 using TMS.Payments.Infrastructure.MessageBrocker;
 using TMS.Payments.Application.Interfaces;
 using TMS.Payments.Infrastructure.Ticketing;
+using TMS.RabbitMq.Configuration;
 
 namespace TMS.Payments.Infrastructure;
 
@@ -28,6 +29,7 @@ public static class ServiceRegistration
             .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<CreatePaymentCommand>())
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
             .AddTransient<IPaymentsMessageBrocker, PaymentsMessageBrocker>()
+            .AddRabbitMqMessageBus(configuration)
             .AddRefitClient<ITicketingApi>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri(ticketingConfig.TicketingUri))
             .Services;
