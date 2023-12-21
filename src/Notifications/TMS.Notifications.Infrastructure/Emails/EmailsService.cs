@@ -2,6 +2,9 @@
 
 using FluentEmail.Core;
 
+using Polly;
+using Polly.CircuitBreaker;
+
 using TMS.Common.IntegrationEvents.Notifications;
 using TMS.Notifications.Application.Interfaces;
 
@@ -14,6 +17,10 @@ internal sealed class EmailsService : IEmailsService
     private readonly IFluentEmail _sender;
 
     private readonly string _viewsFolder;
+
+    private static readonly CircuitBreakerPolicy _circuitBreaker = Policy
+        .Handle<Exception>()
+        .CircuitBreaker(2, TimeSpan.FromSeconds(30));
 
     public EmailsService(IFluentEmail sender)
     {
@@ -35,11 +42,16 @@ internal sealed class EmailsService : IEmailsService
             _ => throw new InvalidOperationException("Unknown notification type")
         };
 
-        await _sender
-            .To(email.To)
-            .Subject(email.Subject)
-            .UsingTemplateFromFile(email.TemplatePath, email.TemplateModel)
-            .SendAsync();
+        await _circuitBreaker
+            .Wrap(Policy
+                .Handle<Exception>()
+                .WaitAndRetry(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
+            .Execute(() => _sender
+                .To(email.To)
+                .Subject(email.Subject)
+                .UsingTemplateFromFile(email.TemplatePath, email.TemplateModel)
+                .SendAsync()
+            );
     }
 
     private EmailContent CreateEmail(OrderStatusUpdatedNotification orderUpdated)
