@@ -19,6 +19,11 @@ docker network connect pgnetwork my-pgadmin
 docker run --name redis-server -p6379:6379 -d redis --requirepass "root"
 ```
 
+### RabbitMQ
+```
+docker run -d -p 15672:15672 -p 5672:5672 --name my-rabbit -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:3-management
+```
+
 ### Jaeger
 UI at http://localhost:16686
 ```
@@ -29,4 +34,9 @@ docker run --name my-jaeger -p 5775:5775/udp -p 5778:5778 -p 6831:6831/udp -p 68
 UI at http://localhost:5341/
 ```
 docker run --name my-seq -e ACCEPT_EULA=y -p 5341:80 -d --restart=unless-stopped datalust/seq
+```
+
+### Fake Email Provider
+```
+https://ethereal.email/
 ```

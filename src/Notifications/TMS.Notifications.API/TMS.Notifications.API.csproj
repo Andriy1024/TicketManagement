@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+  </PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
@@ -15,6 +19,13 @@
     <ProjectReference Include="..\TMS.Notifications.Domain\TMS.Notifications.Domain.csproj" />
     <ProjectReference Include="..\TMS.Notifications.Infrastructure\TMS.Notifications.Infrastructure.csproj" />
     <ProjectReference Include="..\TMS.Notifications.Persistence\TMS.Notifications.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\*.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

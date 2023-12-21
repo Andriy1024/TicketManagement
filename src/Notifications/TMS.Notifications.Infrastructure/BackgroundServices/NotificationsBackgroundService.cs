@@ -1,17 +1,19 @@
 ﻿using MediatR;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TMS.Notifications.Application.Interfaces;
+
 using TMS.Notifications.Application.UseCases;
-using TMS.Notifications.Domain.Enums;
 
 namespace TMS.Notifications.Infrastructure.BackgroundServices;
 
-internal class NotificationsBackgroundService : BackgroundService
+internal sealed class NotificationsBackgroundService : BackgroundService
 {
-    private static readonly TimeSpan MinimumMessageAgeToBatch = TimeSpan.FromSeconds(30);
+    private static readonly TimeSpan _delay = TimeSpan.FromSeconds(10);
+
     private readonly ILogger<NotificationsBackgroundService> _logger;
+    
     private readonly IServiceScopeFactory _scopeFactory;
 
     public NotificationsBackgroundService(ILogger<NotificationsBackgroundService> logger, IServiceScopeFactory scopeFactory)
@@ -22,31 +24,24 @@ internal class NotificationsBackgroundService : BackgroundService
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        await Task.Yield();
+
         while (!stoppingToken.IsCancellationRequested)
         {
-            DateTime minimumMessageAgeToBatch = DateTime.UtcNow.Subtract(MinimumMessageAgeToBatch);
-
             try
             {
                 using var scope = _scopeFactory.CreateScope();
 
-                var repo = scope.ServiceProvider.GetRequiredService<INotificationsRepository>();
-
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-                var notification = await repo.GetAsync(x => x.Status == NotificationStatus.Pending);
-
-                if (notification != null)
-                {
-                    await mediator.Send(new ProccessNotification(notification), CancellationToken.None);
-                }
+                await mediator.Send(new SendNotificationsCommand(), CancellationToken.None);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
             }
 
-            await Task.Delay(MinimumMessageAgeToBatch, stoppingToken);
+            await Task.Delay(_delay, stoppingToken);
         }
     }
 }
