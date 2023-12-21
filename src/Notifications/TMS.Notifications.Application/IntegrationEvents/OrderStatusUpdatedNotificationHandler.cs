@@ -19,8 +19,6 @@ public class OrderStatusUpdatedNotificationHandler : IRequestHandler<Integration
 
     public async Task<Unit> Handle(IntegrationEvent<OrderStatusUpdatedNotification> request, CancellationToken cancellationToken)
     {
-        // TODO: Use transactional inbox pattern
-
         var notification = NotificationEntity.Create(request.Payload);
 
         await _repository.AddAsync(notification, CancellationToken.None);

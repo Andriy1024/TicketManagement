@@ -43,7 +43,7 @@ public sealed class OrderEntity : EventDrivenEntity<Guid>
             @event.BookSeat(orderItem.SeatId);
         }
 
-        return new OrderEntity
+        var order = new OrderEntity
         {
             Id = Guid.NewGuid(),
             AccountId = user.Id,
@@ -54,6 +54,10 @@ public sealed class OrderEntity : EventDrivenEntity<Guid>
             Status = OrderStatus.Pending,
             PaymentId = paymentId
         };
+
+        order.AddDomainEvent(new EntityCreated<OrderEntity>(order));
+
+        return order;
     }
 
     public OrderEntity UpdateStatus(PaymentStatus payment)

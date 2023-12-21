@@ -51,7 +51,7 @@ internal sealed class RabbitMqConnectionService : IRabbitMqConnectionService
         get
         {
             using (new ReadLock(_syncRoot))
-                return _connection != null && _connection.IsOpen && !_isDisposed;
+                return !_isDisposed && _connection is { IsOpen: true };
         }
     }
 

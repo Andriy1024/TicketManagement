@@ -3,9 +3,17 @@ using FluentValidation.Results;
 
 using MediatR;
 
+using TMS.Common.Interfaces;
 using TMS.Common.Validation;
 
 namespace TMS.Common.IntegrationEvents;
+
+/// <summary>
+/// The interface represents an event that is sent to message broker (RabbitMq).
+/// </summary>
+public interface IIntegrationEvent : ICommand<Unit>
+{
+}
 
 public class IntegrationEvent<TPayload> : IIntegrationEvent, IValidatable
 {
@@ -25,30 +33,4 @@ public class IntegrationEvent<TPayload> : IIntegrationEvent, IValidatable
 
         return result;
     }
-}
-
-public interface IHasTransaction
-{
-}
-
-/// <summary>
-/// The interface represents an event that is sent to message broker (RabbitMq).
-/// </summary>
-public interface IIntegrationEvent : IRequest<Unit>
-{
-}
-
-/// <summary>
-/// Persistent events are saved to database before publish to message broker.
-/// </summary>
-public interface IPersistentIntegrationEvent : IIntegrationEvent, IHasTransaction
-{
-    public Guid Id { get; set; }
-}
-
-/// <summary>
-/// Transient events are not persistent in database.
-/// </summary>
-public interface ITransientIntegrationEvent : IIntegrationEvent
-{
 }

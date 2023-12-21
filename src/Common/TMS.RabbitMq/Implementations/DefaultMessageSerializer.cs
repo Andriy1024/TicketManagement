@@ -1,7 +1,5 @@
 ﻿using System.Text.Json;
 
-using TMS.RabbitMq.Serialization;
-
 namespace TMS.RabbitMq.Implementations;
 
 public class DefaultMessageSerializer : IMessageSerializer
@@ -16,8 +14,6 @@ public class DefaultMessageSerializer : IMessageSerializer
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             DictionaryKeyPolicy = JsonNamingPolicy.CamelCase
         };
-
-        _serializerOptions.Converters.Add(new JsonNonStringKeyDictionaryConverterFactory());
     }
 
     public T? Deserialize<T>(ReadOnlySpan<byte> obj)

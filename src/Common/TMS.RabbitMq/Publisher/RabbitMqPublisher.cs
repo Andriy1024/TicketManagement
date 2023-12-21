@@ -93,7 +93,7 @@ public sealed class RabbitMqPublisher : IRabbitMqPublisher
     {
         if (string.IsNullOrEmpty(eventBusProperties.RoutingKey)) 
         {
-            eventBusProperties.RoutingKey = PublishProperties.CreateRoutingKey(integrationEvent);
+            eventBusProperties.RoutingKey = integrationEvent.GetType().Name;
         }
 
         var body = _serializer.SerializeToBytes(integrationEvent, integrationEvent.GetType());
