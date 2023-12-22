@@ -5,7 +5,7 @@ using TMS.Ticketing.Domain.Events;
 
 namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed class CreateEventCommand : IRequest<EventDetailsDto>, IValidatable
+public sealed class CreateEventCommand : ICommand<EventDetailsDto>, IValidatable
 {
     public string Name { get; set; }
 
@@ -55,7 +55,7 @@ internal sealed class CreateEventHandler : IRequestHandler<CreateEventCommand, E
             CreatorId = _userContext.GetUser().Id
         };
 
-        await _eventsRepo.UpdateAsync(@event);
+        await _eventsRepo.AddAsync(@event);
 
         return EventDetailsDto.Map(@event);
     }

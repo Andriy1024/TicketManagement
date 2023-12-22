@@ -1,6 +1,6 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Venues;
 
-public sealed record DeleteVenueCommand(Guid Id) : IRequest<Unit>, IValidatable
+public sealed record DeleteVenueCommand(Guid Id) : ICommand<Unit>, IValidatable
 {
     public IEnumerable<ValidationFailure> Validate()
     {
@@ -20,7 +20,11 @@ internal sealed class DeleteVenueHandler : IRequestHandler<DeleteVenueCommand, U
 
     public async Task<Unit> Handle(DeleteVenueCommand request, CancellationToken cancellationToken)
     {
-        await _repository.DeleteAsync(request.Id);
+        var venue = await _repository.GetRequiredAsync(request.Id);
+
+        venue.Delete();
+
+        await _repository.DeleteAsync(venue);
 
         return Unit.Value;
     }

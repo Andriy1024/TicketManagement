@@ -1,6 +1,6 @@
 ﻿namespace TMS.Ticketing.Application.UseCases.Events;
 
-public sealed record DeleteEventCommand(Guid EventId) : IRequest<Unit>, IValidatable 
+public sealed record DeleteEventCommand(Guid EventId) : ICommand<Unit>, IValidatable
 {
     public IEnumerable<ValidationFailure> Validate()
     {
@@ -20,7 +20,11 @@ internal sealed class DeleteEventHandler : IRequestHandler<DeleteEventCommand, U
 
     public async Task<Unit> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
     {
-        await _eventsRepo.DeleteAsync(request.EventId);
+        var @event = await _eventsRepo.GetRequiredAsync(request.EventId);
+
+        @event.Delete();
+
+        await _eventsRepo.DeleteAsync(@event);
 
         return Unit.Value;
     }

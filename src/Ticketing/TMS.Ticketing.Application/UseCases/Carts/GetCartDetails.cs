@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Application.UseCases.Carts;
 
-public sealed record GetCartDetails(Guid CartId) : IRequest<CartDetailsDto>, IValidatable 
+public sealed record GetCartDetails(Guid CartId) : ICommand<CartDetailsDto>, IValidatable 
 {
     public IEnumerable<ValidationFailure> Validate()
     {

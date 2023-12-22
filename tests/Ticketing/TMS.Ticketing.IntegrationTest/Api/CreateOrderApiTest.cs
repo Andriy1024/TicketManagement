@@ -7,7 +7,6 @@ using TMS.Ticketing.Application.UseCases.Orders;
 using TMS.Ticketing.Domain.Common;
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.Domain.Ordering;
-using TMS.Ticketing.Domain.Ordeting;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.IntegrationTest.Common;
 using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
@@ -15,11 +14,12 @@ using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 
-public class CreateOrderApiTest : IClassFixture<MongoDbFactory>
+[Collection(MongoDBReplicaSetCollection.Name)]
+public class CreateOrderApiTest
 {
     private readonly TicketingApiFactory _apiFactory;
 
-    public CreateOrderApiTest(MongoDbFactory mongo)
+    public CreateOrderApiTest(MongoReplicaSetFactory mongo)
     {
         _apiFactory = new TicketingApiFactory(new MongoConfig
         {
@@ -59,13 +59,16 @@ public class CreateOrderApiTest : IClassFixture<MongoDbFactory>
     {
         var venue = FakeVenueFactory.Create(venueId: Guid.NewGuid(), name: "Venue #4");
 
+        var start = DateTime.UtcNow.Date;
+        var end = start.AddDays(1);
+
         var @event = new EventEntity
         {
             Id = Guid.NewGuid(),
             Name = "Event #2",
             CreatorId = UserContext.DefaultId,
-            Start = DateTime.UtcNow,
-            End = DateTime.UtcNow.AddDays(1),
+            Start = start,
+            End = end,
             Details = new List<Detail>()
             {
                 new() { Name = "Detail 1", Value = "Value 1" }
@@ -74,7 +77,7 @@ public class CreateOrderApiTest : IClassFixture<MongoDbFactory>
 
         var booking = VenueBookingEntity.Create(
             Array.Empty<VenueBookingEntity>(),
-            DateTime.UtcNow, DateTime.UtcNow.AddDays(1),
+            start, end,
             venue, @event);
 
         @event.GeneratePrices().GenerateOffers();

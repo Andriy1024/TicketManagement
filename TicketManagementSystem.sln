@@ -43,7 +43,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Ticketing.IntegrationTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Test.Common", "tests\TMS.Test.Common\TMS.Test.Common.csproj", "{AA7A8D2E-A15F-455D-B351-F333A13E6FD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMS.Ticketing.Applications.Test", "tests\Ticketing\TMS.Ticketing.Applications.Test\TMS.Ticketing.Applications.Test.csproj", "{78BB4DD1-F3EC-4743-95F8-45E5BB9DBE21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Ticketing.Applications.Test", "tests\Ticketing\TMS.Ticketing.Applications.Test\TMS.Ticketing.Applications.Test.csproj", "{78BB4DD1-F3EC-4743-95F8-45E5BB9DBE21}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Caching.Redis", "src\Common\TMS.Caching.Redis\TMS.Caching.Redis.csproj", "{4F304B2F-CCD0-4B3D-B36F-D4DD08CBBA8C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Ticketing.Infrastructure", "src\Ticketing\TMS.Ticketing.Infrastructure\TMS.Ticketing.Infrastructure.csproj", "{58924280-B0A3-42FE-AECC-47D466F7E49A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMS.Observability", "src\Common\TMS.Observability\TMS.Observability.csproj", "{96AE9376-3FC9-46DE-A484-8C8367C94397}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +109,18 @@ Global
 		{78BB4DD1-F3EC-4743-95F8-45E5BB9DBE21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78BB4DD1-F3EC-4743-95F8-45E5BB9DBE21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78BB4DD1-F3EC-4743-95F8-45E5BB9DBE21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F304B2F-CCD0-4B3D-B36F-D4DD08CBBA8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F304B2F-CCD0-4B3D-B36F-D4DD08CBBA8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F304B2F-CCD0-4B3D-B36F-D4DD08CBBA8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F304B2F-CCD0-4B3D-B36F-D4DD08CBBA8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58924280-B0A3-42FE-AECC-47D466F7E49A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58924280-B0A3-42FE-AECC-47D466F7E49A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58924280-B0A3-42FE-AECC-47D466F7E49A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58924280-B0A3-42FE-AECC-47D466F7E49A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96AE9376-3FC9-46DE-A484-8C8367C94397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96AE9376-3FC9-46DE-A484-8C8367C94397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96AE9376-3FC9-46DE-A484-8C8367C94397}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96AE9376-3FC9-46DE-A484-8C8367C94397}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +145,9 @@ Global
 		{0F18809E-192E-4972-A6F0-D74138BFB35C} = {3B6F609A-0758-44DC-9E29-A2746D804A22}
 		{AA7A8D2E-A15F-455D-B351-F333A13E6FD1} = {29C9B6F2-7D1E-435A-9EA2-82E3B6F04277}
 		{78BB4DD1-F3EC-4743-95F8-45E5BB9DBE21} = {3B6F609A-0758-44DC-9E29-A2746D804A22}
+		{4F304B2F-CCD0-4B3D-B36F-D4DD08CBBA8C} = {B2D23266-6FD7-48F8-8430-3CE4E10BFEA3}
+		{58924280-B0A3-42FE-AECC-47D466F7E49A} = {018B19BD-8FAF-493A-8B40-1E89E93584C7}
+		{96AE9376-3FC9-46DE-A484-8C8367C94397} = {B2D23266-6FD7-48F8-8430-3CE4E10BFEA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03841D9E-D332-4F6A-BEE6-9A2EEB5C71B4}

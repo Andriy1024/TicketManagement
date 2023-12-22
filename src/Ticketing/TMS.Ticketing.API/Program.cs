@@ -2,7 +2,8 @@ using TMS.Common.Extensions;
 
 using TMS.Ticketing.API;
 using TMS.Ticketing.Persistence;
-using TMS.Ticketing.Application;
+using TMS.Ticketing.Infrastructure;
+using TMS.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,18 +12,24 @@ builder.Services
     .Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
-    .AddApplicationServices(builder.Configuration)
-    .AddPersistenceServices(builder.Configuration);
-    
+    .AddInfrastructure(builder.Configuration)
+    .AddPersistenceServices(builder.Configuration)
+    .AddProblemDetails();
+
+builder.AddLogger();
+builder.AddOpenTelemetry();
+
 var app = builder.Build();
 
 app.UseSwagger();
 
 app.UseSwaggerUI();
 
-app.UseAuthorization();
+app.UseRequestLogging();
 
 app.UseMiddleware<ErrorMiddleware>();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

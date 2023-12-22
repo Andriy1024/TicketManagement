@@ -2,7 +2,7 @@
 
 namespace TMS.Ticketing.Application.UseCases.VenueSections;
 
-public sealed class UpdateSectionCommand : IRequest<VenueDetailsDto>, IValidatable
+public sealed class UpdateSectionCommand : ICommand<VenueDetailsDto>, IValidatable
 {
     public required Guid SectionId { get; init; }
 
@@ -30,17 +30,14 @@ internal sealed class UpdateSectionHandler : IRequestHandler<UpdateSectionComman
 
     public UpdateSectionHandler(IVenuesRepository repository)
     {
-        this._repository = repository;
+        _repository = repository;
     }
 
     public async Task<VenueDetailsDto> Handle(UpdateSectionCommand request, CancellationToken cancellationToken)
     {
         var venue = await _repository.GetRequiredAsync(request.VenueId);
 
-        var section = venue.GetSection(request.SectionId);
-
-        section.Name = request.Name;
-        section.Type = request.Type;
+        venue.UpdateSection(request.SectionId, request.Name, request.Type);
 
         await _repository.UpdateAsync(venue);
 

@@ -1,22 +1,20 @@
-﻿using MongoDB.Driver;
-using TMS.Common.Errors;
+﻿using TMS.Common.Errors;
+using TMS.Ticketing.Infrastructure.ChangeTracker;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.Persistence.Abstractions;
 using TMS.Ticketing.Persistence.Helpers;
+using TMS.Ticketing.Persistence.Sessions;
 
 namespace TMS.Ticketing.Persistence.Implementations;
 
-internal sealed class VenuesRepository : MongoRepository<VenueEntity, Guid>, IVenuesRepository
+internal class VenuesRepository : ChangeTrackableRepository<VenueEntity, Guid>, IVenuesRepository
 {
     protected override string CollectionName => Collections.Venues;
 
-    public VenuesRepository(IMongoDatabase database) : base(database)
-    {
-    }
+    public VenuesRepository(IMongoDatabase database, MongoTransactionScope transactionScope, IEntityChangeTracker domainEvents)
+         : base(database, transactionScope, domainEvents) {}
 
     public async Task<VenueEntity> GetRequiredAsync(Guid venueId)
-    {
-        return await GetAsync(venueId)
+        => await GetAsync(venueId)
             ?? throw ApiError.NotFound($"Venue not found: {venueId}").ToException();
-    }
 }

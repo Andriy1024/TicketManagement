@@ -25,42 +25,41 @@ public static class BsonClassMapInitializer
             IsInitialize = true;
         }
 
+        BsonClassMap.RegisterClassMap<Entity<Guid>>(map =>
+        {
+            map.AutoMap();
+            map.MapIdMember(x => x.Id);
+        });
+
         BsonClassMap.RegisterClassMap<VenueEntity>(map =>
         {
             map.AutoMap();
-
-            map.MapIdMember(x => x.Id);
         });
 
         BsonClassMap.RegisterClassMap<VenueBookingEntity>(map =>
         {
             map.AutoMap();
-            map.MapIdMember(x => x.Id);
         });
 
         BsonClassMap.RegisterClassMap<EventEntity>(map =>
         {
             map.AutoMap();
-            map.MapIdMember(x => x.Id);
         });
 
         BsonClassMap.RegisterClassMap<CartEntity>(map =>
         {
             map.AutoMap();
-            map.MapIdMember(x => x.Id);
             map.UnmapProperty(x => x.Total);
         });
 
         BsonClassMap.RegisterClassMap<OrderEntity>(map =>
         {
             map.AutoMap();
-            map.MapIdMember(x => x.Id);
         });
 
         BsonClassMap.RegisterClassMap<TicketEntity>(map =>
         {
             map.AutoMap();
-            map.MapIdMember(x => x.Id);
         });
     }
 }

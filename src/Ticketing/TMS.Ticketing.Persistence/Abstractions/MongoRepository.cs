@@ -1,9 +1,7 @@
-﻿using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+﻿using System.Linq.Expressions;
 
-using TMS.Ticketing.Domain;
-
-using System.Linq.Expressions;
+using TMS.Ticketing.Persistence.Exceptions;
+using TMS.Ticketing.Persistence.Sessions;
 
 namespace TMS.Ticketing.Persistence.Abstractions;
 
@@ -15,9 +13,12 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
 
     protected IMongoCollection<TEntity> Collection { get; }
 
-    public MongoRepository(IMongoDatabase database)
+    protected MongoTransactionScope TransactionScope { get; }
+
+    public MongoRepository(IMongoDatabase database, MongoTransactionScope transactionScope)
     {
         Collection = database.GetCollection<TEntity>(CollectionName);
+        TransactionScope = transactionScope;
     }
 
     public Task<TEntity?> GetAsync(TIdentifiable id, CancellationToken cancellationToken = default)
@@ -34,21 +35,59 @@ internal abstract class MongoRepository<TEntity, TIdentifiable> : IRepository<TE
     public async Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         => await Collection.Find(predicate).ToListAsync(cancellationToken);
 
-    public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
-        => Collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
+    public virtual Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        return TransactionScope.HasTransaction
+            ? Collection.InsertOneAsync(TransactionScope.GetTransaction(), entity, cancellationToken: cancellationToken)
+            : Collection.InsertOneAsync(entity, cancellationToken: cancellationToken);
+    }
 
-    public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
-        => UpdateAsync(entity, e => e.Id.Equals(entity.Id), cancellationToken: cancellationToken);
+    public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        var versionInfo = entity.IncreaseVersion();
 
-    public Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-        => Collection.ReplaceOneAsync(predicate, entity, cancellationToken: cancellationToken);
+        FilterDefinition<TEntity> filter = 
+             Builders<TEntity>.Filter.Eq(r => r.Id, entity.Id)
+           & Builders<TEntity>.Filter.Eq(r => r.Version, versionInfo.Old);
 
-    public Task DeleteAsync(TIdentifiable id, CancellationToken cancellationToken = default)
-        => DeleteAsync(e => e.Id.Equals(id), cancellationToken);
+        var result = TransactionScope.HasTransaction
+            ? await Collection.ReplaceOneAsync(TransactionScope.GetTransaction(), filter, entity, cancellationToken: cancellationToken)
+            : await Collection.ReplaceOneAsync(filter, entity, cancellationToken: cancellationToken);
 
-    public Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-        => Collection.DeleteOneAsync(predicate, cancellationToken: cancellationToken);
+        if (!result.IsAcknowledged)
+        {
+            throw MongoDbException.OperationIsAcknowledged();
+        }
 
+        if (result.ModifiedCount != 1)
+        {
+            throw new MongoDbException($"This operation conflicted with another operation. MongoDB modified count expected to be one, actual: {result.ModifiedCount}. Please retry your operation.");
+        }
+    }
+    
+    public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        var versionInfo = entity.IncreaseVersion();
+
+        FilterDefinition<TEntity> filter =
+            Builders<TEntity>.Filter.Eq(r => r.Id, entity.Id)
+          & Builders<TEntity>.Filter.Eq(r => r.Version, versionInfo.Old);
+
+        var result = TransactionScope.HasTransaction
+            ? await Collection.DeleteOneAsync(TransactionScope.GetTransaction(), filter, cancellationToken: cancellationToken)
+            : await Collection.DeleteOneAsync(filter, cancellationToken: cancellationToken);
+
+        if (!result.IsAcknowledged)
+        {
+            throw MongoDbException.OperationIsAcknowledged();
+        }
+
+        if (result.DeletedCount != 1)
+        {
+            throw new MongoDbException($"This operation conflicted with another operation. MongoDB delete count expected to be one, actual: {result.DeletedCount}. Please retry your operation.");
+        }
+    }
+    
     public Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         => Collection.Find(predicate).AnyAsync(cancellationToken);
 }

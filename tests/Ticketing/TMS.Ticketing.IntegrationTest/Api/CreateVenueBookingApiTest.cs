@@ -12,11 +12,12 @@ using TMS.Ticketing.Persistence;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 
-public class CreateVenueBookingApiTest : IClassFixture<MongoDbFactory>
+[Collection(MongoDBReplicaSetCollection.Name)]
+public class CreateVenueBookingApiTest
 {
     private readonly TicketingApiFactory _apiFactory;
 
-    public CreateVenueBookingApiTest(MongoDbFactory mongo)
+    public CreateVenueBookingApiTest(MongoReplicaSetFactory mongo)
     {
         _apiFactory = new TicketingApiFactory(new MongoConfig
         {
@@ -58,13 +59,16 @@ public class CreateVenueBookingApiTest : IClassFixture<MongoDbFactory>
     {
         var venue = FakeVenueFactory.Create(venueId: Guid.NewGuid(), name: "Venue #4");
 
+        var start = DateTime.UtcNow.Date;
+        var end = start.AddDays(1);
+
         var @event = new EventEntity
         {
             Id = Guid.NewGuid(),
             Name = "Event #2",
             CreatorId = UserContext.DefaultId,
-            Start = DateTime.UtcNow,
-            End = DateTime.UtcNow.AddDays(1)
+            Start = start,
+            End = end
         };
 
         using (var scope = serviceProvider.CreateScope())

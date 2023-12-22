@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\TMS.Caching.Redis\TMS.Caching.Redis.csproj" />
+    <ProjectReference Include="..\TMS.Ticketing.Application\TMS.Ticketing.Application.csproj" />
+  </ItemGroup>
+
+</Project>

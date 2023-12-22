@@ -27,6 +27,7 @@ builder.Services
     .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<CreatePaymentCommand>())
     .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
     .AddTransient<IMessageBrocker, MessageBrocker>()
+    .AddProblemDetails()
     .AddRefitClient<ITicketingApi>()
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(ticketingConfig.TicketingUri));
 
