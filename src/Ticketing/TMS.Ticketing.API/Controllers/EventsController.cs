@@ -24,6 +24,7 @@ public sealed class EventsController : ControllerBase
 
     #region Events
 
+    //[ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
     [HttpGet("overview")]
     public Task<IEnumerable<EventOverviewDto>> GetEventsOverviewAsync(CancellationToken token)
         => _mediator.Send(new GetEventsOverview(), token);
