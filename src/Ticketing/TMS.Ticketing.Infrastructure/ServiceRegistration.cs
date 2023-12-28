@@ -12,13 +12,16 @@ using TMS.Common.Validation;
 
 using TMS.Caching.Redis;
 
+using TMS.Common.Interfaces;
 using TMS.Ticketing.Application.Interfaces;
+using TMS.Ticketing.Application.UseCases.Carts;
 using TMS.Ticketing.Infrastructure.ChangeTracker;
 using TMS.Ticketing.Infrastructure.DomainEvents;
 using TMS.Ticketing.Infrastructure.Payments;
 using TMS.Ticketing.Infrastructure.Payments.API;
-using TMS.Ticketing.Application.UseCases.Carts;
 using TMS.Ticketing.Infrastructure.Transactions;
+using TMS.Ticketing.Infrastructure.MessageBroker;
+using TMS.RabbitMq.Configuration;
 
 namespace TMS.Ticketing.Infrastructure;
 
@@ -31,7 +34,7 @@ public static class ServiceRegistration
         var paymentsConfig = configuration.GetSection(nameof(PaymentsConfig)).Get<PaymentsConfig>()
             ?? throw new ArgumentNullException(nameof(PaymentsConfig));
 
-        services
+        return services
             .AddMediatR(x => x.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly(), typeof(GetCartDetails).Assembly))
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
             .AddCachableBehavior()
@@ -43,9 +46,10 @@ public static class ServiceRegistration
             .AddRefitClient<IPaymentsApi>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri(paymentsConfig.PaymentsUri))
             .Services
-            .AddRedisServices<DB1>(configuration);
-
-        return services;
+            .AddRedisServices<DB1>(configuration)
+            .AddRabbitMqMessageBus(configuration)
+            .AddTransient<IStartupTask, RabbitMqStartupTask>()
+            .AddScoped<ITicketingMessageBrocker, TicketingMessageBrocker>();
     }
 }
 

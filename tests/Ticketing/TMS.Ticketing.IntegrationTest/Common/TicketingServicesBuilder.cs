@@ -1,6 +1,8 @@
 ﻿using TMS.Common.Caching;
 using TMS.Ticketing.Persistence;
 using TMS.Ticketing.Infrastructure;
+using TMS.MongoDB;
+using TMS.RabbitMq;
 
 namespace TMS.Ticketing.IntegrationTest.Common;
 
@@ -27,12 +29,22 @@ public class TicketingServicesBuilder : ServicesBuilder<TicketingServicesBuilder
             .AddInfrastructure(Config)
             .AddPersistenceServices(Config);
 
+        SetFakeRabbitMq();
+
         return this;
     }
 
     public TicketingServicesBuilder SetFakeCache()
     {
         OverrideService<ICacheClient>(new FakeCacheClient());
+
+        return this;
+    }
+
+    public TicketingServicesBuilder SetFakeRabbitMq()
+    {
+        OverrideService<IRabbitMqPublisher>(Substitute.For<IRabbitMqPublisher>());
+        OverrideService<IRabbitMqSubscriber>(Substitute.For<IRabbitMqSubscriber>());
 
         return this;
     }

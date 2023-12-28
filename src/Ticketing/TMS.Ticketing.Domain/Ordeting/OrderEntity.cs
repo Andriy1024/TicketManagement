@@ -3,11 +3,12 @@ using TMS.Common.Errors;
 using TMS.Common.Extensions;
 using TMS.Common.Users;
 
+using TMS.Ticketing.Domain.DomainEvents;
 using TMS.Ticketing.Domain.Events;
 
 namespace TMS.Ticketing.Domain.Ordering;
 
-public sealed class OrderEntity : Entity<Guid>
+public sealed class OrderEntity : EventDrivenEntity<Guid>
 {
     public Guid EventId { get; init; }
 
@@ -42,7 +43,7 @@ public sealed class OrderEntity : Entity<Guid>
             @event.BookSeat(orderItem.SeatId);
         }
 
-        return new OrderEntity
+        var order = new OrderEntity
         {
             Id = Guid.NewGuid(),
             AccountId = user.Id,
@@ -53,6 +54,10 @@ public sealed class OrderEntity : Entity<Guid>
             Status = OrderStatus.Pending,
             PaymentId = paymentId
         };
+
+        order.AddDomainEvent(new EntityCreated<OrderEntity>(order));
+
+        return order;
     }
 
     public OrderEntity UpdateStatus(PaymentStatus payment)
@@ -79,6 +84,8 @@ public sealed class OrderEntity : Entity<Guid>
         if (error != null) throw error.ToException();
 
         Status = newStatus;
+
+        AddDomainEvent(new OrderStatusUpdated(this));
 
         return this;
     }

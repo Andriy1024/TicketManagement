@@ -8,7 +8,7 @@ using TMS.Ticketing.Application.UseCases.VenueBookings;
 using TMS.Ticketing.Domain.Events;
 using TMS.Ticketing.IntegrationTest.Common;
 using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
-using TMS.Ticketing.Persistence;
+using TMS.MongoDB;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 

@@ -7,5 +7,5 @@ public interface IEntityChangeTracker
 {
     IEnumerable<IDomainEvent> ExtractEvents();
 
-    void Add(IEntity entity);
+    void Add(IEventDrivenEntity entity);
 }

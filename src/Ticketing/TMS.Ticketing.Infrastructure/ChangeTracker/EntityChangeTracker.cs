@@ -5,9 +5,9 @@ namespace TMS.Ticketing.Infrastructure.ChangeTracker;
 
 internal sealed class EntityChangeTracker : IEntityChangeTracker
 {
-    private readonly List<IEntity> _entities = new();
+    private readonly List<IEventDrivenEntity> _entities = new();
 
-    public void Add(IEntity entity)
+    public void Add(IEventDrivenEntity entity)
     {
         _entities.Add(entity);
     }

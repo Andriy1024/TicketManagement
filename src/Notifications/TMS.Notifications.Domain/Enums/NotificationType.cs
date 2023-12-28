@@ -4,5 +4,6 @@ public enum NotificationType
 {
     OrderFailed = 1,
     OrderCancelled = 2,
-    OrderCompleted = 3
+    OrderCompleted = 3,
+    OrderPending = 4
 }

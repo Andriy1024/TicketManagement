@@ -7,7 +7,7 @@ using TMS.Ticketing.Domain.Venues;
 
 namespace TMS.Ticketing.Domain.Events;
 
-public sealed class EventEntity : Entity<Guid>, IDateRange
+public sealed class EventEntity : EventDrivenEntity<Guid>, IDateRange
 {
     public required string Name { get; set; }
 

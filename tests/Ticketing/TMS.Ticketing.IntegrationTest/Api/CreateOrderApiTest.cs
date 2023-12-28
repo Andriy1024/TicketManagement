@@ -10,7 +10,7 @@ using TMS.Ticketing.Domain.Ordering;
 using TMS.Ticketing.Domain.Venues;
 using TMS.Ticketing.IntegrationTest.Common;
 using TMS.Ticketing.IntegrationTest.Common.FakeObjects;
-using TMS.Ticketing.Persistence;
+using TMS.MongoDB;
 
 namespace TMS.Ticketing.IntegrationTest.Api;
 

@@ -1,0 +1,12 @@
+﻿@model TMS.Common.IntegrationEvents.Notifications.OrderStatusUpdatedNotification
+
+@{}
+
+<p>Dear user,</p>
+
+<p>Your order has been updated:</p>
+<p> - Status: @Model.Status.ToString()</p>
+<p> - At: @Model.UpdatedAt.ToString()</p>
+
+<p>Best regards,</p>
+<p>Ticket Management System</p>

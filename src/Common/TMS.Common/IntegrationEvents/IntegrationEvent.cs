@@ -3,11 +3,19 @@ using FluentValidation.Results;
 
 using MediatR;
 
+using TMS.Common.Interfaces;
 using TMS.Common.Validation;
 
 namespace TMS.Common.IntegrationEvents;
 
-public class IntegrationEvent<TPayload> : IRequest<Unit>, IValidatable
+/// <summary>
+/// The interface represents an event that is sent to message broker (RabbitMq).
+/// </summary>
+public interface IIntegrationEvent : ICommand<Unit>
+{
+}
+
+public class IntegrationEvent<TPayload> : IIntegrationEvent, IValidatable
 {
     public TPayload Payload { get; set; }
 

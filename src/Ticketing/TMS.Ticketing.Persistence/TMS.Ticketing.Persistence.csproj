@@ -15,6 +15,7 @@
   </ItemGroup>
 	
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\TMS.MongoDB\TMS.MongoDB.csproj" />
     <ProjectReference Include="..\TMS.Ticketing.Infrastructure\TMS.Ticketing.Infrastructure.csproj" />
   </ItemGroup>
 
